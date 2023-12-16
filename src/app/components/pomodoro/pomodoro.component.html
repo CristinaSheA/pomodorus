@@ -1,1 +1,19 @@
-<p>pomodoro works!</p>,
+<sections></sections>
+<timer
+(nextSection)="parentMethod($event)"></timer>
+
+<div class="control-buttons">
+  @if (showStartButton === true) {
+    <div class="control-buttons__button" id="start-control-button">Start</div>
+  }
+  @if (showPauseButton === true) {
+    <div class="control-buttons__button" id="pause-control-button">Pause</div>
+  }
+  @if (showResumeButton === true) {
+    <div class="control-buttons__button" id="resume-control-button">Resume</div>
+  }
+  @if (showSkipButton === true) {
+    <div class="control-buttons__button" id="skip-control-button"></div>
+  }
+</div>
+

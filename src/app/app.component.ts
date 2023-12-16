@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { PomodoroComponent } from './components/pomodoro/pomodoro.component';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,7 @@ import { RouterOutlet } from '@angular/router';
   imports: [
     CommonModule,
     RouterOutlet,
+    PomodoroComponent
   ],
 
   templateUrl: './app.component.html',

@@ -1,0 +1,19 @@
+:host {
+  display: block;
+}
+
+#sections button {
+  border: none;
+  margin: 0px;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 2px 12px;
+  height: 28px;
+  cursor: pointer;
+  background: none rgba(0, 0, 0, 0.15);
+  box-shadow: none;
+  color: white;
+  opacity: 1;
+  font-weight: bold;
+  margin: 10px;
+}
