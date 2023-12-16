@@ -1,6 +1,8 @@
-<sections></sections>
+<sections
+(methodFromChild)="parentMethod($event)"></sections>
 <timer
-(nextSection)="parentMethod($event)"></timer>
+[currentSection]="currentSection"
+[sectionsList]="sectionsList"></timer>
 
 <div class="control-buttons">
   @if (showStartButton === true) {

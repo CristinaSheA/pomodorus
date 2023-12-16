@@ -13,5 +13,12 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 })
 export class SectionsComponent {
   @Input() currentSection!: string
-  // @Output() setSection!: EventEmitter<string>
+  @Output() setSection!: EventEmitter<string>
+
+  @Output() methodFromChild = new EventEmitter<string>();
+
+  childMethod(a: string) {
+    // Aquí va la lógica del método del componente hijo
+    this.methodFromChild.emit(a);
+  }
 }

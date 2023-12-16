@@ -1,1 +1,11 @@
-<p id="timer" (click)=" pauseTimer()">25</p>
+@if (currentSection == 'pomodoro') {
+  <p id="timer">25:00</p>
+}
+
+@if (currentSection == 'short-break') {
+  <p id="timer">05:00</p>
+}
+
+@if (currentSection == 'long-break') {
+  <p id="timer">15:00</p>
+}

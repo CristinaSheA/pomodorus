@@ -13,9 +13,13 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 })
 export class TimerComponent {
   secondsLeft!: number
+  @Input() currentSection!: string
+  @Input() sectionsList!: any
   @Output() nextSection: any = new EventEmitter<string>()
-  pauseTimer() {
-    this.nextSection.emit('¡Hola desde el componente hijo!');
+  // - - [metodo] pause
+  // - - [metodo] nextSection
+
+  a() {
+
   }
-  
 }
