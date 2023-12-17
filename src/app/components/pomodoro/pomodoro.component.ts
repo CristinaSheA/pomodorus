@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, ViewChild } from '@angular/core';
 import { TimerComponent } from './components/timer/timer.component';
 import { SectionsComponent } from './components/sections/sections.component';
 
@@ -38,6 +38,16 @@ export class PomodoroComponent {
   parentMethod(message: string) {
     console.log(message); 
     this.currentSection = message// Imprime: ¡Hola desde el componente hijo!
+  }
+
+  @ViewChild(TimerComponent) hijoComponent!: TimerComponent;
+
+  startChildTimer() {
+    // Ejecutar el método 'startTimer()' en el componente hijo
+    this.hijoComponent.startTimer();
+    this.showStartButton = false;
+    this.showPauseButton = true;
+    this.showSkipButton = true;
   }
 
   // startTimer() {

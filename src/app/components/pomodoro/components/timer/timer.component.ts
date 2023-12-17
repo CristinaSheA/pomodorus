@@ -33,6 +33,7 @@ export class TimerComponent {
 
 
 
+
   startTimer() {
     switch (this.currentSection) {
       case 'pomodoro':

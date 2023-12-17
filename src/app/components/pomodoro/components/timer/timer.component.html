@@ -1,17 +1,4 @@
-@if (currentSection == 'pomodoro') {
-  <p id="timer">25:00</p>
-}
 
-@if (currentSection == 'short-break') {
-  <p id="timer">05:00</p>
-}
+<p id="timer">{{min}}:{{sec}}</p>
 
-@if (currentSection == 'long-break') {
-  <p id="timer">15:00</p>
-}
-
-<div>
-  <p>{{min}}:{{sec}}</p>
-  <button (click)="startTimer()">Iniciar</button>
-</div>
 

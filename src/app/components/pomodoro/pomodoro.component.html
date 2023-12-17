@@ -6,7 +6,7 @@
 
 <div class="control-buttons">
   @if (showStartButton === true) {
-    <div class="control-buttons__button" id="start-control-button">Start</div>
+    <div class="control-buttons__button" id="start-control-button" (click)="startChildTimer()">Start</div>
   }
   @if (showPauseButton === true) {
     <div class="control-buttons__button" id="pause-control-button">Pause</div>
