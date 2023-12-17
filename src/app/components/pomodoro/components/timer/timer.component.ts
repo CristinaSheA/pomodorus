@@ -18,6 +18,9 @@ import { Subscription, interval } from 'rxjs';
 })
 export class TimerComponent {
   @Input() public currentSection!: string;
+  @Input() public sectionsList!: { name: string; time: number }[];
+  @Input() public longBreakFrequency!: number;
+
 
   private readonly cdr = inject(ChangeDetectorRef);
   private secondsLeft!: number;
@@ -55,7 +58,7 @@ export class TimerComponent {
 
   pauseTimer(): void {
     console.log('pauseTimer');
-    this.timer.unsubscribe()
+    this.timer.unsubscribe();
   }
 
   resumeTimer(): void {
@@ -70,10 +73,29 @@ export class TimerComponent {
       }
     });
   }
-  
+
+  private currentSectionIndex = 0;
+  private pomodoroCount = 0;
 
   nextSection(): void {
     console.log('nextSection');
+    this.timer.unsubscribe();
+
+    if (this.sectionsList[this.currentSectionIndex].name === 'pomodoro') {
+      this.pomodoroCount++;
+    }
+
+    if (this.pomodoroCount === this.longBreakFrequency) {
+      this.currentSectionIndex = this.sectionsList.findIndex(
+        (section: { name: string }) => section.name === 'long-break'
+      );
+      this.pomodoroCount = 0;
+    } else {
+      this.currentSectionIndex =
+        (this.currentSectionIndex + 1) % this.sectionsList.length;
+    }
+
+    this.startTimer();
   }
 
   get getMinutes(): void {

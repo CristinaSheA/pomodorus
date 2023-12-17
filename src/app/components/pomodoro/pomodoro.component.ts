@@ -28,7 +28,7 @@ export class PomodoroComponent {
     },
   ];
 
-  longBreakFrequency!: number;
+  @Output() longBreakFrequency!: number;
 
   showStartButton: boolean = true;
   showPauseButton: boolean = false;
@@ -37,7 +37,7 @@ export class PomodoroComponent {
 
   parentMethod(message: string) {
     console.log(message); 
-    this.currentSection = message// Imprime: ¡Hola desde el componente hijo!
+    this.currentSection = message
   }
 
   @ViewChild(TimerComponent) hijoComponent!: TimerComponent;
@@ -65,6 +65,8 @@ export class PomodoroComponent {
     
     this.hijoComponent.nextSection();
   }
+
+  
 
   resumeTimer() {
     this.showPauseButton = true;
