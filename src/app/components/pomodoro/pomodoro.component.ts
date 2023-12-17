@@ -43,11 +43,35 @@ export class PomodoroComponent {
   @ViewChild(TimerComponent) hijoComponent!: TimerComponent;
 
   startChildTimer() {
-    // Ejecutar el método 'startTimer()' en el componente hijo
     this.hijoComponent.startTimer();
     this.showStartButton = false;
     this.showPauseButton = true;
     this.showSkipButton = true;
+  }
+
+  
+  pauseTimer() {
+    this.showPauseButton = false;
+    this.showSkipButton = false;
+    this.showResumeButton = true;
+
+    this.hijoComponent.pauseTimer();
+  }
+
+  nextSection() {
+    this.showStartButton = true;
+    this.showPauseButton = false;
+    this.showSkipButton = false;
+    
+    this.hijoComponent.nextSection();
+  }
+
+  resumeTimer() {
+    this.showPauseButton = true;
+    this.showSkipButton = true;
+    this.showResumeButton = false;
+
+    this.hijoComponent.resumeTimer();
   }
 
   // startTimer() {

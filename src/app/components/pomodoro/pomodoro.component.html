@@ -1,21 +1,19 @@
-<sections
-(methodFromChild)="parentMethod($event)"></sections>
-<timer
-[currentSection]="currentSection"
-[sectionsList]="sectionsList"></timer>
+<sections (methodFromChild)="parentMethod($event)"></sections>
+<timer [currentSection]="currentSection"></timer>
 
 <div class="control-buttons">
   @if (showStartButton === true) {
     <div class="control-buttons__button" id="start-control-button" (click)="startChildTimer()">Start</div>
   }
   @if (showPauseButton === true) {
-    <div class="control-buttons__button" id="pause-control-button">Pause</div>
+    <div class="control-buttons__button" id="pause-control-button" (click)="pauseTimer()">Pause</div>
   }
   @if (showResumeButton === true) {
-    <div class="control-buttons__button" id="resume-control-button">Resume</div>
+    <div class="control-buttons__button" id="resume-control-button" (click)="resumeTimer()">Resume</div>
   }
   @if (showSkipButton === true) {
-    <div class="control-buttons__button" id="skip-control-button"></div>
+    <div class="control-buttons__button" id="skip-control-button" (click)="nextSection()"></div>
   }
 </div>
+
 
