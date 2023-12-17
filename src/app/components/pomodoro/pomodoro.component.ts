@@ -39,4 +39,32 @@ export class PomodoroComponent {
     console.log(message); 
     this.currentSection = message// Imprime: ¡Hola desde el componente hijo!
   }
+
+  // startTimer() {
+  //   switch (this.currentSection) {
+  //     case 'pomodoro':
+  //       this.secondsLeft = 1500;
+  //       break;
+  
+  //     case 'short-break':
+  //       this.secondsLeft = 300;
+  //       break;
+  //     case 'long-break':
+  //       this.secondsLeft = 900;
+  //       break;
+  
+  //     default:
+  //       break;
+  //   }
+      
+  //   this.timerId = interval(1000).subscribe(() => {
+  //     if (this.secondsLeft > 0) {
+  //       this.secondsLeft--;
+  //       console.log(this.secondsLeft);
+  //       this.getMinutes()
+  //     } else {
+  //       this.nextSection.emit();
+  //     }
+  //   });
+  // }
 }

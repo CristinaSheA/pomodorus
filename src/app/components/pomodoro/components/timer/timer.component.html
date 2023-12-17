@@ -9,3 +9,9 @@
 @if (currentSection == 'long-break') {
   <p id="timer">15:00</p>
 }
+
+<div>
+  <p>{{min}}:{{sec}}</p>
+  <button (click)="startTimer()">Iniciar</button>
+</div>
+
