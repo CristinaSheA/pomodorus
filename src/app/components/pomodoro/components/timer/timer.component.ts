@@ -21,12 +21,17 @@ export class TimerComponent {
   @Input() public sectionsList!: { name: string; time: number }[];
   @Input() public longBreakFrequency!: number;
 
-
   private readonly cdr = inject(ChangeDetectorRef);
-  private secondsLeft!: number;
+  public secondsLeft!: number;
   private timer!: Subscription;
   public min!: number;
   public sec!: number;
+
+
+  constructor() {
+
+  }
+
 
   startTimer() {
     switch (this.currentSection) {
@@ -44,6 +49,9 @@ export class TimerComponent {
       default:
         break;
     }
+
+    this.min = Math.floor(this.secondsLeft / 60);
+    this.sec = this.secondsLeft % 60;
 
     this.timer = interval(1000).subscribe(() => {
       if (this.secondsLeft > 0) {
@@ -80,23 +88,22 @@ export class TimerComponent {
   nextSection(): void {
     console.log('nextSection');
     this.timer.unsubscribe();
-
-    if (this.sectionsList[this.currentSectionIndex].name === 'pomodoro') {
+    this.currentSectionIndex++;
+    if (this.currentSectionIndex >= this.sectionsList.length) {
+      this.currentSectionIndex = 0;
+    }
+    this.currentSection = this.sectionsList[this.currentSectionIndex].name;
+    if (this.currentSection === 'pomodoro') {
       this.pomodoroCount++;
+      if (this.pomodoroCount === this.longBreakFrequency) {
+        this.currentSection = 'long-break';
+        this.pomodoroCount = 0;
+      }
     }
 
-    if (this.pomodoroCount === this.longBreakFrequency) {
-      this.currentSectionIndex = this.sectionsList.findIndex(
-        (section: { name: string }) => section.name === 'long-break'
-      );
-      this.pomodoroCount = 0;
-    } else {
-      this.currentSectionIndex =
-        (this.currentSectionIndex + 1) % this.sectionsList.length;
-    }
-
-    this.startTimer();
+    console.log(this.currentSection);
   }
+  
 
   get getMinutes(): void {
     const minutes = Math.floor(this.secondsLeft / 60);

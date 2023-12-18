@@ -1,4 +1,4 @@
 
-<p id="timer">{{min}}:{{sec}}</p>
+<p id="timer">{{ min < 10 ? '0' + min : min }}:{{ sec < 10 ? '0' + sec : sec }}</p>
 
 

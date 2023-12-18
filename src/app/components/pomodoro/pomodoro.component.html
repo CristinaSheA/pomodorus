@@ -1,4 +1,4 @@
-<sections (methodFromChild)="parentMethod($event)"></sections>
+<sections [currentSection]="currentSection" (methodFromChild)="parentMethod($event)"></sections>
 <timer [currentSection]="currentSection" [sectionsList]="sectionsList" [longBreakFrequency]="longBreakFrequency"></timer>
 
 <div class="control-buttons">
