@@ -12,7 +12,7 @@
     <div class="control-buttons__button" id="resume-control-button" (click)="resumeTimer()">Resume</div>
   }
   @if (showSkipButton === true) {
-    <div class="control-buttons__button" id="skip-control-button" (click)="nextSection()"></div>
+    <span id="skip-control-button" (click)="nextSection()"><i class="fi fi-sr-right"></i></span>
   }
 </div>
 
