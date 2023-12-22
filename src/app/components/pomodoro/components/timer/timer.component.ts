@@ -28,7 +28,7 @@ export class TimerComponent {
   public sec!: number;
 
   setTime() {
-    switch (this.currentSection) {
+    switch (this.currentSection || this.sectionsList[this.currentSectionIndex].name) {
       case 'pomodoro':
         this.min = 25
         this.sec = 0
@@ -84,35 +84,26 @@ export class TimerComponent {
         this.secondsLeft--;
         this.getMinutes;
         this.cdr.detectChanges();
-      } else {
-        this.nextSection();
       }
     });
   }
 
   private currentSectionIndex = 0;
-  private pomodoroCount = 0;
+
 
   nextSection(): void {
     this.timer.unsubscribe();
+
     this.currentSectionIndex++;
+
     if (this.currentSectionIndex >= this.sectionsList.length) {
       this.currentSectionIndex = 0;
     }
     this.currentSection = this.sectionsList[this.currentSectionIndex].name;
     this.setTime()
+    this.getMinutes
 
-    if (this.currentSection === 'pomodoro') {
-      this.pomodoroCount++;
-      this.secondsLeft = 1500
-   
-    }
-    if (this.pomodoroCount === this.longBreakFrequency) {
-      this.currentSection = 'long-break';
-      this.secondsLeft = 900
-      this.pomodoroCount = 0;
-    }
-
+    
     console.log(this.currentSection);
   }
   
