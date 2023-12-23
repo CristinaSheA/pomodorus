@@ -1,8 +1,9 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Inject,
   Input,
   inject,
 } from '@angular/core';
@@ -21,48 +22,49 @@ export class TimerComponent {
   @Input() public sectionsList!: { name: string; time: number }[];
   @Input() public longBreakFrequency: number = 2;
 
+  private sectionsOrder: { name: string; time: number }[] = [
+    {
+      name: 'pomodoro',
+      time: 1500,
+    },
+    {
+      name: 'short-break',
+      time: 300,
+    },
+    {
+      name: 'pomodoro',
+      time: 1500,
+    },
+    {
+      name: 'short-break',
+      time: 300,
+    },
+    {
+      name: 'pomodoro',
+      time: 1500,
+    },
+    {
+      name: 'long-break',
+      time: 900,
+    },
+  ];
+
   private readonly cdr = inject(ChangeDetectorRef);
-  public secondsLeft!: number;
+  private currentSectionIndex = 0;
   private timer!: Subscription;
+  public secondsLeft!: number;
   public min!: number;
   public sec!: number;
 
-  setTime() {
-    switch (this.currentSection || this.sectionsList[this.currentSectionIndex].name) {
-      case 'pomodoro':
-        this.min = 25
-        this.sec = 0
-        this.secondsLeft = 1500;
-        break;
 
-      case 'short-break':
-        this.min = 5
-        this.sec = 0
-        this.secondsLeft = 300;
-        break;
-      case 'long-break':
-        this.min = 15
-        this.sec = 0
-        this.secondsLeft = 900;
-        break;
+  constructor(@Inject(DOCUMENT) private document: Document) {}
 
-      default:
-        break;
-    }
+  
+  ngOnChanges(): void {
+    this.setTime();
   }
 
-
-  ngOnChanges() {
-    this.setTime()
-  }
-
-
-  startTimer() {
-    this.setTime()
-
-    this.min = Math.floor(this.secondsLeft / 60);
-    this.sec = this.secondsLeft % 60;
-
+  public startTimer(): void {
     this.timer = interval(1000).subscribe(() => {
       if (this.secondsLeft > 0) {
         this.secondsLeft--;
@@ -74,11 +76,11 @@ export class TimerComponent {
     });
   }
 
-  pauseTimer(): void {
+  public pauseTimer(): void {
     this.timer.unsubscribe();
   }
 
-  resumeTimer(): void {
+  public resumeTimer(): void {
     this.timer = interval(1000).subscribe(() => {
       if (this.secondsLeft > 0) {
         this.secondsLeft--;
@@ -88,30 +90,52 @@ export class TimerComponent {
     });
   }
 
-  private currentSectionIndex = 0;
-
-
-  nextSection(): void {
+  public nextSection(): void {
     this.timer.unsubscribe();
 
     this.currentSectionIndex++;
 
-    if (this.currentSectionIndex >= this.sectionsList.length) {
+    if (this.currentSectionIndex >= this.sectionsOrder.length) {
       this.currentSectionIndex = 0;
     }
-    this.currentSection = this.sectionsList[this.currentSectionIndex].name;
-    this.setTime()
-    this.getMinutes
+    this.currentSection = this.sectionsOrder[this.currentSectionIndex].name;
+    this.setTime();
+    this.getMinutes;
 
-    
     console.log(this.currentSection);
   }
-  
+
+
+  public setTime(): void {
+    switch (
+      this.currentSection ||
+      this.sectionsList[this.currentSectionIndex].name
+    ) {
+      case 'pomodoro':
+        this.updateTimerAndBackground(25, 1500,'rgb(186, 73, 73)')
+        break;
+
+      case 'short-break':
+        this.updateTimerAndBackground(5, 300,'rgb(56, 133, 138)')
+        break;
+
+      case 'long-break':
+        this.updateTimerAndBackground(15, 900,'rgb(57, 112, 151)')
+        break;
+    }
+  }
+
+  private updateTimerAndBackground(minutes: number, secondsLeft: number, background: string) {
+    this.min = minutes;
+    this.sec = 0;
+    this.secondsLeft = secondsLeft;
+    this.document.body.style.background = background;
+  }
 
   get getMinutes(): void {
     const minutes = Math.floor(this.secondsLeft / 60);
     const sec = this.secondsLeft % 60;
-  
+
     this.min = minutes;
     this.sec = sec;
     this.cdr.detectChanges();

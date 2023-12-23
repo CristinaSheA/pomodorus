@@ -3,10 +3,10 @@
 }
 
 #timer {
-  font-family: 'ArialRounded', -apple-system, BlinkMacSystemFont,
-  'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
-  'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family: "ArialRounded", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
   font-size: 110px;
-  margin: 0;
   font-weight: bold;
-} 
+  margin: 0;
+}

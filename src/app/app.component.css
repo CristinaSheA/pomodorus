@@ -1,15 +1,15 @@
-app-pomodoro {
-  color: #fff;
+pomodoro-main {
   background: none rgba(255, 255, 255, 0.1);
-  max-width: 480px;
   border-radius: 6px;
+  color: #fff;
+  max-width: 480px;
 
-  margin: 0 auto;
   margin-bottom: 20px;
+  margin: 0 auto;
   padding: 20px 0px 30px;
 
+  align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
 }
