@@ -17,7 +17,9 @@ import { CommonModule } from '@angular/common';
 })
 export class SectionsComponent {
   @Input() public currentSection!: string;
-  @Output() private methodFromChild = new EventEmitter<string>();
+  @Input() public sectionsList!: { name: string; time: number }[];
+  @Output() private methodFromChild: EventEmitter<string> =
+    new EventEmitter<string>();
 
   public setSection(message: string): void {
     this.methodFromChild.emit(message);

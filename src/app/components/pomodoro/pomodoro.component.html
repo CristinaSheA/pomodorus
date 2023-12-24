@@ -1,21 +1,38 @@
-<sections [currentSection]="currentSection" (methodFromChild)="setSection($event)"></sections>
+<sections
+  [currentSection]="currentSection"
+  [sectionsList]="sectionsList"
+  (methodFromChild)="setSection($event)"
+></sections>
 <timer [currentSection]="currentSection" [sectionsList]="sectionsList"></timer>
 
 <div class="control-buttons">
   @if (showStartButton === true) {
-    <div class="control-buttons__button" id="start-control-button" (click)="startChildTimer()">Start</div>
-  }
-  @if (showPauseButton === true) {
-    <div class="control-buttons__button" id="pause-control-button" (click)="pauseTimer()">Pause</div>
-  }
-  @if (showResumeButton === true) {
-    <div class="control-buttons__button" id="resume-control-button" (click)="resumeTimer()">Resume</div>
-  }
-  @if (showSkipButton === true) {
-    <span id="skip-control-button" (click)="nextSection()">
-      <img src="../../../assets/next.svg" alt="">
-    </span>
+  <div
+    class="control-buttons__button"
+    id="start-control-button"
+    (click)="startChildTimer()"
+  >
+    Start
+  </div>
+  } @if (showPauseButton === true) {
+  <div
+    class="control-buttons__button"
+    id="pause-control-button"
+    (click)="pauseTimer()"
+  >
+    Pause
+  </div>
+  } @if (showResumeButton === true) {
+  <div
+    class="control-buttons__button"
+    id="resume-control-button"
+    (click)="resumeTimer()"
+  >
+    Resume
+  </div>
+  } @if (showSkipButton === true) {
+  <span id="skip-control-button" (click)="nextSection()">
+    <img src="../../../assets/next.svg" alt="" />
+  </span>
   }
 </div>
-
-

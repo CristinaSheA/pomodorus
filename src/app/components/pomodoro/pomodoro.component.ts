@@ -20,8 +20,8 @@ import { SectionsComponent } from './components/sections/sections.component';
 export class PomodoroComponent {
   @ViewChild(TimerComponent) hijoComponent!: TimerComponent;
 
-  @Output() public currentSection: string = 'pomodoro';
-  @Output() public sectionsList: { name: string; time: number }[] = [
+  public currentSection: string = 'pomodoro';
+  public sectionsList: { name: string; time: number }[] = [
     {
       name: 'pomodoro',
       time: 1500,
@@ -77,3 +77,4 @@ export class PomodoroComponent {
     this.hijoComponent.resumeTimer();
   }
 }
+

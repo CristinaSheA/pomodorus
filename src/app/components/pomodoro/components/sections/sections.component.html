@@ -1,5 +1,5 @@
-  <div id="sections">
-    <button (click)="setSection('pomodoro')">Pomo<span>doro</span></button>
-    <button (click)="setSection('short-break')">Short <span>Break</span></button>
-    <button (click)="setSection('long-break')">Long <span>Break</span></button>
-  </div>
+<div id="sections">
+  @for (section of sectionsList; track section.name) {
+  <button (click)="setSection(section.name)">{{ section.name }}</button>
+  }
+</div>

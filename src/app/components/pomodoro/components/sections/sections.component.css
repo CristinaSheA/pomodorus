@@ -16,4 +16,6 @@
   margin: 10px;
   opacity: 1;
   padding: 2px 12px;
+  text-transform: capitalize;
 }
+
