@@ -56,10 +56,8 @@ export class TimerComponent {
   public min!: number;
   public sec!: number;
 
-
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
-  
   ngOnChanges(): void {
     this.setTime();
   }
@@ -68,7 +66,7 @@ export class TimerComponent {
     this.timer = interval(1000).subscribe(() => {
       if (this.secondsLeft > 0) {
         this.secondsLeft--;
-        this.getMinutes;
+        this.getMinutes();
         this.cdr.detectChanges();
       } else {
         this.nextSection();
@@ -84,7 +82,7 @@ export class TimerComponent {
     this.timer = interval(1000).subscribe(() => {
       if (this.secondsLeft > 0) {
         this.secondsLeft--;
-        this.getMinutes;
+        this.getMinutes();
         this.cdr.detectChanges();
       }
     });
@@ -93,18 +91,14 @@ export class TimerComponent {
   public nextSection(): void {
     this.timer.unsubscribe();
 
-    this.currentSectionIndex++;
+    this.currentSectionIndex = (this.currentSectionIndex + 1) % this.sectionsOrder.length;
 
-    if (this.currentSectionIndex >= this.sectionsOrder.length) {
-      this.currentSectionIndex = 0;
-    }
     this.currentSection = this.sectionsOrder[this.currentSectionIndex].name;
     this.setTime();
-    this.getMinutes;
+    this.getMinutes();
 
     console.log(this.currentSection);
   }
-
 
   public setTime(): void {
     switch (
@@ -112,33 +106,36 @@ export class TimerComponent {
       this.sectionsList[this.currentSectionIndex].name
     ) {
       case 'pomodoro':
-        this.updateTimerAndBackground(25, 1500,'rgb(186, 73, 73)')
+        this.updateTimerAndBackground(25, 1500, 'rgb(186, 73, 73)');
         break;
 
       case 'short-break':
-        this.updateTimerAndBackground(5, 300,'rgb(56, 133, 138)')
+        this.updateTimerAndBackground(5, 300, 'rgb(56, 133, 138)');
         break;
 
       case 'long-break':
-        this.updateTimerAndBackground(15, 900,'rgb(57, 112, 151)')
+        this.updateTimerAndBackground(15, 900, 'rgb(57, 112, 151)');
         break;
     }
   }
 
-  private updateTimerAndBackground(minutes: number, secondsLeft: number, background: string) {
+  private updateTimerAndBackground(
+    minutes: number,
+    secondsLeft: number,
+    background: string
+  ) {
     this.min = minutes;
     this.sec = 0;
     this.secondsLeft = secondsLeft;
     this.document.body.style.background = background;
   }
 
-  get getMinutes(): void {
+  private getMinutes(): void {
     const minutes = Math.floor(this.secondsLeft / 60);
     const sec = this.secondsLeft % 60;
 
     this.min = minutes;
     this.sec = sec;
     this.cdr.detectChanges();
-    return console.log(`${minutes}:${sec}`);
   }
 }

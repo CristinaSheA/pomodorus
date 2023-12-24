@@ -18,10 +18,10 @@ import { SectionsComponent } from './components/sections/sections.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PomodoroComponent {
-  @ViewChild(TimerComponent) hijoComponent!: TimerComponent;
+  @ViewChild(TimerComponent) timerComponentRef!: TimerComponent;
 
-  @Output() public currentSection: string = 'pomodoro';
-  @Output() public sectionsList: { name: string; time: number }[] = [
+  public currentSection: string = 'pomodoro';
+  public sectionsList: { name: string; time: number }[] = [
     {
       name: 'pomodoro',
       time: 1500,
@@ -37,7 +37,7 @@ export class PomodoroComponent {
   ];
 
   public showStartButton: boolean = true;
-  public showPauseButton: boolean = false;
+  public showPauseAndSkipButtons: boolean = false;
   public showResumeButton: boolean = false;
   public showSkipButton: boolean = false;
 
@@ -46,34 +46,30 @@ export class PomodoroComponent {
     this.currentSection = message;
   }
 
+  private setShowingButtons(start: boolean, pauseAndSkip: boolean, resume: boolean): void {
+    this.showStartButton = start;
+    this.showPauseAndSkipButtons = pauseAndSkip;
+    this.showResumeButton = resume;
+  }
+
   public startChildTimer(): void {
-    this.hijoComponent.startTimer();
-    this.showStartButton = false;
-    this.showPauseButton = true;
-    this.showSkipButton = true;
+    this.timerComponentRef.startTimer();
+    this.setShowingButtons(false, true, false)
   }
 
   public pauseTimer(): void {
-    this.showPauseButton = false;
-    this.showSkipButton = false;
-    this.showResumeButton = true;
-
-    this.hijoComponent.pauseTimer();
+    this.timerComponentRef.pauseTimer();
+    this.setShowingButtons(false, false, true)
   }
 
   public nextSection(): void {
-    this.showStartButton = true;
-    this.showPauseButton = false;
-    this.showSkipButton = false;
-
-    this.hijoComponent.nextSection();
+    this.timerComponentRef.nextSection();
+    this.setShowingButtons(true, false, false)
   }
 
   public resumeTimer(): void {
-    this.showPauseButton = true;
-    this.showSkipButton = true;
-    this.showResumeButton = false;
-
-    this.hijoComponent.resumeTimer();
+    this.timerComponentRef.resumeTimer();
+    this.setShowingButtons(false, true, false)
   }
 }
+
