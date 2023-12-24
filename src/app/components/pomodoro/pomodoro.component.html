@@ -1,11 +1,7 @@
 <sections
   [currentSection]="currentSection"
   [sectionsList]="sectionsList"
-<<<<<<< HEAD
   (sectionMessage)="setSection($event)"
-=======
-  (methodFromChild)="setSection($event)"
->>>>>>> 2dfc00e20462808e63b63b384b1016fc201f7c19
 ></sections>
 <timer [currentSection]="currentSection" [sectionsList]="sectionsList"></timer>
 
@@ -18,17 +14,6 @@
   >
     Start
   </div>
-<<<<<<< HEAD
-=======
-  } @if (showPauseButton === true) {
-  <div
-    class="control-buttons__button"
-    id="pause-control-button"
-    (click)="pauseTimer()"
-  >
-    Pause
-  </div>
->>>>>>> 2dfc00e20462808e63b63b384b1016fc201f7c19
   } @if (showResumeButton === true) {
   <div
     class="control-buttons__button"
@@ -37,7 +22,6 @@
   >
     Resume
   </div>
-<<<<<<< HEAD
   } @if (showPauseAndSkipButtons === true) {
   <div
     class="control-buttons__button"
@@ -47,9 +31,6 @@
     Pause
   </div>
 
-=======
-  } @if (showSkipButton === true) {
->>>>>>> 2dfc00e20462808e63b63b384b1016fc201f7c19
   <span id="skip-control-button" (click)="nextSection()">
     <img src="../../../assets/next.svg" alt="" />
   </span>
