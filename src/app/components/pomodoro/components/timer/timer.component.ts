@@ -20,38 +20,11 @@ import { Subscription, interval } from 'rxjs';
 export class TimerComponent {
   @Input() public currentSection!: string;
   @Input() public sectionsList!: { name: string; time: number }[];
-  @Input() public longBreakFrequency: number = 2;
-
-  private sectionsOrder: { name: string; time: number }[] = [
-    {
-      name: 'pomodoro',
-      time: 1500,
-    },
-    {
-      name: 'short-break',
-      time: 300,
-    },
-    {
-      name: 'pomodoro',
-      time: 1500,
-    },
-    {
-      name: 'short-break',
-      time: 300,
-    },
-    {
-      name: 'pomodoro',
-      time: 1500,
-    },
-    {
-      name: 'long-break',
-      time: 900,
-    },
-  ];
-
+  @Input() public longBreakFrequency: number = 3;
 
   private readonly cdr = inject(ChangeDetectorRef);
-  private currentSectionIndex = 0;
+  private currentPomodoroCount: number = 0;
+  private currentSectionIndex: number = 0;
   public timer!: Subscription;
   public secondsLeft!: number;
   public min!: number;
@@ -92,13 +65,23 @@ export class TimerComponent {
   public skipSection(): void {
     this.timer.unsubscribe();
 
-    this.currentSectionIndex = (this.currentSectionIndex + 1) % this.sectionsOrder.length;
+    if (this.currentSection === 'pomodoro') {
+      this.currentPomodoroCount++;
+    }
 
-    this.currentSection = this.sectionsOrder[this.currentSectionIndex].name;
+    // Si la sección actual es 'pomodoro' y el número de pomodoros actual es divisible por la frecuencia de los descansos largos,
+    // se establece la sección actual como 'long-break'
+
+    this.currentSection =
+      this.currentSection === 'pomodoro' &&
+      this.currentPomodoroCount % this.longBreakFrequency === 0
+        ? 'long-break'
+        : this.currentSection === 'pomodoro'
+        ? 'short-break'
+        : 'pomodoro';
+
     this.setTime();
     this.getMinutes();
-
-    console.log(this.currentSection);
   }
 
   public setTime(): void {
@@ -107,28 +90,23 @@ export class TimerComponent {
       this.sectionsList[this.currentSectionIndex].name
     ) {
       case 'pomodoro':
-        this.updateTimerAndBackground(25, 1500, 'rgb(186, 73, 73)');
+        this.updateTimerAndBackground(25, 'rgb(186, 73, 73)');
         break;
 
       case 'short-break':
-        this.updateTimerAndBackground(5, 300, 'rgb(56, 133, 138)');
+        this.updateTimerAndBackground(5, 'rgb(56, 133, 138)');
         break;
 
       case 'long-break':
-        this.updateTimerAndBackground(15, 900, 'rgb(57, 112, 151)');
+        this.updateTimerAndBackground(15, 'rgb(57, 112, 151)');
         break;
     }
   }
 
-  private updateTimerAndBackground(
-    minutes: number,
-    secondsLeft: number,
-    background: string
-  ) {
+  private updateTimerAndBackground(minutes: number, background: string) {
     this.min = minutes;
     this.sec = 0;
-    this.secondsLeft = secondsLeft;
-    this.document.body.style.background = background;
+    this.secondsLeft = minutes * 60;
     this.document.body.style.background = background;
   }
 

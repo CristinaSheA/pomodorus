@@ -13,3 +13,59 @@ pomodoro-main {
   flex-direction: column;
   justify-content: center;
 }
+
+nav {
+  color: #fff;
+  margin: 0 auto 40px;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.134);
+}
+h1 {
+  font-size: 20px;
+  font-weight: bold;
+}
+#logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#logo i {
+  margin-right: 5px;
+  font-size: 20px;
+}
+#info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+#nav-options button,
+#nav-options2 button {
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0.9;
+  background: none rgba(255, 255, 255, 0.2);
+  margin-left: 10px;
+  font-size: 13px;
+  padding: 8px 12px;
+  border: none;
+  color: white;
+}
+hr {
+  max-width: 500px;
+  width: 100%;
+  color: rgb(34, 34, 34);
+}
+a {
+  text-decoration: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+#nav-options2 {
+  display: none;
+}
