@@ -8,6 +8,7 @@ import {
   inject,
 } from '@angular/core';
 import { Subscription, interval } from 'rxjs';
+import { Section } from '../../interfaces/section';
 
 @Component({
   selector: 'timer',
@@ -19,7 +20,7 @@ import { Subscription, interval } from 'rxjs';
 })
 export class TimerComponent {
   @Input() public currentSection!: string;
-  @Input() public sectionsList!: { name: string; time: number }[];
+  @Input() public sectionsList!: Section[];
   @Input() public longBreakFrequency: number = 3;
 
   private readonly cdr = inject(ChangeDetectorRef);
@@ -103,7 +104,7 @@ export class TimerComponent {
     }
   }
 
-  private updateTimerAndBackground(minutes: number, background: string) {
+  private updateTimerAndBackground(minutes: number, background: string):void {
     this.min = minutes;
     this.sec = 0;
     this.secondsLeft = minutes * 60;
@@ -111,7 +112,7 @@ export class TimerComponent {
   }
 
   private getMinutes(): void {
-    const minutes = Math.floor(this.secondsLeft / 60);
+    const minutes = ~~(this.secondsLeft / 60);
     const sec = this.secondsLeft % 60;
 
     this.min = minutes;

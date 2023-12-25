@@ -1,7 +1,6 @@
 <sections
-  [currentSection]="currentSection"
   [sectionsList]="sectionsList"
-  (sectionMessage)="setSection($event)"
+  (setSection)="setSection($event)"
 ></sections>
 <timer [currentSection]="currentSection" [sectionsList]="sectionsList"></timer>
 

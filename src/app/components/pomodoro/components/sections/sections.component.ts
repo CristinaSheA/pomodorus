@@ -6,6 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Section } from '../../interfaces/section';
 
 @Component({
   selector: 'sections',
@@ -16,12 +17,11 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SectionsComponent {
-  @Input() public currentSection!: string;
-  @Input() public sectionsList!: { name: string; time: number }[];
-  @Output() private sectionMessage: EventEmitter<string> =
+  @Input() public sectionsList!: Section[];
+  @Output() private setSection: EventEmitter<string> =
     new EventEmitter<string>();
 
-  public setSection(message: string): void {
-    this.sectionMessage.emit(message);
+  public onSetSection(message: string): void {
+    this.setSection.emit(message);
   }
 }
