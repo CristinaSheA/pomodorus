@@ -49,9 +49,10 @@ export class TimerComponent {
     },
   ];
 
+
   private readonly cdr = inject(ChangeDetectorRef);
   private currentSectionIndex = 0;
-  private timer!: Subscription;
+  public timer!: Subscription;
   public secondsLeft!: number;
   public min!: number;
   public sec!: number;
@@ -69,7 +70,7 @@ export class TimerComponent {
         this.getMinutes();
         this.cdr.detectChanges();
       } else {
-        this.nextSection();
+        this.skipSection();
       }
     });
   }
@@ -88,7 +89,7 @@ export class TimerComponent {
     });
   }
 
-  public nextSection(): void {
+  public skipSection(): void {
     this.timer.unsubscribe();
 
     this.currentSectionIndex = (this.currentSectionIndex + 1) % this.sectionsOrder.length;
@@ -127,6 +128,7 @@ export class TimerComponent {
     this.min = minutes;
     this.sec = 0;
     this.secondsLeft = secondsLeft;
+    this.document.body.style.background = background;
     this.document.body.style.background = background;
   }
 
