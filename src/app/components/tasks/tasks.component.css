@@ -1,0 +1,45 @@
+:host {
+  display: block;
+}
+
+header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  position: relative;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+  margin-bottom: 20px;
+}
+
+header h2 {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+header button {
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0.9;
+  background: none rgba(255, 255, 255, 0.2);
+  margin-left: 10px;
+  font-size: 13px;
+  padding: 5px;
+  min-width: auto;
+  border: none;
+  color: white !important;
+}
+
+task {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+}

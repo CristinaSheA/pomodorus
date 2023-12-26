@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { PomodoroComponent } from './components/pomodoro/pomodoro.component';
+import { TasksComponent } from './components/tasks/tasks.component';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,8 @@ import { PomodoroComponent } from './components/pomodoro/pomodoro.component';
   imports: [
     CommonModule,
     RouterOutlet,
-    PomodoroComponent
+    PomodoroComponent,
+    TasksComponent
   ],
 
   templateUrl: './app.component.html',

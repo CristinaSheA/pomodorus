@@ -42,7 +42,7 @@ export class TimerComponent {
       if (this.secondsLeft > 0) {
         this.secondsLeft--;
         this.getMinutes();
-        this.cdr.detectChanges();
+        this.cdr?.detectChanges();
       } else {
         this.skipSection();
       }
@@ -58,7 +58,7 @@ export class TimerComponent {
       if (this.secondsLeft > 0) {
         this.secondsLeft--;
         this.getMinutes();
-        this.cdr.detectChanges();
+        this.cdr?.detectChanges();
       }
     });
   }
@@ -117,6 +117,6 @@ export class TimerComponent {
 
     this.min = minutes;
     this.sec = sec;
-    this.cdr.detectChanges();
+    this.cdr?.detectChanges();
   }
 }
