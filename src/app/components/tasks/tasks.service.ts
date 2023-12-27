@@ -1,24 +1,13 @@
 import { Injectable } from '@angular/core';
 import { signal } from '@angular/core';
 import { Task, TaskStatus } from './interfaces/task';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TasksService {
   
-  public tasksList = signal<Task[]>([
-    // {
-    //   id: Date.now(),
-    //   title: 'fjsajfksaf',
-    //   description: 'hkkds',
-    //   isSelected: false,
-    //   status: TaskStatus.NotDone,
-    //   editMode: false,
-    //   pomodoros: { totalPomodoros: 10, donePomodoros: 1 },
-    // },
-  ]);
+  public tasksList = signal<Task[]>([]);
 
   // - - [PropSignal] selectedTask
 
@@ -27,7 +16,21 @@ export class TasksService {
   toggleTaskStatus(): void {
   }
 
-  createTask(): void {}
+  createTask(title: string, description: string | undefined , totalPomodoros: number): void {
+    const newTask: Task = {
+      id: Date.now(),
+      title: title,
+      description: description,
+      isSelected: false,
+      status: TaskStatus.NotDone,
+      editMode: false,
+      pomodoros: { totalPomodoros: totalPomodoros, donePomodoros: 0 },
+    }
+  
+    this.tasksList.update((currentTasksList: Task[]) => {
+      return [...currentTasksList, newTask];
+    });
+  }
 
   updateTask(): void {}
 

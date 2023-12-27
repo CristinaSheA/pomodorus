@@ -4,17 +4,22 @@
       type="text"
       id="taskTitleField"
       placeholder="What are you working on?"
+      [(ngModel)]="taskTitle"
     />
 
     <h2>Est Pomodoros</h2>
 
-    <input id="taskPomodorosField" type="number" placeholder="1" />
+    <input id="taskPomodorosField" type="number" placeholder="1" [(ngModel)]="taskPomodoros"/>
 
-    <textarea placeholder="Some notes..."></textarea>
+    @if (showDescriptionField === true) {
+      <textarea placeholder="Some notes..."  [(ngModel)]="taskDescription"></textarea>
+    }
 
-    <div id="moreOptions">
-      <button id="add-task-description">+ Add note</button>
-    </div>
+    @if (showDescriptionField !== true) {
+      <div id="moreOptions">
+        <button id="add-task-description" (click)="onShowDescriptionField()">+ Add note</button>
+      </div>
+    }
   </div>
   <div id="task-handling-buttons">
     <button
@@ -25,7 +30,7 @@
     </button>
 
     <button class="optionsButtons__button" id="task-handling-buttons__save">
-      <span class="word-option">Save</span>
+      <span class="word-option" (click)="createTask()">Save</span>
     </button>
 
     <button class="optionsButtons__button" id="task-handling-buttons__update">

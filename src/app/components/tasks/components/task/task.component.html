@@ -14,7 +14,8 @@
         <i class="fi fi-sr-menu-dots-vertical"></i>
       </div>
     </div>
-    <div id="task__description">{{task.description}}</div>
-    <div id="task__description">{{task.id}}</div>
+    @if (task.description !== '') {
+      <div id="task__description">{{task.description}}</div>
+    }
   </div>
 }
