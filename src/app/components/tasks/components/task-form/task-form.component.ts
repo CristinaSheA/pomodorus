@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TasksService } from '../../tasks.service';
 
@@ -22,6 +22,9 @@ export class TaskFormComponent {
 
   public createTask() {
     this.tasksService?.createTask(this.taskTitle, this.taskDescription, this.taskPomodoros )
+    this.taskTitle = ''
+    this.taskPomodoros = 1
+    this.taskDescription = ''
   }
 
   public onShowDescriptionField() {

@@ -7,6 +7,12 @@
 
 <task></task>
 
-<button id="add-task-button"><i class="fi fi-sr-add"></i> Add Task</button>
 
-<task-form></task-form>
+@if (showTaskForm !== true) {
+  <button id="add-task-button" (click)="onShowTaskForm()"><i class="fi fi-sr-add"></i> Add Task</button>
+}
+
+
+@if (showTaskForm === true) {
+  <task-form class="animate__animated animate__flipInX"></task-form>
+}

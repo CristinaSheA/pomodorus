@@ -65,3 +65,7 @@ task-form {
 #add-task-button i {
   margin-right: 5px;
 }
+
+.animate__flipInX {
+  animation-duration: 0.55s;
+}

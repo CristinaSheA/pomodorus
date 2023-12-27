@@ -1,21 +1,32 @@
-
-
-@for (task of this.tasksService?.tasksList(); track task.title) { 
-  <div id="task">
-    <div id="task__main">
-      <div id="task__title">
-        <i class="fi fi-ss-check-circle doneIcon"></i>
-        <h3>{{task.title}}</h3>
-      </div>
-      <div id="task__pomodoros-and-settings">
-        <h3>{{task.pomodoros.donePomodoros}}</h3>
-        /{{task.pomodoros.totalPomodoros}}
-        <div class="delete"></div>
-        <i class="fi fi-sr-menu-dots-vertical"></i>
-      </div>
+@for (task of this.tasksService?.tasksList(); track task.title) {
+<div
+  id="task"
+  (click)="this.tasksService?.selectTask(task)"
+  [ngClass]="{
+    selected: task.isSelected === true,
+    done: task.status === 'DONE'
+  }"
+>
+  <div id="task__main">
+    <div id="task__title">
+      <i
+        class="fi fi-sr-check-circle"
+        (click)="tasksService?.toggleTaskStatus(task)"
+      ></i>
+      <h3>{{ task.title }}</h3>
     </div>
-    @if (task.description !== '') {
-      <div id="task__description">{{task.description}}</div>
-    }
+    <div id="task__pomodoros-and-settings">
+      <h3>{{ task.pomodoros.donePomodoros }}</h3>
+      /{{ task.pomodoros.totalPomodoros }}
+      <div class="delete"></div>
+      <i class="fi fi-sr-menu-dots-vertical"></i>
+    </div>
   </div>
+  @if (task.description !== '') {
+  <div id="task__description">{{ task.description }}</div>
+  }
+  <div id="task__description">{{ task.id }}</div>
+  <div id="task__description">{{ task.isSelected }}</div>
+  <div id="task__description">{{ task.status }}</div>
+</div>
 }

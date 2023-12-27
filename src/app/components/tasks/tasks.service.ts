@@ -6,39 +6,61 @@ import { Task, TaskStatus } from './interfaces/task';
   providedIn: 'root',
 })
 export class TasksService {
-  
   public tasksList = signal<Task[]>([]);
+  public selectedTask = signal<Task | null>(null);
 
-  // - - [PropSignal] selectedTask
+  public selectTask(task: Task): void {
+    this.tasksList.update((currentTasksList: Task[]) => {
+      return currentTasksList.map((t) => ({ ...t, isSelected: false }));
+    });
+    this.selectedTask.update(() => {
+      task.isSelected = true;
+      return task;
+    });
 
-  selectTask(): void {}
-
-  toggleTaskStatus(): void {
+    this.tasksList.update((currentTasksList: Task[]) => {
+      return currentTasksList.map((t) => (t.id === task.id ? task : t));
+    });
   }
 
-  createTask(title: string, description: string | undefined , totalPomodoros: number): void {
+  public toggleTaskStatus(task: Task): void {
+    task.status = task.status === TaskStatus.Done ? TaskStatus.NotDone : TaskStatus.Done;
+  
+    this.tasksList.update((currentTasksList: Task[]) => {
+      return currentTasksList.map(t => t.id === task.id ? task : t);
+    });
+  }
+  
+
+  public createTask(
+    title: string,
+    description: string | undefined,
+    totalPomodoros: number
+  ): void {
     const newTask: Task = {
       id: Date.now(),
-      title: title,
-      description: description,
+      title: '',
+      description: 'description',
       isSelected: false,
       status: TaskStatus.NotDone,
       editMode: false,
-      pomodoros: { totalPomodoros: totalPomodoros, donePomodoros: 0 },
-    }
-  
+      pomodoros: { totalPomodoros: 0, donePomodoros: 0 },
+    };
+
+    newTask.title = title;
+    newTask.description = description;
+    newTask.pomodoros.totalPomodoros = totalPomodoros;
+
     this.tasksList.update((currentTasksList: Task[]) => {
       return [...currentTasksList, newTask];
     });
   }
 
-  updateTask(): void {}
+  public updateTask(): void {
+    
+  }
 
-  deleteTask(): void {}
+  public deleteTask(): void {}
 
   constructor() {}
-
 }
-
-
-

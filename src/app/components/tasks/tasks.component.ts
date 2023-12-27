@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TasksService } from './tasks.service';
 import { TaskFormComponent } from './components/task-form/task-form.component';
 import { TaskComponent } from './components/task/task.component';
+import 'animate.css'
 
 @Component({
   selector: 'tasks',
@@ -18,8 +19,13 @@ import { TaskComponent } from './components/task/task.component';
 })
 export class TasksComponent {
   private readonly tasksService = inject(TasksService);
+  public showTaskForm: boolean = false
 
-  get tasksList() {
+  public onShowTaskForm() {
+    return (this.showTaskForm = true);
+  }
+
+  public get tasksList() {
     return this.tasksService?.tasksList
   }
 }
