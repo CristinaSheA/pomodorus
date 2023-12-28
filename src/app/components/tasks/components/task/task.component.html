@@ -19,14 +19,16 @@
       <h3>{{ task.pomodoros.donePomodoros }}</h3>
       /{{ task.pomodoros.totalPomodoros }}
       <div class="delete"></div>
-      <i class="fi fi-sr-menu-dots-vertical"></i>
+      <i class="fi fi-sr-menu-dots-vertical" (click)="editTask(task)"></i>
+
+      <i class="fi fi-rr-trash" (click)="tasksService?.deleteTask(task)"></i>
     </div>
   </div>
   @if (task.description !== '') {
   <div id="task__description">{{ task.description }}</div>
   }
-  <div id="task__description">{{ task.id }}</div>
   <div id="task__description">{{ task.isSelected }}</div>
   <div id="task__description">{{ task.status }}</div>
+  <div id="task__description">{{ task.editMode }}</div>
 </div>
 }

@@ -29,12 +29,14 @@
       <span>Cancel</span>
     </button>
 
-    <button class="optionsButtons__button" id="task-handling-buttons__save">
-      <span class="word-option" (click)="createTask()">Save</span>
-    </button>
+    @if (showCreateButton) {
+      <button class="task-handling-buttons__button" id="task-handling-buttons__save">
+        <span class="word-option" (click)="createTask()">Save</span>
+      </button>
+    }
 
-    <button class="optionsButtons__button" id="task-handling-buttons__update">
-      <span class="word-option">Update</span>
-    </button>
+      <button class="task-handling-buttons__button" id="task-handling-buttons__update">
+        <span class="word-option" (click)="tasksService?.updateTask(taskTitle, taskDescription, taskPomodoros)">Update</span>
+      </button>
   </div>
 </div>

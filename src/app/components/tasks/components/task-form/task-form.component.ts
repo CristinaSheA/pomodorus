@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TasksService } from '../../tasks.service';
 
@@ -12,19 +12,34 @@ import { TasksService } from '../../tasks.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskFormComponent {
-  public taskTitle: string = '';
-  public taskPomodoros: number = 1;
-  public taskDescription: string | undefined = '';
+  @Input() taskTitle!: string;
+  @Input() taskPomodoros!: number;
+  @Input() taskDescription!: string | undefined;
+  @Input() showTaskForm!: boolean;
+
+  showUpdateButton: boolean = false
+  showCreateButton: boolean = true
+  
+  ngOnChanges(): void {
+    this.cdr?.detectChanges();
+
+  }
 
   public showDescriptionField: boolean = false;
 
-  private readonly tasksService = inject(TasksService)
+  public readonly tasksService = inject(TasksService)
+  private readonly cdr = inject(ChangeDetectorRef);
+
+
+
+
 
   public createTask() {
     this.tasksService?.createTask(this.taskTitle, this.taskDescription, this.taskPomodoros )
     this.taskTitle = ''
     this.taskPomodoros = 1
     this.taskDescription = ''
+
   }
 
   public onShowDescriptionField() {

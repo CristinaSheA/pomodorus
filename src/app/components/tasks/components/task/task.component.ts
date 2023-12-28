@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject} from '@angular/core';
 import { Task, TaskStatus } from '../../interfaces/task';
 import { TasksService } from '../../tasks.service';
 
@@ -14,19 +14,29 @@ import { TasksService } from '../../tasks.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskComponent { 
+  @Input() taskTitle: string = '';
+  @Input() taskPomodoros: number = 1;
+  @Input() taskDescription: string | undefined = '';
+  private readonly cdr = inject(ChangeDetectorRef);
+
 
   public readonly tasksService = inject(TasksService);
 
+  public editTask(task: Task): void {
+    task.editMode = true;
+   
+    this.taskTitle = task.title;
+    this.taskPomodoros = task.pomodoros.totalPomodoros;
+    this.taskDescription = task.description;
+
+    this.cdr?.detectChanges();
+  }
+
+
+  
+  
 
   get tasksList() {
     return this.tasksService?.tasksList();
-  }
-
-  public setTaskAsNotDone(task: Task): Task {
-    return { ...task, status: TaskStatus.NotDone };
-  }
-
-  public setTaskAsDone(task: Task): Task {
-    return { ...task, status: TaskStatus.Done };
   }
 }

@@ -5,14 +5,23 @@
   </button>
 </header>
 
-<task></task>
-
+<task
+  [taskTitle]="taskTitle"
+  [taskPomodoros]="taskPomodoros"
+  [taskDescription]="taskDescription"
+></task>
 
 @if (showTaskForm !== true) {
-  <button id="add-task-button" (click)="onShowTaskForm()"><i class="fi fi-sr-add"></i> Add Task</button>
+<button id="add-task-button" (click)="onShowTaskForm()">
+  <i class="fi fi-sr-add"></i> Add Task
+</button>
 }
 
-
 @if (showTaskForm === true) {
-  <task-form class="animate__animated animate__flipInX"></task-form>
+<task-form
+  [taskTitle]="taskTitle"
+  [taskPomodoros]="taskPomodoros"
+  [taskDescription]="taskDescription"
+  class="animate__animated animate__flipInX"
+></task-form>
 }

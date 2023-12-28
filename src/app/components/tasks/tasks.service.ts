@@ -24,13 +24,13 @@ export class TasksService {
   }
 
   public toggleTaskStatus(task: Task): void {
-    task.status = task.status === TaskStatus.Done ? TaskStatus.NotDone : TaskStatus.Done;
-  
+    task.status =
+      task.status === TaskStatus.Done ? TaskStatus.NotDone : TaskStatus.Done;
+
     this.tasksList.update((currentTasksList: Task[]) => {
-      return currentTasksList.map(t => t.id === task.id ? task : t);
+      return currentTasksList.map((t) => (t.id === task.id ? task : t));
     });
   }
-  
 
   public createTask(
     title: string,
@@ -56,11 +56,46 @@ export class TasksService {
     });
   }
 
-  public updateTask(): void {
-    
+  public editTask(task: Task): void {
+    task.editMode = true;
   }
 
-  public deleteTask(): void {}
+  public updateTask(
+    title: string,
+    description: string | undefined,
+    totalPomodoros: number
+  ): void {
+    const tasks = this.tasksList();
+
+    const taskInEditMode = tasks.find((task) => task.editMode);
+
+    if (taskInEditMode) {
+      const updatedTask: Task = {
+        ...taskInEditMode,
+        title: title,
+        description: description,
+        pomodoros: {
+          totalPomodoros: totalPomodoros,
+          donePomodoros: taskInEditMode.pomodoros.donePomodoros,
+        },
+      };
+
+      this.tasksList.update((currentTasksList: Task[]) => {
+        return currentTasksList.map((t) =>
+          t.id === updatedTask.id ? updatedTask : t
+        );
+      });
+
+      updatedTask.editMode = false;
+    }
+  }
+
+  public deleteTask(taskToDelete: Task): void {
+    this.tasksList.update((currentTasksList: Task[]) => {
+      return currentTasksList.filter(task => task.id !== taskToDelete.id);
+    });
+  }
+  
 
   constructor() {}
 }
