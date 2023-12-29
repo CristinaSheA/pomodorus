@@ -5,11 +5,21 @@
   </button>
 </header>
 
-<task
-  [taskTitle]="taskTitle"
-  [taskPomodoros]="taskPomodoros"
-  [taskDescription]="taskDescription"
-></task>
+
+@for (task of this.tasksService?.tasksList(); track task.title) {
+  @if (task.editMode === false) {
+    <task [task]="task"></task>
+  } @else {
+    <task-form
+    [task]="task"
+    [taskTitle]="taskTitle"
+    [taskPomodoros]="taskPomodoros"
+    [taskDescription]="taskDescription"
+    class="animate__animated animate__flipInX"
+  ></task-form>
+  }
+}
+
 
 @if (showTaskForm !== true) {
 <button id="add-task-button" (click)="onShowTaskForm()">
@@ -18,10 +28,10 @@
 }
 
 @if (showTaskForm === true) {
-<task-form
+  <task-form
   [taskTitle]="taskTitle"
   [taskPomodoros]="taskPomodoros"
   [taskDescription]="taskDescription"
   class="animate__animated animate__flipInX"
-></task-form>
+  ></task-form>
 }

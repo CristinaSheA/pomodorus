@@ -17,6 +17,7 @@ export class TaskComponent {
   @Input() taskTitle: string = '';
   @Input() taskPomodoros: number = 1;
   @Input() taskDescription: string | undefined = '';
+  @Input() task!: any;
   private readonly cdr = inject(ChangeDetectorRef);
 
 
