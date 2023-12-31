@@ -1,42 +1,59 @@
-<div id="task-creator-popup">
+<form id="task-creator-popup" [formGroup]="taskForm">
   <div id="task-creator-popup__main">
     <input
       type="text"
       id="taskTitleField"
       placeholder="What are you working on?"
-      [(ngModel)]="taskTitle"
+      formControlName="taskTitle"
+      required
     />
 
     <h2>Est Pomodoros</h2>
 
-    <input id="taskPomodorosField" type="number" placeholder="1" [(ngModel)]="taskPomodoros"/>
+    <input
+      id="taskPomodorosField"
+      type="number"
+      placeholder="1"
+      formControlName="taskPomodoros"
+      required
+    />
 
     @if (showDescriptionField === true) {
-      <textarea placeholder="Some notes..."  [(ngModel)]="taskDescription"></textarea>
-    }
-
-    @if (showDescriptionField !== true) {
-      <div id="moreOptions">
-        <button id="add-task-description" (click)="onShowDescriptionField()">+ Add note</button>
-      </div>
+    <textarea
+      placeholder="Some notes..."
+      formControlName="taskDescription"
+      required
+    ></textarea>
+    } @else {
+    <div id="moreOptions">
+      <button id="add-task-description" (click)="onShowDescriptionField()">
+        + Add note
+      </button>
+    </div>
     }
   </div>
   <div id="task-handling-buttons">
     <button
+      (click)="hideShowTaskForm()"
       class="task-handling-buttons__button"
-      id="task-handling-buttons__cancel"
     >
       <span>Cancel</span>
     </button>
 
-    @if (showCreateButton) {
-      <button class="task-handling-buttons__button" id="task-handling-buttons__save">
-        <span class="word-option" (click)="createTask()">Save</span>
-      </button>
-    }
+    <button
+      (click)="createTask()"
+      class="task-handling-buttons__button"
+      id="task-handling-buttons__save"
+    >
+      <span class="word-option">Save</span>
+    </button>
 
-      <button class="task-handling-buttons__button" id="task-handling-buttons__update">
-        <span class="word-option" (click)="tasksService?.updateTask(taskTitle, taskDescription, taskPomodoros)">Update</span>
-      </button>
+    <button
+      (click)="updateTask()"
+      class="task-handling-buttons__button"
+      id="task-handling-buttons__update"
+    >
+      <span class="word-option">Update</span>
+    </button>
   </div>
-</div>
+</form>

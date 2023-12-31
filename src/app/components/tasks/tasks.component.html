@@ -5,33 +5,19 @@
   </button>
 </header>
 
-
 @for (task of this.tasksService?.tasksList(); track task.title) {
   @if (task.editMode === false) {
     <task [task]="task"></task>
   } @else {
-    <task-form
-    [task]="task"
-    [taskTitle]="taskTitle"
-    [taskPomodoros]="taskPomodoros"
-    [taskDescription]="taskDescription"
-    class="animate__animated animate__flipInX"
-  ></task-form>
-  }
+    <task-form [task]="task" class="animate__animated animate__flipInX"></task-form>
+  } 
 }
 
 
 @if (showTaskForm !== true) {
-<button id="add-task-button" (click)="onShowTaskForm()">
-  <i class="fi fi-sr-add"></i> Add Task
-</button>
-}
-
-@if (showTaskForm === true) {
-  <task-form
-  [taskTitle]="taskTitle"
-  [taskPomodoros]="taskPomodoros"
-  [taskDescription]="taskDescription"
-  class="animate__animated animate__flipInX"
-  ></task-form>
+  <button id="add-task-button" (click)="onShowTaskForm()">
+    <i class="fi fi-sr-add"></i> Add Task
+  </button>
+} @else {
+  <task-form class="animate__animated animate__flipInX"></task-form>
 }

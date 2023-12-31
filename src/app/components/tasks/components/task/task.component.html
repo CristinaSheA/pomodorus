@@ -1,6 +1,6 @@
 <div
   id="task"
-  (click)="this.tasksService?.selectTask(task)"
+  (click)="selectTask(task)"
   [ngClass]="{
     selected: task.isSelected === true,
     done: task.status === 'DONE'
@@ -8,25 +8,20 @@
 >
   <div id="task__main">
     <div id="task__title">
-      <i
-        class="fi fi-sr-check-circle"
-        (click)="tasksService?.toggleTaskStatus(task)"
-      ></i>
+      <i class="fi fi-sr-check-circle" (click)="toggleTaskStatus(task)"></i>
       <h3>{{ task.title }}</h3>
     </div>
+    
     <div id="task__pomodoros-and-settings">
       <h3>{{ task.pomodoros.donePomodoros }}</h3>
       /{{ task.pomodoros.totalPomodoros }}
-      <div class="delete"></div>
-      <i class="fi fi-sr-menu-dots-vertical" (click)="editTask(task)"></i>
 
-      <i class="fi fi-rr-trash" (click)="tasksService?.deleteTask(task)"></i>
+      <i class="fi fi-sr-menu-dots-vertical" (click)="editTask(task)"></i>
+      <i class="fi fi-rr-trash" (click)="deleteTask(task)"></i>
     </div>
+
   </div>
   @if (task.description !== '') {
   <div id="task__description">{{ task.description }}</div>
   }
-  <div id="task__description">{{ task.isSelected }}</div>
-  <div id="task__description">{{ task.status }}</div>
-  <div id="task__description">{{ task.editMode }}</div>
 </div>
