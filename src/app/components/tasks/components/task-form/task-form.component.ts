@@ -1,11 +1,8 @@
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
-  Output,
   inject,
 } from '@angular/core';
 import {
@@ -17,6 +14,7 @@ import {
 import { TasksService } from '../../services/tasks.service';
 import { FormGroup } from '@angular/forms';
 import { ShowingPartsService } from '../../services/showing-parts.service';
+import { Task } from '../../interfaces/task';
 
 @Component({
   selector: 'task-form',
@@ -27,8 +25,9 @@ import { ShowingPartsService } from '../../services/showing-parts.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskFormComponent {
-  @Input() public task!: any;
+  @Input() public task!: Task;
   public showDescriptionField: boolean = false;
+  public showSaveButton: boolean = true;
   public readonly tasksService = inject(TasksService);
   public readonly showingPartsService = inject(ShowingPartsService);
 
@@ -42,6 +41,7 @@ export class TaskFormComponent {
 
   ngOnInit():void {
     if (this.task.editMode === true) {
+      this.showSaveButton = false
       this.taskForm = this.fb.group({
         taskTitle: [
           this.task.title,
@@ -53,7 +53,11 @@ export class TaskFormComponent {
         ],
         taskDescription: [this.task.description],
       });
+      if (this.task.description !== '') {
+        this.showDescriptionField = true
+      }
     }
+    
   }
 
   public hideShowTaskForm():void {
@@ -66,6 +70,10 @@ export class TaskFormComponent {
       taskPomodoros: 1,
       taskDescription: '',
     });
+
+    if (this.task.editMode === true) {
+      this.task.editMode = false
+    }
   }
 
   public createTask():void {
@@ -87,6 +95,7 @@ export class TaskFormComponent {
     this.hideShowTaskForm();
   }
 
+
   public updateTask():void {
     let taskTitleValue = this.taskForm.get('taskTitle')?.value;
     let taskPomodorosValue = this.taskForm.get('taskPomodoros')?.value;
@@ -102,6 +111,8 @@ export class TaskFormComponent {
       taskDescriptionValue,
       taskPomodorosValue
     );
+
+
   }
 
   public onShowDescriptionField():void {

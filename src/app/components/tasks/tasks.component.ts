@@ -6,12 +6,13 @@ import {
   WritableSignal,
   inject,
 } from '@angular/core';
-import { TasksService } from './services/tasks.service';
-import { TaskFormComponent } from './components/task-form/task-form.component';
-import { TaskComponent } from './components/task/task.component';
+
 import 'animate.css';
 import { ShowingPartsService } from './services/showing-parts.service';
 import { Task } from './interfaces/task';
+import { TaskComponent } from './components/task/task.component';
+import { TaskFormComponent } from './components/task-form/task-form.component';
+import { TasksService } from './services/tasks.service';
 
 @Component({
   selector: 'tasks',
@@ -25,16 +26,17 @@ export class TasksComponent {
   private readonly showingPartsService = inject(ShowingPartsService);
   public readonly tasksService = inject(TasksService);
   private readonly cdr = inject(ChangeDetectorRef);
-
   ngOnChanges(): void {
     this.cdr?.detectChanges();
   }
-  
+
   public get showTaskForm(): boolean | undefined {
-    return this.showingPartsService?.showTaskForm
+    return this.showingPartsService?.showTaskForm;
   }
   public onShowTaskForm(): true | null {
-    return (this.showingPartsService && (this.showingPartsService.showTaskForm = true));
+    return (
+      this.showingPartsService && (this.showingPartsService.showTaskForm = true)
+    );
   }
   public get tasksList(): WritableSignal<Task[]> | undefined {
     return this.tasksService?.tasksList;

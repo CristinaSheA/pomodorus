@@ -21,7 +21,7 @@ export class TaskComponent {
   private readonly tasksService = inject(TasksService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input() public task!: any;
+  @Input() public task!: Task;
 
   public editTask(task: Task): void {
     task.editMode = true;
