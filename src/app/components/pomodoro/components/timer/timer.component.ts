@@ -25,7 +25,7 @@ export class TimerComponent {
   @Input() public sectionsList!: Section[];
   @Input() public longBreakFrequency: number = 3;
   @Input() private setShowingButtons: EventEmitter<boolean> =
-  new EventEmitter<boolean>()
+    new EventEmitter<boolean>();
 
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly tasksService = inject(TasksService);
@@ -47,13 +47,9 @@ export class TimerComponent {
       if (this.secondsLeft > 0) {
         this.secondsLeft--;
         this.getMinutes();
-        this.cdr?.detectChanges();
       } else {
-        // if (this.currentSection === 'pomodoro') {
-        //   this.incrementDonePomodoros();
-        // }
         this.timer.unsubscribe();
-        this.setShowingButtons.emit()
+        this.setShowingButtons.emit();
         this.skipSection();
       }
     });
@@ -68,7 +64,6 @@ export class TimerComponent {
       if (this.secondsLeft > 0) {
         this.secondsLeft--;
         this.getMinutes();
-        this.cdr?.detectChanges();
       }
     });
   }
@@ -112,11 +107,11 @@ export class TimerComponent {
   }
 
   private incrementDonePomodoros(): void {
-      this.tasksService?.selectedTask.update((task) => {
-        if (!task) return null;
-        task.pomodoros.donePomodoros++;
-        return task;
-      });
+    this.tasksService?.selectedTask.update((task) => {
+      if (!task) return null;
+      task.pomodoros.donePomodoros++;
+      return task;
+    });
   }
 
   private updateTimerAndBackground(minutes: number, background: string): void {

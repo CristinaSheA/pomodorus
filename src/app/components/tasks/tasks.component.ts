@@ -1,9 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  WritableSignal,
   inject,
   signal,
 } from '@angular/core';

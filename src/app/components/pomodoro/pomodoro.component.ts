@@ -2,8 +2,6 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
-  Output,
   ViewChild,
 } from '@angular/core';
 import { TimerComponent } from './components/timer/timer.component';
@@ -39,7 +37,6 @@ export class PomodoroComponent {
   public showStartButton: boolean = true;
   public showPauseAndSkipButtons: boolean = false;
   public showResumeButton: boolean = false;
-  public showSkipButton: boolean = false;
 
   public setSection(message: string): void {
     this.currentSection = message;
