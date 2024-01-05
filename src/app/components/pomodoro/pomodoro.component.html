@@ -2,7 +2,9 @@
   [sectionsList]="sectionsList"
   (setSection)="setSection($event)"
 ></sections>
-<timer [currentSection]="currentSection" [sectionsList]="sectionsList"></timer>
+<timer [currentSection]="currentSection" 
+(setShowingButtons)="setShowingButtons(true, false, false)"
+[sectionsList]="sectionsList"></timer>
 
 <div class="control-buttons">
   @if (showStartButton === true) {

@@ -5,19 +5,22 @@
   </button>
 </header>
 
-@for (task of this.tasksService?.tasksList(); track task.title) {
-  @if (task.editMode === false) {
-    <task [task]="task"></task>
+@for (task of tasksList; track task.id) { 
+  @if (task.editMode) {
+    <task-form
+      [task]="task"
+      (hideForm)="setShowTaskForm(false)"
+      class="animate__animated animate__flipInX"
+    ></task-form>
   } @else {
-    <task-form [task]="task" class="animate__animated animate__flipInX"></task-form>
+    <task [task]="task"></task>
   } 
 }
 
-
-@if (showTaskForm !== true) {
-  <button id="add-task-button" (click)="onShowTaskForm()">
-    <i class="fi fi-sr-add"></i> Add Task
-  </button>
+@if (showTaskForm()) {
+<task-form (hideForm)="setShowTaskForm(false)" class="animate__animated animate__flipInX"></task-form>
 } @else {
-  <task-form class="animate__animated animate__flipInX"></task-form>
+<button id="add-task-button" (click)="setShowTaskForm(true)">
+  <i class="fi fi-sr-add"></i> Add Task
+</button>
 }

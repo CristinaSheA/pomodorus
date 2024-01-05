@@ -15,17 +15,13 @@ import { TasksService } from '../../services/tasks.service';
   imports: [CommonModule],
   templateUrl: './task.component.html',
   styleUrl: './task.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskComponent {
   private readonly tasksService = inject(TasksService);
-  private readonly cdr = inject(ChangeDetectorRef);
-
   @Input() public task!: Task;
 
   public editTask(task: Task): void {
     task.editMode = true;
-    this.cdr?.detectChanges();
   }
 
   public deleteTask(task: Task) {

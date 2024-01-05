@@ -41,39 +41,41 @@ export class PomodoroComponent {
   public showResumeButton: boolean = false;
   public showSkipButton: boolean = false;
 
-
   public setSection(message: string): void {
-    console.log(message);
     this.currentSection = message;
-    this.timerComponentRef.timer.unsubscribe()
-    this.setShowingButtons(true, false, false)
+    if (this.timerComponentRef.timer) {
+      this.timerComponentRef.timer.unsubscribe();
+    }
+    this.setShowingButtons(true, false, false);
   }
 
-  private setShowingButtons(start: boolean, pauseAndSkip: boolean, resume: boolean): void {
+  public setShowingButtons(
+    start: boolean,
+    pauseAndSkip: boolean,
+    resume: boolean
+  ): void {
     this.showStartButton = start;
     this.showPauseAndSkipButtons = pauseAndSkip;
     this.showResumeButton = resume;
   }
 
-
   public startChildTimer(): void {
     this.timerComponentRef.startTimer();
-    this.setShowingButtons(false, true, false)
+    this.setShowingButtons(false, true, false);
   }
 
   public pauseTimer(): void {
     this.timerComponentRef.pauseTimer();
-    this.setShowingButtons(false, false, true)
+    this.setShowingButtons(false, false, true);
   }
 
   public skipSection(): void {
     this.timerComponentRef.skipSection();
-    this.setShowingButtons(true, false, false)
+    this.setShowingButtons(true, false, false);
   }
 
   public resumeTimer(): void {
     this.timerComponentRef.resumeTimer();
-    this.setShowingButtons(false, true, false)
+    this.setShowingButtons(false, true, false);
   }
 }
-

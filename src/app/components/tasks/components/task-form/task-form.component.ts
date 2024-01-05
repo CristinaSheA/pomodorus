@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
+  Output,
   inject,
 } from '@angular/core';
 import {
@@ -13,7 +15,6 @@ import {
 } from '@angular/forms';
 import { TasksService } from '../../services/tasks.service';
 import { FormGroup } from '@angular/forms';
-import { ShowingPartsService } from '../../services/showing-parts.service';
 import { Task } from '../../interfaces/task';
 
 @Component({
@@ -25,12 +26,12 @@ import { Task } from '../../interfaces/task';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskFormComponent {
+  @Output() public hideForm: EventEmitter<void> = new EventEmitter<void>();
   @Input() public task!: Task;
+
+  public readonly tasksService = inject(TasksService);
   public showDescriptionField: boolean = false;
   public showSaveButton: boolean = true;
-  public readonly tasksService = inject(TasksService);
-  public readonly showingPartsService = inject(ShowingPartsService);
-
   public taskForm: FormGroup = this.fb.group({
     taskTitle: ['', [Validators.required, Validators.minLength(1)]],
     taskPomodoros: [1, [Validators.required, Validators.min(1)]],
@@ -39,9 +40,9 @@ export class TaskFormComponent {
 
   constructor(private fb: FormBuilder) {}
 
-  ngOnInit():void {
-    if (this.task.editMode === true) {
-      this.showSaveButton = false
+  ngOnInit(): void {
+    if (this.task?.editMode) {
+      this.showSaveButton = false;
       this.taskForm = this.fb.group({
         taskTitle: [
           this.task.title,
@@ -54,16 +55,13 @@ export class TaskFormComponent {
         taskDescription: [this.task.description],
       });
       if (this.task.description !== '') {
-        this.showDescriptionField = true
+        this.showDescriptionField = true;
       }
     }
-    
   }
 
-  public hideShowTaskForm():void {
-    if (this.showingPartsService) {
-      this.showingPartsService.showTaskForm = false;
-    }
+  public hideTaskForm(): void {
+    this.hideForm.emit();
 
     this.taskForm.reset({
       taskTitle: '',
@@ -71,12 +69,12 @@ export class TaskFormComponent {
       taskDescription: '',
     });
 
-    if (this.task.editMode === true) {
-      this.task.editMode = false
+    if (this.task?.editMode) {
+      this.task.editMode = false;
     }
   }
 
-  public createTask():void {
+  public createTask(): void {
     let taskTitleValue = this.taskForm.get('taskTitle')?.value;
     let taskPomodorosValue = this.taskForm.get('taskPomodoros')?.value;
     let taskDescriptionValue = this.taskForm.get('taskDescription')?.value;
@@ -92,11 +90,10 @@ export class TaskFormComponent {
       taskPomodorosValue
     );
 
-    this.hideShowTaskForm();
+    this.hideTaskForm();
   }
 
-
-  public updateTask():void {
+  public updateTask(): void {
     let taskTitleValue = this.taskForm.get('taskTitle')?.value;
     let taskPomodorosValue = this.taskForm.get('taskPomodoros')?.value;
     let taskDescriptionValue = this.taskForm.get('taskDescription')?.value;
@@ -111,11 +108,9 @@ export class TaskFormComponent {
       taskDescriptionValue,
       taskPomodorosValue
     );
-
-
   }
 
-  public onShowDescriptionField():void {
+  public onShowDescriptionField(): void {
     this.showDescriptionField = true;
   }
 

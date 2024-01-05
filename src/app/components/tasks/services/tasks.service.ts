@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal } from '@angular/core';
 import { signal } from '@angular/core';
 import { Task, TaskStatus } from '../interfaces/task';
 import Swal from 'sweetalert2'
@@ -7,8 +7,8 @@ import Swal from 'sweetalert2'
   providedIn: 'root',
 })
 export class TasksService {
+  public selectedTask: WritableSignal<Task | null> = signal<Task | null>(null);
   public tasksList = signal<Task[]>([]);
-  public selectedTask = signal<Task | null>(null);
 
   public selectTask(task: Task): void {
     this.tasksList.update((currentTasksList: Task[]) => {
@@ -23,7 +23,6 @@ export class TasksService {
       return currentTasksList.map((t) => (t.id === task.id ? task : t));
     });
   }
-
   public toggleTaskStatus(task: Task): void {
     task.status =
       task.status === TaskStatus.Done ? TaskStatus.NotDone : TaskStatus.Done;
@@ -32,7 +31,6 @@ export class TasksService {
       return currentTasksList.map((t) => (t.id === task.id ? task : t));
     });
   }
-
   public createTask(
     title: string,
     description: string | undefined,
@@ -56,7 +54,6 @@ export class TasksService {
       return [...currentTasksList, newTask];
     });
   }
-
   public updateTask(
     title: string,
     description: string | undefined,
@@ -86,7 +83,6 @@ export class TasksService {
       updatedTask.editMode = false;
     }
   }
-
   public deleteTask(taskToDelete: Task): void {
     Swal.fire({
       title: "Are you sure?",
@@ -105,7 +101,4 @@ export class TasksService {
     });
 
   }
-  
-
-  constructor() {}
 }

@@ -3,12 +3,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Inject,
   Input,
   inject,
 } from '@angular/core';
 import { Subscription, interval } from 'rxjs';
 import { Section } from '../../interfaces/section';
+import { TasksService } from '../../../tasks/services/tasks.service';
 
 @Component({
   selector: 'timer',
@@ -22,10 +24,13 @@ export class TimerComponent {
   @Input() public currentSection!: string;
   @Input() public sectionsList!: Section[];
   @Input() public longBreakFrequency: number = 3;
+  @Input() private setShowingButtons: EventEmitter<boolean> =
+  new EventEmitter<boolean>()
 
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly tasksService = inject(TasksService);
+
   private currentPomodoroCount: number = 0;
-  private currentSectionIndex: number = 0;
   public timer!: Subscription;
   public secondsLeft!: number;
   public min!: number;
@@ -44,6 +49,11 @@ export class TimerComponent {
         this.getMinutes();
         this.cdr?.detectChanges();
       } else {
+        // if (this.currentSection === 'pomodoro') {
+        //   this.incrementDonePomodoros();
+        // }
+        this.timer.unsubscribe();
+        this.setShowingButtons.emit()
         this.skipSection();
       }
     });
@@ -64,14 +74,15 @@ export class TimerComponent {
   }
 
   public skipSection(): void {
+    if (this.currentSection === 'pomodoro') {
+      this.incrementDonePomodoros();
+    }
+
     this.timer.unsubscribe();
 
     if (this.currentSection === 'pomodoro') {
       this.currentPomodoroCount++;
     }
-
-    // Si la sección actual es 'pomodoro' y el número de pomodoros actual es divisible por la frecuencia de los descansos largos,
-    // se establece la sección actual como 'long-break'
 
     this.currentSection =
       this.currentSection === 'pomodoro' &&
@@ -80,22 +91,18 @@ export class TimerComponent {
         : this.currentSection === 'pomodoro'
         ? 'short-break'
         : 'pomodoro';
-
     this.setTime();
     this.getMinutes();
   }
 
-  public setTime(): void {
-    switch (
-      this.currentSection ||
-      this.sectionsList[this.currentSectionIndex].name
-    ) {
+  private setTime(): void {
+    switch (this.currentSection) {
       case 'pomodoro':
-        this.updateTimerAndBackground(25, 'rgb(186, 73, 73)');
+        this.updateTimerAndBackground(1, 'rgb(186, 73, 73)');
         break;
 
       case 'short-break':
-        this.updateTimerAndBackground(5, 'rgb(56, 133, 138)');
+        this.updateTimerAndBackground(1, 'rgb(56, 133, 138)');
         break;
 
       case 'long-break':
@@ -104,7 +111,15 @@ export class TimerComponent {
     }
   }
 
-  private updateTimerAndBackground(minutes: number, background: string):void {
+  private incrementDonePomodoros(): void {
+      this.tasksService?.selectedTask.update((task) => {
+        if (!task) return null;
+        task.pomodoros.donePomodoros++;
+        return task;
+      });
+  }
+
+  private updateTimerAndBackground(minutes: number, background: string): void {
     this.min = minutes;
     this.sec = 0;
     this.secondsLeft = minutes * 60;
