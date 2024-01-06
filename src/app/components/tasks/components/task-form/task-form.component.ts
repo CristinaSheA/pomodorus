@@ -27,6 +27,7 @@ import { Task } from '../../interfaces/task';
 })
 export class TaskFormComponent {
   @Output() public hideForm: EventEmitter<void> = new EventEmitter<void>();
+
   @Input() public task!: Task;
 
   public readonly tasksService = inject(TasksService);

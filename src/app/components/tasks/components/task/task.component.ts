@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  EventEmitter,
   Input,
+  Output,
   inject,
 } from '@angular/core';
 import { Task } from '../../interfaces/task';
@@ -18,19 +20,20 @@ export class TaskComponent {
   private readonly tasksService = inject(TasksService);
   @Input() public task!: Task;
 
+
   public editTask(task: Task): void {
-    task.editMode = true;
+    task.editMode = true
   }
 
-  public deleteTask(task: Task) {
+  public deleteTask(task: Task): void {
     this.tasksService?.deleteTask(task)
   }
 
-  public toggleTaskStatus(task: Task) {
+  public toggleTaskStatus(task: Task): void {
     this.tasksService?.toggleTaskStatus(task)
   }
 
-  public selectTask(task: Task) {
+  public selectTask(task: Task): void {
     this.tasksService?.selectTask(task)
   }
 

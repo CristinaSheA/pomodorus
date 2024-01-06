@@ -1,7 +1,7 @@
 import { Injectable, WritableSignal } from '@angular/core';
 import { signal } from '@angular/core';
 import { Task, TaskStatus } from '../interfaces/task';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -85,20 +85,19 @@ export class TasksService {
   }
   public deleteTask(taskToDelete: Task): void {
     Swal.fire({
-      title: "Are you sure?",
+      title: 'Are you sure?',
       text: "You won't be able to revert this!",
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "rgb(81 138 88)",
-      cancelButtonColor: "rgb(186, 73, 73)",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonColor: 'rgb(81 138 88)',
+      cancelButtonColor: 'rgb(186, 73, 73)',
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
         this.tasksList.update((currentTasksList: Task[]) => {
-          return currentTasksList.filter(task => task.id !== taskToDelete.id);
+          return currentTasksList.filter((task) => task.id !== taskToDelete.id);
         });
       }
     });
-
   }
 }

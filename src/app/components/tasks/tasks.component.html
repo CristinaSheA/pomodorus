@@ -13,14 +13,15 @@
       class="animate__animated animate__flipInX"
     ></task-form>
   } @else {
-    <task [task]="task"></task>
+    <task [task]="task" 
+    ></task>
   } 
 }
 
 @if (showTaskForm()) {
 <task-form (hideForm)="setShowTaskForm(false)" class="animate__animated animate__flipInX"></task-form>
 } @else {
-<button id="add-task-button" (click)="setShowTaskForm(true)">
+<button id="add-task-button" (click)="confirmTaskChanges()">
   <i class="fi fi-sr-add"></i> Add Task
 </button>
 }
