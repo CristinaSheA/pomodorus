@@ -6,6 +6,7 @@ import {
   EventEmitter,
   Inject,
   Input,
+  Output,
   inject,
 } from '@angular/core';
 import { Subscription, interval } from 'rxjs';
@@ -24,8 +25,6 @@ export class TimerComponent {
   @Input() public currentSection!: string;
   @Input() public sectionsList!: Section[];
   @Input() public longBreakFrequency: number = 3;
-  @Input() private setShowingButtons: EventEmitter<boolean> =
-    new EventEmitter<boolean>();
 
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly tasksService = inject(TasksService);
@@ -42,6 +41,8 @@ export class TimerComponent {
     this.setTime();
   }
 
+  @Output() timerEnded = new EventEmitter<void>();
+
   public startTimer(): void {
     this.timer = interval(1000).subscribe(() => {
       if (this.secondsLeft > 0) {
@@ -49,8 +50,8 @@ export class TimerComponent {
         this.getMinutes();
       } else {
         this.timer.unsubscribe();
-        this.setShowingButtons.emit();
         this.skipSection();
+        this.timerEnded.emit();
       }
     });
   }
@@ -90,20 +91,51 @@ export class TimerComponent {
     this.getMinutes();
   }
 
-  private setTime(): void {
+  public setTime(): void {
+    let index = 0;
+    let desiredTime = this.sectionsList[index].time;
+    let minutes;
+
     switch (this.currentSection) {
       case 'pomodoro':
-        this.updateTimerAndBackground(1, 'rgb(186, 73, 73)');
+        index = 0;
         break;
 
       case 'short-break':
-        this.updateTimerAndBackground(1, 'rgb(56, 133, 138)');
+        index = 1;
         break;
 
       case 'long-break':
-        this.updateTimerAndBackground(15, 'rgb(57, 112, 151)');
+        index = 2;
         break;
     }
+
+    desiredTime = this.sectionsList[index].time;
+    minutes = desiredTime / 60;
+    console.log(minutes);
+
+    switch (this.currentSection) {
+      case 'pomodoro':
+        this.updateTimerAndBackground(minutes, 'rgb(186, 73, 73)');
+        break;
+
+      case 'short-break':
+        this.updateTimerAndBackground(minutes, 'rgb(56, 133, 138)');
+        break;
+
+      case 'long-break':
+        this.updateTimerAndBackground(minutes, 'rgb(57, 112, 151)');
+        break;
+    }
+  }
+
+  public getMinutes(): void {
+    const minutes = ~~(this.secondsLeft / 60);
+    const sec = this.secondsLeft % 60;
+
+    this.min = minutes;
+    this.sec = sec;
+    this.cdr?.detectChanges();
   }
 
   private incrementDonePomodoros(): void {
@@ -119,14 +151,5 @@ export class TimerComponent {
     this.sec = 0;
     this.secondsLeft = minutes * 60;
     this.document.body.style.background = background;
-  }
-
-  private getMinutes(): void {
-    const minutes = ~~(this.secondsLeft / 60);
-    const sec = this.secondsLeft % 60;
-
-    this.min = minutes;
-    this.sec = sec;
-    this.cdr?.detectChanges();
   }
 }

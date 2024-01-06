@@ -10,3 +10,7 @@ body {
 input {
   outline: none;
 }
+
+.control-buttons__button {
+  color: currentColor;
+}

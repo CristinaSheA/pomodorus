@@ -1,10 +1,13 @@
 <sections
   [sectionsList]="sectionsList"
   (setSection)="setSection($event)"
+  (timerEnded)="handleTimerEnd()"
 ></sections>
-<timer [currentSection]="currentSection" 
-(setShowingButtons)="setShowingButtons(true, false, false)"
-[sectionsList]="sectionsList"></timer>
+<timer
+  [currentSection]="currentSection"
+  [sectionsList]="sectionsList"
+  (timerEnded)="handleTimerEnd()"
+></timer>
 
 <div class="control-buttons">
   @if (showStartButton === true) {
@@ -33,7 +36,7 @@
   </div>
 
   <span id="skip-control-button" (click)="skipSection()">
-    <img src="../../../assets/next.svg" alt="" />
+    <img src="../../../assets/next.svg" alt="skip-section-icon" />
   </span>
   }
 </div>

@@ -21,6 +21,8 @@ export class SectionsComponent {
   @Output() private setSection: EventEmitter<string> =
     new EventEmitter<string>();
 
+
+
   public onSetSection(message: string): void {
     this.setSection.emit(message);
   }

@@ -6,6 +6,9 @@ import {
 } from '@angular/core';
 import { TimerComponent } from './components/timer/timer.component';
 import { SectionsComponent } from './components/sections/sections.component';
+import Swal from 'sweetalert2'
+import { Section } from './interfaces/section';
+
 
 @Component({
   selector: 'pomodoro-main',
@@ -19,7 +22,7 @@ export class PomodoroComponent {
   @ViewChild(TimerComponent) timerComponentRef!: TimerComponent;
 
   public currentSection: string = 'pomodoro';
-  public sectionsList: { name: string; time: number }[] = [
+  public sectionsList: Section[] = [
     {
       name: 'pomodoro',
       time: 1500,
@@ -39,10 +42,34 @@ export class PomodoroComponent {
   public showResumeButton: boolean = false;
 
   public setSection(message: string): void {
-    this.currentSection = message;
     if (this.timerComponentRef.timer) {
       this.timerComponentRef.timer.unsubscribe();
     }
+
+    if (message === this.currentSection) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You are on the same section, you'll restart the timer!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "rgb(81 138 88)",
+        cancelButtonColor: "rgb(186, 73, 73)",
+        confirmButtonText: "Yes, restart it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.timerComponentRef.getMinutes()
+          this.handleTimerEnd()
+          console.log('conf');
+        } else {
+          console.log('cancel');
+        }
+      });
+    }
+    this.currentSection = message;
+    this.setShowingButtons(true, false, false)
+  }
+  
+  public handleTimerEnd(): void {
     this.setShowingButtons(true, false, false);
   }
 
