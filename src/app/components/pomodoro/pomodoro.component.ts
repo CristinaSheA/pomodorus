@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { TimerComponent } from './components/timer/timer.component';
 import { SectionsComponent } from './components/sections/sections.component';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import { Section } from './interfaces/section';
-
 
 @Component({
   selector: 'pomodoro-main',
@@ -20,6 +21,7 @@ import { Section } from './interfaces/section';
 })
 export class PomodoroComponent {
   @ViewChild(TimerComponent) timerComponentRef!: TimerComponent;
+  private readonly cdr = inject(ChangeDetectorRef);
 
   public currentSection: string = 'pomodoro';
   public sectionsList: Section[] = [
@@ -46,29 +48,19 @@ export class PomodoroComponent {
       this.timerComponentRef.timer.unsubscribe();
     }
 
-    if (message === this.currentSection) {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You are on the same section, you'll restart the timer!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "rgb(81 138 88)",
-        cancelButtonColor: "rgb(186, 73, 73)",
-        confirmButtonText: "Yes, restart it!"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.timerComponentRef.getMinutes()
-          this.handleTimerEnd()
-          console.log('conf');
-        } else {
-          console.log('cancel');
-        }
-      });
-    }
     this.currentSection = message;
-    this.setShowingButtons(true, false, false)
+    this.timerComponentRef.getMinutes();
+    this.timerComponentRef.setTime();
+
+    console.log(this.timerComponentRef.secondsLeft);
+    console.log(this.timerComponentRef.min);
+    console.log(this.timerComponentRef.sec);
+
+    this.handleTimerEnd();
+    this.setShowingButtons(true, false, false);
+    this.cdr?.detectChanges();
   }
-  
+
   public handleTimerEnd(): void {
     this.setShowingButtons(true, false, false);
   }

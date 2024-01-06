@@ -112,7 +112,6 @@ export class TimerComponent {
 
     desiredTime = this.sectionsList[index].time;
     minutes = desiredTime / 60;
-    console.log(minutes);
 
     switch (this.currentSection) {
       case 'pomodoro':
@@ -127,6 +126,7 @@ export class TimerComponent {
         this.updateTimerAndBackground(minutes, 'rgb(57, 112, 151)');
         break;
     }
+    this.cdr?.detectChanges();
   }
 
   public getMinutes(): void {
@@ -138,18 +138,18 @@ export class TimerComponent {
     this.cdr?.detectChanges();
   }
 
+  public updateTimerAndBackground(minutes: number, background: string): void {
+    this.min = minutes;
+    this.sec = 0;
+    this.secondsLeft = minutes * 60;
+    this.document.body.style.background = background;
+  }
+
   private incrementDonePomodoros(): void {
     this.tasksService?.selectedTask.update((task) => {
       if (!task) return null;
       task.pomodoros.donePomodoros++;
       return task;
     });
-  }
-
-  private updateTimerAndBackground(minutes: number, background: string): void {
-    this.min = minutes;
-    this.sec = 0;
-    this.secondsLeft = minutes * 60;
-    this.document.body.style.background = background;
   }
 }
