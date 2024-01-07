@@ -14,10 +14,16 @@
     />
   </div>
   <div id="template-handling-buttons">
-    <button class="template-handling-buttons__button">Cancel</button>
+    <button
+      class="template-handling-buttons__button"
+      (click)="hideTemplateForm()"
+    >
+      Cancel
+    </button>
     <button
       class="template-handling-buttons__button"
       id="template-handling-buttons__save"
+      (click)="createTemplate()"
     >
       Save
     </button>

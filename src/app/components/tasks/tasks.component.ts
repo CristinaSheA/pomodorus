@@ -20,6 +20,9 @@ import { TemplatesListComponent } from './components/templates-list/templates-li
 export class TasksComponent {
   private readonly tasksService = inject(TasksService);
   public showTaskForm = signal<boolean>(false);
+  public showTemplateForm = signal<boolean>(false);
+  public showTemplatesList = signal<boolean>(false);
+
 
   public get tasksList(): Task[] {
     if (!this.tasksService) return [];
@@ -28,6 +31,14 @@ export class TasksComponent {
 
   public setShowTaskForm(value: boolean): void {
     this.showTaskForm.set(value);
+  }
+
+  public setShowTemplateForm(value: boolean): void {
+    this.showTemplateForm.set(value);
+  } 
+
+  public setShowTemplatesList(value: boolean): void {
+    this.showTemplatesList.set(value);
   }
 
   public confirmTaskChanges(): void {

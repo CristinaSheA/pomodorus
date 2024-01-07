@@ -1,32 +1,31 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Template } from '../interfaces/template';
 import { Task, TaskStatus } from '../interfaces/task';
+import { TasksService } from './tasks.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TemplatesService {
-  public templatesList = signal<Template[]>([
-    {
-      id: Date.now(),
-      title: 'fsafsa',
-      tasks: [
-        {
-          id: Date.now(),
-          title: '',
-          description: 'description',
-          isSelected: false,
-          status: TaskStatus.NotDone,
-          editMode: false,
-          pomodoros: { totalPomodoros: 0, donePomodoros: 0 },
-        }
-      ],
-    }
-  ]);
+  private tasksService = inject(TasksService);
+  public templatesList = signal<Template[]>([]);
 
   constructor() {}
 
-  public createTemplate(tasks: Task[]) {}
+  public createTemplate(tasks: Task[], title: string) {
+    if (!tasks) return;
+    const newTemplate: Template = {
+      id: Date.now(),
+      title: title,
+      tasks: tasks,
+    };
+
+    console.log(this.templatesList());
+
+    this.templatesList.update((currentTemplatesList: Template[]) => {
+      return [...currentTemplatesList, newTemplate];
+    });
+  }
 
   public getTemplates() {}
 

@@ -4,9 +4,11 @@
       <h2>select a template</h2>
     </header>
 
-    <div class="template">
-      @for (template of templatesList; track template.id) { 
-        <span>{{template.title}}</span>
-      }
-    </div>
+    @for (template of templatesList; track template.id) {
+      <div class="template">
+        <span>{{ template.title }}</span>
+      </div>
+
+    }
+  </div>
 </div>
