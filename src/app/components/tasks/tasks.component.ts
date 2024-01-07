@@ -7,11 +7,13 @@ import { TaskComponent } from './components/task/task.component';
 import { TaskFormComponent } from './components/task-form/task-form.component';
 import { TasksService } from './services/tasks.service';
 import Swal from 'sweetalert2';
+import { TemplateFormComponent } from './components/template-form/template-form.component';
+import { TemplatesListComponent } from './components/templates-list/templates-list.component';
 
 @Component({
   selector: 'tasks',
   standalone: true,
-  imports: [CommonModule, TaskComponent, TaskFormComponent],
+  imports: [CommonModule, TaskComponent, TaskFormComponent, TemplateFormComponent, TemplatesListComponent],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
 })

@@ -1,0 +1,25 @@
+<form action="" [formGroup]="templateForm">
+  <div id="template-form-main">
+    <header>
+      <h2>Save template</h2>
+      <i class="fi fi-rr-cross"></i>
+    </header>
+    <input
+      type="text"
+      placeholder="Name this template"
+      formControlName="templateTitle"
+      required
+      autocomplete="off"
+      autofocus
+    />
+  </div>
+  <div id="template-handling-buttons">
+    <button class="template-handling-buttons__button">Cancel</button>
+    <button
+      class="template-handling-buttons__button"
+      id="template-handling-buttons__save"
+    >
+      Save
+    </button>
+  </div>
+</form>

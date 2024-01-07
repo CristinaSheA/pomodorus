@@ -70,3 +70,23 @@ task-form {
 .animate__flipInX {
   animation-duration: 0.55s;
 }
+
+template-form, templates-list {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  max-width: 480px;
+  width: 100%;
+  z-index: 3;
+}
+
+.dark-layer {
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.334);
+  border: 1px solid;
+  z-index: 2;
+}

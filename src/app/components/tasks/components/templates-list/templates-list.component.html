@@ -1,0 +1,12 @@
+<div class="templates-list">
+  <div id="template-form-main">
+    <header>
+      <h2>select a template</h2>
+    </header>
+
+    <div class="template">
+      @for (template of templatesList; track template.id) { 
+        <span>{{template.title}}</span>
+      }
+    </div>
+</div>
