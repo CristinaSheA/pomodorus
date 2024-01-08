@@ -1,43 +1,42 @@
 <header>
   <h2>Tasks</h2>
-  <button>
+  <button (click)="setShowTasksToolbar(true)">
     <i class="fi fi-sr-menu-dots-vertical"></i>
   </button>
-  <tasks-toolbar  (showForm)="setShowTemplateForm(true)" (showList)="setShowTemplatesList(true)"></tasks-toolbar>
+
+  @if (showTasksToolbar()) {
+  <tasks-toolbar
+    class="animate__animated animate__bounceIn"
+    (showForm)="setShowTemplateForm(true)"
+    (showList)="setShowTemplatesList(true)"
+  ></tasks-toolbar>
+  }
 </header>
 
-@for (task of tasksList; track task.id) { 
-  @if (task.editMode) {
-    <task-form
-      [task]="task"
-      (hideForm)="setShowTaskForm(false)"
-      class="animate__animated animate__flipInX"
-    ></task-form>
-  } @else {
-    <task [task]="task" 
-    ></task>
-  } 
-}
-
-@if (showTaskForm()) {
-<task-form (hideForm)="setShowTaskForm(false)" class="animate__animated animate__flipInX"></task-form>
+@for (task of tasksList; track task.id) { @if (task.editMode) {
+<task-form
+  [task]="task"
+  (hideForm)="setShowTaskForm(false)"
+  class="animate__animated animate__flipInX"
+></task-form>
+} @else {
+<task [task]="task"></task>
+} } @if (showTaskForm()) {
+<task-form
+  (hideForm)="setShowTaskForm(false)"
+  class="animate__animated animate__flipInX"
+></task-form>
 } @else {
 <button id="add-task-button" (click)="confirmTaskChanges()">
   <i class="fi fi-sr-add"></i> Add Task
 </button>
+} @if (showTemplateForm()) {
+<div class="dark-layer"></div>
+<template-form
+  class="animate__animated animate__flipInX"
+  (hideForm)="setShowTemplateForm(false)"
+></template-form>
+} @if (showTemplatesList()) {
+<div class="dark-layer"></div>
+<templates-list class="animate__animated animate__flipInX"></templates-list>
 }
-
-@if (showTemplateForm()) {
-  <div class="dark-layer"></div>
-  <template-form class="animate__animated animate__flipInX" (hideForm)="setShowTemplateForm(false)"></template-form>
-}
-
-@if (showTemplatesList()) {
-  <div class="dark-layer"></div>
-  <templates-list class="animate__animated animate__flipInX"
-  ></templates-list>
-}
-
-<button (click)="setShowTemplateForm(true)">showTemplateForm</button>
-<button (click)="setShowTemplatesList(true)">showTemplatesList</button>
-

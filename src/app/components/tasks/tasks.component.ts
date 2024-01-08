@@ -30,6 +30,8 @@ export class TasksComponent {
   public showTaskForm = signal<boolean>(false);
   public showTemplateForm = signal<boolean>(false);
   public showTemplatesList = signal<boolean>(false);
+  public showTasksToolbar = signal<boolean>(false);
+
 
   public get tasksList(): Task[] {
     if (!this.tasksService) return [];
@@ -46,6 +48,10 @@ export class TasksComponent {
 
   public setShowTemplatesList(value: boolean): void {
     this.showTemplatesList.set(value);
+  }
+
+  public setShowTasksToolbar(value: boolean): void {
+    this.showTasksToolbar.set(value);
   }
 
   public confirmTaskChanges(): void {
