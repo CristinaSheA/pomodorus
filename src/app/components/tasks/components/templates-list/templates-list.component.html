@@ -7,8 +7,10 @@
     @for (template of templatesList; track template.id) {
       <div class="template">
         <span>{{ template.title }}</span>
+        <i class="fi fi-rr-cross" (click)="deleteTemplate(template)"></i>
       </div>
-
+    } @empty {
+      <span>No templates to show 🤔...</span>
     }
   </div>
 </div>

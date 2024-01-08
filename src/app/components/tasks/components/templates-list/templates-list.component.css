@@ -14,9 +14,11 @@
 }
 
 header {
+  border-bottom: 1px solid rgba(190, 190, 190, 0.635);
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 15px;
 }
 
 header i {
@@ -74,4 +76,16 @@ input::placeholder {
   min-width: 70px;
   background-color: rgb(34, 34, 34);
   border: 2px solid rgb(34, 34, 34);
+}
+
+.template {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.template i {
+  font-size: 12px;
 }

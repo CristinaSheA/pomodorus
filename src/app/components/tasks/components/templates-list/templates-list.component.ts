@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TemplatesService } from '../../services/templates.service';
+import { Template } from '../../interfaces/template';
 
 @Component({
   selector: 'templates-list',
@@ -18,4 +19,10 @@ export class TemplatesListComponent {
   }
   public showTemplates() {}
   public insertFromTemplate() {}
+
+
+  public deleteTemplate(templateToDelete: Template) {
+    if (!this.templatesService) return
+    this.templatesService.deleteTemplate(templateToDelete)
+  }
 }

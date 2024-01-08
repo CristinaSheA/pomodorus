@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { PomodoroComponent } from './components/pomodoro/pomodoro.component';
 import { TasksComponent } from './components/tasks/tasks.component';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-root',
