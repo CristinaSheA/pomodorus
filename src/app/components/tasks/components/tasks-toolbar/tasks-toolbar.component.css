@@ -1,0 +1,31 @@
+:host {
+  display: block;
+}
+
+
+.task-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  border-radius: 5px;
+  width: 100%;
+  background-color: white;
+}
+
+.task-menu__option {
+  cursor: pointer;
+  text-align: left;
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.task-menu__option i {
+  margin-right: 10px;
+}
+
+.clear-all-tasks {
+  margin: 0;
+  border-top: #3333334b solid 1px;
+  padding-top: 10px;
+}

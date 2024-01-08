@@ -3,6 +3,7 @@
   <button>
     <i class="fi fi-sr-menu-dots-vertical"></i>
   </button>
+  <tasks-toolbar  (showForm)="setShowTemplateForm(true)" (showList)="setShowTemplatesList(true)"></tasks-toolbar>
 </header>
 
 @for (task of tasksList; track task.id) { 
@@ -39,3 +40,4 @@
 
 <button (click)="setShowTemplateForm(true)">showTemplateForm</button>
 <button (click)="setShowTemplatesList(true)">showTemplatesList</button>
+

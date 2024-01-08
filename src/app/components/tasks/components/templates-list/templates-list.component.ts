@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output, inject } from '@angular/core';
 import { TemplatesService } from '../../services/templates.service';
 import { Template } from '../../interfaces/template';
 
@@ -13,6 +13,7 @@ import { Template } from '../../interfaces/template';
 })
 export class TemplatesListComponent {
   private templatesService = inject(TemplatesService)
+
 
   public get templatesList() {
     return this.templatesService?.templatesList()

@@ -38,12 +38,10 @@ export class TemplateFormComponent {
 
 
   public createTemplate() {
-    const currentTasksList = this.tasksService?.tasksList()
     let templateTitleValue = this.templateForm.get('templateTitle')?.value;
-    if (!currentTasksList) return
     if (!this.templatesService) return
 
-    this.templatesService.createTemplate(currentTasksList, templateTitleValue)
+    this.templatesService.createTemplate(templateTitleValue)
     this.hideTemplateForm()
   }
 

@@ -29,7 +29,10 @@ export class TemplatesService {
 
   constructor() {}
 
-  public createTemplate(tasks: Task[], title: string) {
+  public createTemplate(title: string) {
+    if (!this.tasksService) return
+    const tasks: Task[] = this.tasksService.tasksList();
+
     if (!tasks) return;
     const newTemplate: Template = {
       id: Date.now(),
