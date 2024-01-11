@@ -9,11 +9,12 @@ import { TasksService } from './services/tasks.service';
 import Swal from 'sweetalert2';
 import { TemplateFormComponent } from './components/template-form/template-form.component';
 import { TemplatesListComponent } from './components/templates-list/templates-list.component';
+import { StatsComponent } from './components/stats/stats.component';
 
 @Component({
   selector: 'tasks',
   standalone: true,
-  imports: [CommonModule, TaskComponent, TaskFormComponent, TemplateFormComponent, TemplatesListComponent],
+  imports: [CommonModule, TaskComponent, TaskFormComponent, TemplateFormComponent, TemplatesListComponent, StatsComponent],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
 })
@@ -22,7 +23,6 @@ export class TasksComponent {
   public showTaskForm = signal<boolean>(false);
   public showTemplateForm = signal<boolean>(false);
   public showTemplatesList = signal<boolean>(false);
-
 
   public get tasksList(): Task[] {
     if (!this.tasksService) return [];
