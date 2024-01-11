@@ -46,9 +46,7 @@ export class TemplatesService {
       return [...currentTemplatesList, newTemplate];
     });
   }
-
-  public getTemplates() {}
-
+             
   public updateTemplate() {}
 
   public deleteTemplate(templateToDelete: Template) {

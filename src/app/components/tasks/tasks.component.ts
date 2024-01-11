@@ -40,18 +40,28 @@ export class TasksComponent {
 
   public setShowTaskForm(value: boolean): void {
     this.showTaskForm.set(value);
+    this.showTasksToolbar.set(false);
+    this.showTemplatesList.set(false);
+    this.showTemplateForm.set(false);
   }
 
   public setShowTemplateForm(value: boolean): void {
     this.showTemplateForm.set(value);
+    this.showTemplatesList.set(false);
+    this.showTasksToolbar.set(false);
   }
 
   public setShowTemplatesList(value: boolean): void {
     this.showTemplatesList.set(value);
+    this.showTemplateForm.set(false);
+    this.showTasksToolbar.set(false);
   }
 
   public setShowTasksToolbar(value: boolean): void {
     this.showTasksToolbar.set(value);
+    this.showTemplateForm.set(false);
+    this.showTemplatesList.set(false);
+    this.showTaskForm.set(false);
   }
 
   public confirmTaskChanges(): void {

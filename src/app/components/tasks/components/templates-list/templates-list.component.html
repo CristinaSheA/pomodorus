@@ -4,8 +4,8 @@
       <h2>select a template</h2>
     </header>
 
-    @for (template of templatesList; track template.id) {
-      <div class="template">
+    @for (template of templatesList(); track template.id) {
+      <div class="template" (click)="insertFromTemplate(template)">
         <span>{{ template.title }}</span>
         <i class="fi fi-rr-cross" (click)="deleteTemplate(template)"></i>
       </div>
