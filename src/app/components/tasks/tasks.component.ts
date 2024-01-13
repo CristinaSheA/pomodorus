@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { TemplateFormComponent } from './components/template-form/template-form.component';
 import { TemplatesListComponent } from './components/templates-list/templates-list.component';
 import { TasksToolbarComponent } from './components/tasks-toolbar/tasks-toolbar.component';
+import { StatsComponent } from './components/stats/stats.component';
 
 @Component({
   selector: 'tasks',
@@ -21,6 +22,7 @@ import { TasksToolbarComponent } from './components/tasks-toolbar/tasks-toolbar.
     TemplateFormComponent,
     TemplatesListComponent,
     TasksToolbarComponent,
+    StatsComponent,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
@@ -31,8 +33,12 @@ export class TasksComponent {
   public showTemplateForm = signal<boolean>(false);
   public showTemplatesList = signal<boolean>(false);
   public showTasksToolbar = signal<boolean>(false);
+  public showStats = signal<boolean>(false);
 
 
+  setShowStats(value:boolean) {
+    this.showStats.set(value);
+  }
   public get tasksList(): Task[] {
     if (!this.tasksService) return [];
     return this.tasksService.tasksList();

@@ -1,3 +1,19 @@
-<div class="stats">
-  {{pomodorosDone()}}/{{allPomodoros}}
-</div>
+<!--  -->
+
+  <div class="timeInfo">
+    <div class="pomos">
+      Pomos:
+      <strong class="act">
+        {{pomodorosDone()}}
+      </strong>
+      /
+      <strong> {{allPomodoros()}} </strong>
+    </div>
+  
+    <div class="finish-at">
+      Finish In:
+      <strong>
+        {{timeLeft()}} min
+      </strong>
+    </div>
+  </div>

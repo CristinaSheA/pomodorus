@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
-  EventEmitter,
   Input,
-  Output,
   inject,
 } from '@angular/core';
 import { Task } from '../../interfaces/task';

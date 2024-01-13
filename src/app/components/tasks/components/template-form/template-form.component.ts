@@ -8,7 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { TemplatesService } from '../../services/templates.service';
-import { TasksService } from '../../services/tasks.service';
 
 @Component({
   selector: 'template-form',
@@ -28,7 +27,6 @@ export class TemplateFormComponent {
     });
   }
   private templatesService = inject(TemplatesService)
-  private tasksService = inject(TasksService)
 
   public templateForm: FormGroup = this.fb.group({
     templateTitle: ['', [Validators.required, Validators.minLength(1)]],

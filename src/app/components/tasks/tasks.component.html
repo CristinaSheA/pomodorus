@@ -17,6 +17,8 @@
 <task-form
   [task]="task"
   (hideForm)="setShowTaskForm(false)"
+  (showStats)="setShowStats(true)"
+
   class="animate__animated animate__flipInX"
 ></task-form>
 } @else {
@@ -40,3 +42,5 @@
 <div class="dark-layer"></div>
 <templates-list class="animate__animated animate__flipInX"></templates-list>
 }
+
+  <stats></stats>

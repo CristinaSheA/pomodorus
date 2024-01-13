@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { TimerComponent } from './components/timer/timer.component';
 import { SectionsComponent } from './components/sections/sections.component';
-import Swal from 'sweetalert2';
 import { Section } from './interfaces/section';
+import { AppStateService } from '../../services/app-state.service';
 
 @Component({
   selector: 'pomodoro-main',
@@ -22,20 +22,23 @@ import { Section } from './interfaces/section';
 export class PomodoroComponent {
   @ViewChild(TimerComponent) timerComponentRef!: TimerComponent;
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly appState = inject(AppStateService);
+
 
   public currentSection: string = 'pomodoro';
+
   public sectionsList: Section[] = [
     {
       name: 'pomodoro',
-      time: 1500,
+      time: this.appState?.pomodoroMinutes ? this.appState.pomodoroMinutes * 60 : 0,
     },
     {
       name: 'short-break',
-      time: 300,
+      time: this.appState?.pomodoroMinutes ? this.appState.shortBreakMinutes * 60 : 0,
     },
     {
       name: 'long-break',
-      time: 900,
+      time: this.appState?.pomodoroMinutes ? this.appState.longBreakMinutes * 60 : 0,
     },
   ];
 
@@ -51,11 +54,6 @@ export class PomodoroComponent {
     this.currentSection = message;
     this.timerComponentRef.getMinutes();
     this.timerComponentRef.setTime();
-
-    console.log(this.timerComponentRef.secondsLeft);
-    console.log(this.timerComponentRef.min);
-    console.log(this.timerComponentRef.sec);
-
     this.handleTimerEnd();
     this.setShowingButtons(true, false, false);
     this.cdr?.detectChanges();

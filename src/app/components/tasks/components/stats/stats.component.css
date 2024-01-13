@@ -1,3 +1,27 @@
 :host {
   display: block;
 }
+
+
+.timeInfo {
+
+  margin-top: 28px;
+  padding: 25px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.8);
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.1);
+  font-size: 17px;
+  color: white;
+}
+
+.finish-at {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+}
+.finish-at strong {
+  margin: 0 10px;
+}

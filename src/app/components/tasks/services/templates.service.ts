@@ -40,8 +40,6 @@ export class TemplatesService {
       tasks: tasks,
     };
 
-    console.log(this.templatesList());
-
     this.templatesList.update((currentTemplatesList: Template[]) => {
       return [...currentTemplatesList, newTemplate];
     });

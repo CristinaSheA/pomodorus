@@ -27,6 +27,8 @@ import { Task } from '../../interfaces/task';
 })
 export class TaskFormComponent {
   @Output() public hideForm: EventEmitter<void> = new EventEmitter<void>();
+  @Output() public showStats: EventEmitter<void> = new EventEmitter<void>();
+
 
   @Input() public task!: Task;
 
@@ -91,6 +93,7 @@ export class TaskFormComponent {
       taskPomodorosValue
     );
 
+    this.showStats.emit()
     this.hideTaskForm();
   }
 

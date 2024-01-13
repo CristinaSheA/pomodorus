@@ -79,3 +79,7 @@ tasks {
   flex-direction: column;
   align-items: center;
 }
+
+stats {
+  border: 1px saddlebrown;
+}
