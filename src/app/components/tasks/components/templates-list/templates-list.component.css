@@ -87,5 +87,6 @@ input::placeholder {
 }
 
 .template i {
+  z-index: 3;
   font-size: 12px;
 }

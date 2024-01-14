@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Output,
@@ -10,6 +11,7 @@ import {
 import { TasksService } from '../../services/tasks.service';
 import { Task } from '../../interfaces/task';
 import Swal from 'sweetalert2';
+import { TemplatesService } from '../../services/templates.service';
 
 @Component({
   selector: 'tasks-toolbar',
@@ -21,9 +23,18 @@ import Swal from 'sweetalert2';
 })
 export class TasksToolbarComponent {
   @Output() private showForm: EventEmitter<void> = new EventEmitter<void>();
+  @Output() private showToolbar: EventEmitter<void> = new EventEmitter<void>();
   @Output() private showList: EventEmitter<void> = new EventEmitter<void>();
+
   
   public tasksService = inject(TasksService);
+  public templatesService = inject(TemplatesService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private tasks = this.tasksService?.tasksList()
+  private templates = this.templatesService?.templatesList()
+
+
+
 
   public deleteAllTasks() {
     Swal.fire({
@@ -40,6 +51,7 @@ export class TasksToolbarComponent {
         this.tasksService.tasksList = signal<Task[]>([]);
       }
     });
+    this.showToolbar.emit()
   }
   public deleteCompletedTasks() {
     Swal.fire({
@@ -58,13 +70,28 @@ export class TasksToolbarComponent {
         });
       }
     });
+    this.showToolbar.emit()
   }
 
   public showTemplateForm() {
-    this.showForm.emit()
+    this.cdr?.detectChanges();
+
+    if (!this.tasks || this.tasks.length === 0) {
+      Swal.fire('Please add tasks first. 📋✅');
+    } else {
+      this.showForm.emit();
+    }
+    this.cdr?.detectChanges();
   }
 
   public showTemplatesList() {
-    this.showList.emit()
+    this.cdr?.detectChanges();
+
+    if (!this.templates || this.templates.length === 0) {
+      Swal.fire('Please add templates first. 📋🔢');
+    } else {
+      this.showList.emit();
+    }
+    this.cdr?.detectChanges();
   }
 }

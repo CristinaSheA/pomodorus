@@ -76,7 +76,9 @@ template-form, templates-list, tasks-toolbar {
   display: flex;
   flex-direction: column;
   text-align: center;
-  
+  max-width: 480px;
+  width: 100%;
+
   z-index: 3;
 }
 tasks-toolbar {
