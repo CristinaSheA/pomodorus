@@ -79,7 +79,11 @@ export class TasksToolbarComponent {
     if (!this.tasks || this.tasks.length === 0) {
       Swal.fire('Please add tasks first. 📋✅');
     } else {
-      this.showForm.emit();
+      if (!this.templates || this.templates.length === 0) {
+        this.showForm.emit();
+      } else {
+        this.showList.emit();
+      }
     }
     this.cdr?.detectChanges();
   }

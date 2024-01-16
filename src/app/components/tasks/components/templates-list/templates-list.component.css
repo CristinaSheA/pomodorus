@@ -14,7 +14,7 @@
 }
 
 header {
-  border-bottom: 1px solid rgba(190, 190, 190, 0.635);
+  border-bottom: 1px solid rgb(239, 239, 239);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,7 +86,21 @@ input::placeholder {
   padding: 10px;
 }
 
+.template:hover {
+  background-color: #EFEFEF;
+}
+
+
 .template i {
   z-index: 3;
   font-size: 12px;
+}
+
+.add-template {
+  text-align: left;
+  color: rgb(143, 143, 143);
+  padding: 16px;
+  border-top: 1px solid rgb(239, 239, 239);
+  width: 100%;
+  cursor: pointer;
 }

@@ -5,45 +5,56 @@
   </button>
 
   @if (showTasksToolbar()) {
-  <tasks-toolbar
-    class="animate__animated animate__bounceIn"
-    (showForm)="setShowTemplateForm(true)"
-    (showList)="setShowTemplatesList(true)"
-    (showToolbar)="setShowTasksToolbar(false)"
-  ></tasks-toolbar>
+    <tasks-toolbar
+      class="animate__animated animate__bounceIn"
+      (showForm)="setShowTemplateForm(true)"
+      (showList)="setShowTemplatesList(true)"
+      (showToolbar)="setShowTasksToolbar(false)"
+    ></tasks-toolbar>
   }
 </header>
 
-@for (task of tasksList; track task.id) { @if (task.editMode) {
-<task-form
-  [task]="task"
-  (hideForm)="setShowTaskForm(false)"
-  (showStats)="setShowStats(true)"
+@for (task of tasksList; track task.id) { 
+  @if (task.editMode) {
+    <task-form
+      [task]="task"
+      (hideForm)="setShowTaskForm(false)"
+      (showStats)="setShowStats(true)"
 
-  class="animate__animated animate__flipInX"
-></task-form>
-} @else {
-<task [task]="task"></task>
-} } @if (showTaskForm()) {
-<task-form
-  (hideForm)="setShowTaskForm(false)"
-  class="animate__animated animate__flipInX"
-></task-form>
-} @else {
-<button id="add-task-button" (click)="confirmTaskChanges()">
-  <i class="fi fi-sr-add"></i> Add Task
-</button>
-} @if (showTemplateForm()) {
-<div class="dark-layer"></div>
-<template-form
-  class="animate__animated animate__flipInX"
-  (hideForm)="setShowTemplateForm(false)"
-></template-form>
-} @if (showTemplatesList()) {
-<div class="dark-layer"></div>
-<templates-list class="animate__animated animate__flipInX" 
-(hideList)="setShowTemplatesList(false)"
-></templates-list>
+      class="animate__animated animate__flipInX"
+    ></task-form>
+  } @else {
+    <task [task]="task"></task>
+  } 
+} 
+
+@if (showTaskForm()) {
+  <task-form
+    (hideForm)="setShowTaskForm(false)"
+    class="animate__animated animate__flipInX"
+  ></task-form>
+} 
+
+@else {
+  <button id="add-task-button" (click)="confirmTaskChanges()">
+    <i class="fi fi-sr-add"></i> Add Task
+  </button>
+} 
+
+@if (showTemplateForm()) {
+  <div class="dark-layer"></div>
+  <template-form
+    class="animate__animated animate__flipInX"
+    (hideForm)="setShowTemplateForm(false)"
+  ></template-form>
+} 
+
+@if (showTemplatesList()) {
+  <div class="dark-layer"></div>
+  <templates-list class="animate__animated animate__flipInX" 
+  (showForm)="setShowTemplateForm(true)"
+  (hideList)="setShowTemplatesList(false)"
+  ></templates-list>
 }
 
-  <stats></stats>
+<stats></stats>

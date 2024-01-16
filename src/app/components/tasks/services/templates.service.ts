@@ -45,7 +45,13 @@ export class TemplatesService {
     });
   }
              
-  public updateTemplate() {}
+  public updateTemplate(template: Template) {
+    if (!template.tasks) return;
+  
+    const tasks = this.tasksService?.tasksList();
+    if (!tasks) return
+    template.tasks = tasks;
+  }
 
   public deleteTemplate(templateToDelete: Template) {
     Swal.fire({
