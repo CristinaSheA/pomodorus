@@ -10,13 +10,12 @@
       <i class="fi fi-rr-cross" (click)="deleteTemplate(template)"></i>
     </div>
     } @empty {
-    <span>No templates to show 🤔...</span>
+      <span class="no-templates">No templates to show 🤔...</span>
     }
 
     <!-- Si "templates" es nula o indefinida, se establece una longitud predeterminada de cero utilizando el operador de coalescencia nula "??". -->
     @if( (this.templates?.length ?? 0) !== 0  && showForm) {
       <div class="add-template" (click)="showTemplatesForm()">+ Create a new template</div>
     }
-    
   </div>
 </div>

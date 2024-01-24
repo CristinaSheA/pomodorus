@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ViewChild,
   inject,
@@ -21,7 +20,6 @@ import { AppStateService } from '../../services/app-state.service';
 })
 export class PomodoroComponent {
   @ViewChild(TimerComponent) timerComponentRef!: TimerComponent;
-  private readonly cdr = inject(ChangeDetectorRef);
   private readonly appState = inject(AppStateService);
 
 
@@ -56,7 +54,6 @@ export class PomodoroComponent {
     this.timerComponentRef.setTime();
     this.handleTimerEnd();
     this.setShowingButtons(true, false, false);
-    this.cdr?.detectChanges();
   }
 
   public handleTimerEnd(): void {

@@ -25,6 +25,8 @@ export class TimerComponent {
   @Input() public currentSection!: string;
   @Input() public sectionsList!: Section[];
   @Input() public longBreakFrequency: number = 3;
+  @Output() timerEnded = new EventEmitter<void>();
+
 
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly tasksService = inject(TasksService);
@@ -41,7 +43,6 @@ export class TimerComponent {
     this.setTime();
   }
 
-  @Output() timerEnded = new EventEmitter<void>();
 
   public startTimer(): void {
     this.timer = interval(1000).subscribe(() => {
@@ -126,7 +127,6 @@ export class TimerComponent {
         this.updateTimerAndBackground(minutes, 'rgb(57, 112, 151)');
         break;
     }
-    this.cdr?.detectChanges();
   }
 
   public getMinutes(): void {

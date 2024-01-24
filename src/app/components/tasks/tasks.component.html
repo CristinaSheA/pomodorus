@@ -5,56 +5,64 @@
   </button>
 
   @if (showTasksToolbar()) {
-    <tasks-toolbar
-      class="animate__animated animate__bounceIn"
-      (showForm)="setShowTemplateForm(true)"
-      (showList)="setShowTemplatesList(true)"
-      (showToolbar)="setShowTasksToolbar(false)"
-    ></tasks-toolbar>
+  <tasks-toolbar
+  appClickOutside (clickOutside)="hideAllPopups()"
+    class="animate__animated animate__bounceIn"
+    (showToolbar)="setShowTasksToolbar(false)"
+    (manageFormTemplateWindow)="manageTemplatesWindow('form', null)"
+    (manageListTemplateWindow)="manageTemplatesWindow('list', $event)"
+  ></tasks-toolbar>
   }
 </header>
 
 @for (task of tasksList; track task.id) { 
   @if (task.editMode) {
     <task-form
-      [task]="task"
-      (hideForm)="setShowTaskForm(false)"
-      (showStats)="setShowStats(true)"
-
-      class="animate__animated animate__flipInX"
+    appClickOutside (clickOutside)="hideAllPopups()"
+    [task]="task"
+    (hideForm)="setShowTaskForm(false)"
+    (showStats)="setShowStats(true)"
+    class="animate__animated animate__flipInX"
     ></task-form>
   } @else {
     <task [task]="task"></task>
   } 
 } 
 
-@if (showTaskForm()) {
+@if (taskFormOpened()) {
   <task-form
+    appClickOutside (clickOutside)="hideAllPopups()"
     (hideForm)="setShowTaskForm(false)"
     class="animate__animated animate__flipInX"
   ></task-form>
-} 
-
-@else {
-  <button id="add-task-button" (click)="confirmTaskChanges()">
+} @else {
+  <button id="add-task-button" (click)="setShowTaskForm(true)">
     <i class="fi fi-sr-add"></i> Add Task
   </button>
-} 
+}
 
-@if (showTemplateForm()) {
-  <div class="dark-layer"></div>
+@if (templatesWindowMode() === 'form') {
   <template-form
+    appClickOutside (clickOutside)="hideAllPopups()"
     class="animate__animated animate__flipInX"
-    (hideForm)="setShowTemplateForm(false)"
+    (hideForm)="manageTemplatesWindow(false, null)"
   ></template-form>
 } 
 
-@if (showTemplatesList()) {
-  <div class="dark-layer"></div>
-  <templates-list class="animate__animated animate__flipInX" 
-  (showForm)="setShowTemplateForm(true)"
-  (hideList)="setShowTemplatesList(false)"
+@if (templatesWindowMode() === 'list') {
+  <templates-list
+    appClickOutside (clickOutside)="hideAllPopups()"
+    class="animate__animated animate__flipInX"
+    (showForm)="manageTemplatesWindow('form', null)"
+    (hideForm)="manageTemplatesWindow(false, null)"
+
+    [action]="action"
   ></templates-list>
 }
 
+@if(templatesWindowMode() === 'form' || templatesWindowMode() === 'list') {
+  <div class="dark-layer" (click)="manageTemplatesWindow(false, null)"></div>
+}
+
 <stats></stats>
+

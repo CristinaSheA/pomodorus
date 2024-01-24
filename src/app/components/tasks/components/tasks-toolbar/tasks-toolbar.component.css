@@ -4,6 +4,7 @@
 
 
 .task-menu {
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 20px, rgba(0, 0, 0, 0.1) 0px 3px 6px;
   display: flex;
   flex-direction: column;
   padding: 15px;

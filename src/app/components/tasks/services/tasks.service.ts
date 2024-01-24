@@ -1,7 +1,8 @@
 import { Injectable, WritableSignal } from '@angular/core';
 import { signal } from '@angular/core';
-import { Task, TaskStatus } from '../interfaces/task';
+import { Task } from '../interfaces/task';
 import Swal from 'sweetalert2';
+import { TaskStatus } from '../enums/taskStatus';
 
 @Injectable({
   providedIn: 'root',

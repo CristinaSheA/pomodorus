@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Template } from '../interfaces/template';
-import { Task, TaskStatus } from '../interfaces/task';
+import { Task } from '../interfaces/task';
 import { TasksService } from './tasks.service';
 import Swal from 'sweetalert2';
 
@@ -9,28 +9,10 @@ import Swal from 'sweetalert2';
 })
 export class TemplatesService {
   private tasksService = inject(TasksService);
-  public templatesList = signal<Template[]>([
-    {
-      id: Date.now(),
-      title: 'fsafsa',
-      tasks: [
-        {
-          id: Date.now(),
-          title: '',
-          description: 'description',
-          isSelected: false,
-          status: TaskStatus.NotDone,
-          editMode: false,
-          pomodoros: { totalPomodoros: 0, donePomodoros: 0 },
-        },
-      ],
-    },
-  ]);
-
-  constructor() {}
+  public templatesList = signal<Template[]>([]);
 
   public createTemplate(title: string) {
-    if (!this.tasksService) return
+    if (!this.tasksService) return;
     const tasks: Task[] = this.tasksService.tasksList();
 
     if (!tasks) return;
@@ -44,12 +26,12 @@ export class TemplatesService {
       return [...currentTemplatesList, newTemplate];
     });
   }
-             
+
   public updateTemplate(template: Template) {
     if (!template.tasks) return;
-  
+
     const tasks = this.tasksService?.tasksList();
-    if (!tasks) return
+    if (!tasks) return;
     template.tasks = tasks;
   }
 

@@ -28,25 +28,23 @@ import { Task } from '../../interfaces/task';
 export class TaskFormComponent {
   @Output() public hideForm: EventEmitter<void> = new EventEmitter<void>();
   @Output() public showStats: EventEmitter<void> = new EventEmitter<void>();
-
-
   @Input() public task!: Task;
 
+  private readonly fb = inject(FormBuilder);
   public readonly tasksService = inject(TasksService);
   public showDescriptionField: boolean = false;
   public showSaveButton: boolean = true;
-  public taskForm: FormGroup = this.fb.group({
+  public taskForm: FormGroup = this.fb!.group({
     taskTitle: ['', [Validators.required, Validators.minLength(1)]],
     taskPomodoros: [1, [Validators.required, Validators.min(1)]],
     taskDescription: [''],
   });
 
-  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     if (this.task?.editMode) {
       this.showSaveButton = false;
-      this.taskForm = this.fb.group({
+      this.taskForm = this.fb!.group({
         taskTitle: [
           this.task.title,
           [Validators.required, Validators.minLength(1)],

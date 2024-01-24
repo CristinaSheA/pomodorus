@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import {
+  Component,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 
 import 'animate.css';
 import { Task } from './interfaces/task';
@@ -9,8 +14,11 @@ import { TasksService } from './services/tasks.service';
 import Swal from 'sweetalert2';
 import { TemplateFormComponent } from './components/template-form/template-form.component';
 import { TemplatesListComponent } from './components/templates-list/templates-list.component';
-import { TasksToolbarComponent } from './components/tasks-toolbar/tasks-toolbar.component';
 import { StatsComponent } from './components/stats/stats.component';
+import { TasksToolbarComponent } from './components/tasks-toolbar/tasks-toolbar.component';
+
+import { ClickOutsideDirective } from './directives/click-outside.directive';
+import { TemplateActions } from './enums/templateAction';
 
 @Component({
   selector: 'tasks',
@@ -23,56 +31,41 @@ import { StatsComponent } from './components/stats/stats.component';
     TemplatesListComponent,
     TasksToolbarComponent,
     StatsComponent,
+    ClickOutsideDirective,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
 })
 export class TasksComponent {
   private readonly tasksService = inject(TasksService);
-  public showTaskForm = signal<boolean>(false);
-  public showTemplateForm = signal<boolean>(false);
-  public showTemplatesList = signal<boolean>(false);
+  public templatesWindowMode: WritableSignal<false | string> = signal(false);
   public showTasksToolbar = signal<boolean>(false);
   public showStats = signal<boolean>(false);
+  public taskFormOpened = signal(false);
+  action!: TemplateActions | null
 
 
-  setShowStats(value:boolean) {
-    this.showStats.set(value);
-  }
   public get tasksList(): Task[] {
     if (!this.tasksService) return [];
     return this.tasksService.tasksList();
   }
+  public manageTemplatesWindow(newState: string | false, templateAction: TemplateActions | null) {
+    this.templatesWindowMode.set(newState);
+    this.showTasksToolbar.set(false);
 
+    this.action = templateAction
+  }
+  public setShowStats(value: boolean) {
+    this.showStats.set(value);
+  }
   public setShowTaskForm(value: boolean): void {
-    this.showTaskForm.set(value);
-    this.showTasksToolbar.set(false);
-    this.showTemplatesList.set(false);
-    this.showTemplateForm.set(false);
+    this.taskFormOpened.set(value);
   }
-
-  public setShowTemplateForm(value: boolean): void {
-    this.showTemplateForm.set(value);
-    this.showTemplatesList.set(false);
-    this.showTasksToolbar.set(false);
-  }
-
-  public setShowTemplatesList(value: boolean): void {
-    this.showTemplatesList.set(value);
-    this.showTemplateForm.set(false);
-    this.showTasksToolbar.set(false);
-  }
-
   public setShowTasksToolbar(value: boolean): void {
     this.showTasksToolbar.set(value);
-    this.showTemplateForm.set(false);
-    this.showTemplatesList.set(false);
-    this.showTaskForm.set(false);
   }
-
   public confirmTaskChanges(): void {
     this.setShowTaskForm(true);
-
     for (const task of this.tasksList) {
       if (task.editMode === true) {
         Swal.fire({
@@ -93,5 +86,10 @@ export class TasksComponent {
         });
       }
     }
+  }
+  public hideAllPopups() {
+    this.setShowTasksToolbar(false)
+    this.setShowTaskForm(false)
+    this.manageTemplatesWindow(false, null)
   }
 }

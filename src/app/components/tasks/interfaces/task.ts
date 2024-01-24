@@ -1,8 +1,4 @@
-
-export enum TaskStatus {
-  Done = "DONE",
-  NotDone = "NOT_DONE"
-}
+import { TaskStatus } from "../enums/taskStatus";
 
 
 export interface Task {
@@ -14,3 +10,4 @@ export interface Task {
   editMode: boolean;
   pomodoros: { totalPomodoros: number; donePomodoros: number };
 }
+
