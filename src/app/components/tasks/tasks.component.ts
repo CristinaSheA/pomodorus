@@ -44,7 +44,6 @@ export class TasksComponent {
   public taskFormOpened = signal(false);
   action!: TemplateActions | null
 
-
   public get tasksList(): Task[] {
     if (!this.tasksService) return [];
     return this.tasksService.tasksList();
