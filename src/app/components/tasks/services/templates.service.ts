@@ -22,6 +22,10 @@ export class TemplatesService {
       tasks: tasks,
     };
 
+    
+
+    this.tasksService!.selectedTask = signal<Task | null>(null)
+
     this.templatesList.update((currentTemplatesList: Template[]) => {
       return [...currentTemplatesList, newTemplate];
     });

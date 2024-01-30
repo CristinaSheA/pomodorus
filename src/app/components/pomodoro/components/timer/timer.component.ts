@@ -72,7 +72,9 @@ export class TimerComponent {
 
   public skipSection(): void {
     if (this.currentSection === 'pomodoro') {
+      this.cdr?.detectChanges()
       this.incrementDonePomodoros();
+      this.cdr?.detectChanges()
     }
 
     this.timer.unsubscribe();
@@ -146,10 +148,13 @@ export class TimerComponent {
   }
 
   private incrementDonePomodoros(): void {
+    this.cdr?.detectChanges()
     this.tasksService?.selectedTask.update((task) => {
       if (!task) return null;
       task.pomodoros.donePomodoros++;
       return task;
     });
+    this.cdr?.detectChanges()
+
   }
 }

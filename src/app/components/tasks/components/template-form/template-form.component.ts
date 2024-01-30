@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Output,
   inject,
+  signal,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -14,6 +15,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { TemplatesService } from '../../services/templates.service';
+import { TasksService } from '../../services/tasks.service';
+import { Task } from '../../interfaces/task';
 
 @Component({
   selector: 'template-form',
@@ -26,6 +29,8 @@ import { TemplatesService } from '../../services/templates.service';
 export class TemplateFormComponent {
   @Output() private hideForm: EventEmitter<void> = new EventEmitter<void>();
   private readonly templatesService = inject(TemplatesService);
+  private readonly tasksService = inject(TasksService);
+
   private readonly fb = inject(FormBuilder);
   public templateForm: FormGroup = this.fb!.group({
     templateTitle: ['', [Validators.required, Validators.minLength(1)]],

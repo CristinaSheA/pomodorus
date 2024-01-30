@@ -50,6 +50,7 @@ export class TemplatesListComponent {
     if (this.action === TemplateActions.SaveAsTemplate) {
       console.log(template.tasks)
       this.templatesService?.updateTemplate(template);
+      this.hideForm.emit()
     } else {
       this.insertFromTemplate(template);
     }
