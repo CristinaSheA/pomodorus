@@ -1,10 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { PomodoroComponent } from './components/pomodoro/pomodoro.component';
 import { TasksComponent } from './components/tasks/tasks.component';
-import Swal from 'sweetalert2';
-import { StatsComponent } from './components/tasks/components/stats/stats.component';
+import { ConfigComponent } from './components/config/config.component';
 
 
 @Component({
@@ -14,12 +13,17 @@ import { StatsComponent } from './components/tasks/components/stats/stats.compon
     CommonModule,
     RouterOutlet,
     PomodoroComponent,
-    TasksComponent
+    TasksComponent,
+    ConfigComponent
   ],
-
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  public showSettings = false
+
+  setShowSettings(value: boolean) {
+    this.showSettings = value
+  }
   title = 'pomodoro';
 }

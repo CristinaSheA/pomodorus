@@ -1,1 +1,162 @@
-<p>config works!</p>,
+<div class="popup">
+  <header class="header">
+    <h1>Setting</h1>
+    <i class="fi fi-rr-cross"></i>
+  </header>
+
+  <section>
+    <header>
+      <i class="fi fi-rr-clock"></i>
+      <h2>Timer</h2>
+    </header>
+
+    <div id="time">
+      <h3>Time (minutes)</h3>
+
+      <div class="time-inputs">
+        <div>
+          <p for="pomodoroMinutes">Pomodoro</p>
+          <input type="number" [(ngModel)]="pomodoroMinutes"/>
+
+        </div>
+        <div>
+          <p>Short Break</p>
+          <input type="number" [(ngModel)]="shortBreakMinutes"/>
+        </div>
+        <div>
+          <p>Long Break</p>
+          <input type="number" [(ngModel)]="longBreakMinutes"/>
+        </div>
+      </div>
+    </div>
+    <div class="switch-setting">
+      <h3>auto start breaks</h3>
+      <label class="switch">
+        <input type="checkbox" (click)="toggleAutoStartBreaks($event)" [checked]="autoStartBreaks"/>
+        <div class="slider round">
+          <span class="on"></span>
+          <span class="off"></span>
+        </div>
+      </label>
+    </div>
+    <div class="switch-setting">
+      <h3>auto start pomodoros</h3>
+      <label class="switch">
+        <input type="checkbox" (click)="toggleAutoStartPomodoros($event)" [checked]="autoStartPomodoros"/>
+        <div class="slider round">
+          <span class="on"></span>
+          <span class="off"></span>
+        </div>
+      </label>
+    </div>
+    <div class="switch-setting">
+      <h3>long break interval</h3>
+      <input type="number" [(ngModel)]="longBreakInterval" />
+    </div>
+  </section>
+  <section>
+    <header>
+      <i class="fi fi-rr-checkbox"></i>
+      <h2>Task</h2>
+    </header>
+
+    <div class="switch-setting">
+      <h3>
+        auto check tasks
+        <i class="fi fi-sr-info" (click)="autoCheckTasksMessage()"></i>
+      </h3>
+      <label class="switch">
+        <input type="checkbox" (click)="toggleAutoCheckTasks($event)" [checked]="autoCheckTasks"/>
+        <div class="slider round">
+          <span class="on"></span>
+          <span class="off"></span>
+        </div>
+      </label>
+    </div>
+    <div class="switch-setting">
+      <h3>
+        auto switch tasks
+        <i class="fi fi-sr-info" (click)="autoSwitchTasksMessage()"></i>
+      </h3>
+      <label class="switch">
+        <input type="checkbox" (click)="toggleAutoSwitchTasks($event)" [checked]="autoSwitchTasks"/>
+        <div class="slider round">
+          <span class="on"></span>
+          <span class="off"></span>
+        </div>
+      </label>
+    </div>
+  </section>
+  <section>
+    <header>
+      <i class="fi fi-sr-volume"></i>
+      <h2>Sound</h2>
+    </header>
+
+    <div class="switch-setting">
+      <h3>alarm sound</h3>
+      <div class="switch-setting-select">
+        <i class="fi fi-sr-caret-down"></i>
+        <select name="" id="">
+          <option value="">Bell</option>
+          <option value="">Bird</option>
+          <option value="">Digital</option>
+          <option value="">Kitchen</option>
+          <option value="">Wood</option>
+        </select>
+        <span>
+          repeat
+          <input type="number" [(ngModel)]="alarmSoundRepetition"/>
+        </span>
+      </div>
+    </div>
+
+    <div class="switch-setting">
+      <h3>ticking sound</h3>
+      <div class="switch-setting-select">
+        <i class="fi fi-sr-caret-down"></i>
+        <select name="" id="">
+          <option value="">None</option>
+          <option value="">Ticking fast</option>
+          <option value="">Ticking Slow</option>
+          <option value="">White Noise</option>
+          <option value="">Brown Noise</option>
+        </select>
+      </div>
+    </div>
+  </section>
+  <section>
+    <header>
+      <i class="fi fi-rr-magic-wand"></i>
+      <h2>Theme</h2>
+    </header>
+
+    <div class="switch-setting">
+      <h3>color themes</h3>
+      <div class="color-themes">
+        <span class="red theme-square"></span>
+        <span class="cyan theme-square"></span>
+        <span class="blue theme-square"></span>
+      </div>
+    </div>
+    <div class="switch-setting">
+      <h3>dark mode when running</h3>
+      <label class="switch">
+        <input type="checkbox" (click)="toggleDarkMode($event)" [checked]="darkMode"/>
+        <div class="slider round">
+          <span class="on"></span>
+          <span class="off"></span>
+        </div>
+      </label>
+    </div>
+  </section>
+
+  <footer>
+    <button (click)="updateState()">OK</button>
+  </footer>
+</div>
+
+
+@if(showColorThemeSelection) {
+  <color-theme-selector ></color-theme-selector>
+}

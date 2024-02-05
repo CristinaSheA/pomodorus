@@ -7,7 +7,7 @@
   </a>
 
   <div id="nav-options">
-    <button>
+    <button (click)="setShowSettings(true)">
       <i class="fi fi-sr-settings"></i>
       Setting
     </button>
@@ -19,8 +19,16 @@
     </button>
   </div>
 </nav>
+@if (showSettings) {
+  <config class="animate__animated animate__fadeIn" (setShowSettings)="setShowSettings(false)"></config>
+}
 
 
 <pomodoro-main></pomodoro-main>
 
 <tasks></tasks>
+
+
+@if(showSettings) {
+  <div class="dark-layer" (click)="setShowSettings(false)"></div>
+}
