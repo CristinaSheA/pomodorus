@@ -1,7 +1,9 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  Inject,
+  SimpleChanges,
   ViewChild,
   inject,
 } from '@angular/core';
@@ -20,46 +22,59 @@ import { AppStateService } from '../../services/app-state.service';
 })
 export class PomodoroComponent {
   @ViewChild(TimerComponent) timerComponentRef!: TimerComponent;
-  private readonly appState = inject(AppStateService);
-
-
+  private readonly appStateService = inject(AppStateService);
   public currentSection: string = 'pomodoro';
-
   public sectionsList: Section[] = [
     {
       name: 'pomodoro',
-      time: this.appState?.pomodoroMinutes ? this.appState.pomodoroMinutes * 60 : 0,
+      time: this.appStateService?.pomodoroMinutes
+        ? this.appStateService.pomodoroMinutes * 60
+        : 0,
     },
     {
       name: 'short-break',
-      time: this.appState?.pomodoroMinutes ? this.appState.shortBreakMinutes * 60 : 0,
+      time: this.appStateService?.pomodoroMinutes
+        ? this.appStateService.shortBreakMinutes * 60
+        : 0,
     },
     {
       name: 'long-break',
-      time: this.appState?.pomodoroMinutes ? this.appState.longBreakMinutes * 60 : 0,
+      time: this.appStateService?.pomodoroMinutes
+        ? this.appStateService.longBreakMinutes * 60
+        : 0,
     },
   ];
-
   public showStartButton: boolean = true;
   public showPauseAndSkipButtons: boolean = false;
   public showResumeButton: boolean = false;
+  constructor(@Inject(DOCUMENT) private document: Document) {}
 
   public setSection(message: string): void {
     if (this.timerComponentRef.timer) {
       this.timerComponentRef.timer.unsubscribe();
     }
-
     this.currentSection = message;
     this.timerComponentRef.getMinutes();
     this.timerComponentRef.setTime();
     this.handleTimerEnd();
     this.setShowingButtons(true, false, false);
-  }
+    switch (this.currentSection) {
+      case 'pomodoro':
+        this.document.body.style.background = this.appStateService!.pomodoroColorTheme;
+        break;
 
+      case 'short-break':
+        this.document.body.style.background = this.appStateService!.shortBreakColorTheme;
+        break;
+
+      case 'long-break':
+        this.document.body.style.background = this.appStateService!.longBreakColorTheme;
+        break;
+    }
+  }
   public handleTimerEnd(): void {
     this.setShowingButtons(true, false, false);
   }
-
   public setShowingButtons(
     start: boolean,
     pauseAndSkip: boolean,
@@ -69,22 +84,18 @@ export class PomodoroComponent {
     this.showPauseAndSkipButtons = pauseAndSkip;
     this.showResumeButton = resume;
   }
-
-  public startChildTimer(): void {
+  public startTimer(): void {
     this.timerComponentRef.startTimer();
     this.setShowingButtons(false, true, false);
   }
-
   public pauseTimer(): void {
     this.timerComponentRef.pauseTimer();
     this.setShowingButtons(false, false, true);
   }
-
   public skipSection(): void {
     this.timerComponentRef.skipSection();
     this.setShowingButtons(true, false, false);
   }
-
   public resumeTimer(): void {
     this.timerComponentRef.resumeTimer();
     this.setShowingButtons(false, true, false);

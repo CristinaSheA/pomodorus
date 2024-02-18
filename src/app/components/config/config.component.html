@@ -134,9 +134,9 @@
     <div class="switch-setting">
       <h3>color themes</h3>
       <div class="color-themes">
-        <span class="red theme-square"></span>
-        <span class="cyan theme-square"></span>
-        <span class="blue theme-square"></span>
+        <span class="red theme-square" (click)="setThemeColor('pomodoro')" [style.background-color]="pomodoroTheme"></span>
+        <span class="cyan theme-square" (click)="setThemeColor('short-break')" [style.background-color]="shortBreakTheme"></span>
+        <span class="blue theme-square" (click)="setThemeColor('long-break')" [style.background-color]="longBreakTheme"></span>
       </div>
     </div>
     <div class="switch-setting">
@@ -158,5 +158,5 @@
 
 
 @if(showColorThemeSelection) {
-  <color-theme-selector ></color-theme-selector>
+  <color-theme-selector (hideColorThemeSelection)="setColorThemeSelection(false)" (update)="updateState()"></color-theme-selector>
 }

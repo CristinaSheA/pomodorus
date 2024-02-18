@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  inject,
+} from '@angular/core';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
 import { ColorThemeSelectorComponent } from './components/colorThemeSelector/colorThemeSelector.component';
@@ -16,7 +23,7 @@ import { AppStateService } from '../../services/app-state.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfigComponent {
-  @Output() public setShowSettings = new EventEmitter<void>()
+  @Output() public setShowSettings = new EventEmitter<void>();
 
   private appStateService = inject(AppStateService);
   public pomodoroMinutes = this.appStateService!.pomodoroMinutes;
@@ -26,15 +33,16 @@ export class ConfigComponent {
   public alarmSound: AlarmSound = this.appStateService!.alarmSound;
   public alarmSoundRepetition = this.appStateService!.alarmSoundRepetition;
   public tickingSound: TickingSound = this.appStateService!.tickingSound;
-  public autoStartBreaks: boolean = this.appStateService!.autoStartBreaks
-  public autoStartPomodoros: boolean = this.appStateService!.autoStartPomodoros
-  public autoCheckTasks: boolean = this.appStateService!.autoCheckTasks
-  public autoSwitchTasks: boolean = this.appStateService!.autoSwitchTasks
-  public pomodoroColorTheme: string = this.appStateService!.pomodoroColorTheme
-  public shortBreakColorTheme: string = this.appStateService!.shortBreakColorTheme
-  public longBreakColorTheme: string = this.appStateService!.longBreakColorTheme
-  public darkMode: boolean = this.appStateService!.darkMode
-
+  public autoStartBreaks: boolean = this.appStateService!.autoStartBreaks;
+  public autoStartPomodoros: boolean = this.appStateService!.autoStartPomodoros;
+  public autoCheckTasks: boolean = this.appStateService!.autoCheckTasks;
+  public autoSwitchTasks: boolean = this.appStateService!.autoSwitchTasks;
+  public pomodoroColorTheme: string = this.appStateService!.pomodoroColorTheme;
+  public shortBreakColorTheme: string =
+    this.appStateService!.shortBreakColorTheme;
+  public longBreakColorTheme: string =
+    this.appStateService!.longBreakColorTheme;
+  public darkMode: boolean = this.appStateService!.darkMode;
 
   public showColorThemeSelection: boolean = false;
   public selectingColorThemePomodoro: boolean = false;
@@ -42,65 +50,78 @@ export class ConfigComponent {
   public selectingColorThemeLongBreak: boolean = false;
 
   ngOnInit() {
-    // se parsea el resultado a un objeto
-    const state = JSON.parse(localStorage.getItem('state') || '{}');
-    this.pomodoroMinutes = state.pomodoroMinutes;
-    this.shortBreakMinutes = state.shortBreakMinutes;
-    this.longBreakMinutes = state.longBreakMinutes;
-    this.longBreakInterval = state.longBreakInterval;
-    this.alarmSoundRepetition = state.alarmSoundRepetition;
-    this.showColorThemeSelection = state.showColorThemeSelection;
-    this.selectingColorThemePomodoro = state.selectingColorThemePomodoro;
-    this.selectingColorThemeBreak = state.selectingColorThemeBreak;
-    this.selectingColorThemeLongBreak = state.selectingColorThemeLongBreak;
+    this.pomodoroMinutes = this.appStateService!.pomodoroMinutes;
+    this.shortBreakMinutes = this.appStateService!.shortBreakMinutes;
+    this.longBreakMinutes = this.appStateService!.longBreakMinutes;
+    this.longBreakInterval = this.appStateService!.longBreakInterval;
+    this.alarmSound = this.appStateService!.alarmSound;
+    this.alarmSoundRepetition = this.appStateService!.alarmSoundRepetition;
+    this.tickingSound = this.appStateService!.tickingSound;
+    this.autoStartBreaks = this.appStateService!.autoStartBreaks;
+    this.autoStartPomodoros = this.appStateService!.autoStartPomodoros;
+    this.autoCheckTasks = this.appStateService!.autoCheckTasks;
+    this.autoSwitchTasks = this.appStateService!.autoSwitchTasks;
+    this.pomodoroColorTheme = this.appStateService!.pomodoroColorTheme;
+    this.shortBreakColorTheme = this.appStateService!.shortBreakColorTheme;
+    this.longBreakColorTheme = this.appStateService!.longBreakColorTheme;
+    this.darkMode = this.appStateService!.darkMode;
+    this.selectingColorThemePomodoro =
+      this.appStateService!.selectingColorThemePomodoro;
+    this.selectingColorThemeBreak =
+      this.appStateService!.selectingColorThemeBreak;
+    this.selectingColorThemeLongBreak =
+      this.appStateService!.selectingColorThemeLongBreak;
+  }
+
+  setColorThemeSelection(value: boolean) {
+    this.showColorThemeSelection = value;
   }
 
   public updateState() {
     const newState = {
-      pomodoroMinutes: this.pomodoroMinutes, 
-      shortBreakMinutes: this.shortBreakMinutes, 
-      longBreakMinutes: this.longBreakMinutes, 
-      autoStartBreaks: this.autoStartBreaks, 
-      autoStartPomodoros: this.autoStartPomodoros, 
-      longBreakInterval: this.longBreakInterval, 
-      autoCheckTasks: this.autoCheckTasks, 
-      autoSwitchTasks: this.autoSwitchTasks, 
-      alarmSound: this.alarmSound, 
-      alarmSoundRepetition: this.alarmSoundRepetition, 
-      tickingSound: this.tickingSound, 
-      pomodoroColorTheme: this.pomodoroColorTheme, 
-      shortBreakColorTheme: this.shortBreakColorTheme, 
-      longBreakColorTheme: this.longBreakColorTheme, 
-      darkMode: this.darkMode, 
+      pomodoroMinutes: this.pomodoroMinutes,
+      shortBreakMinutes: this.shortBreakMinutes,
+      longBreakMinutes: this.longBreakMinutes,
+      autoStartBreaks: this.autoStartBreaks,
+      autoStartPomodoros: this.autoStartPomodoros,
+      longBreakInterval: this.longBreakInterval,
+      autoCheckTasks: this.autoCheckTasks,
+      autoSwitchTasks: this.autoSwitchTasks,
+      alarmSound: this.alarmSound,
+      alarmSoundRepetition: this.alarmSoundRepetition,
+      tickingSound: this.tickingSound,
+      pomodoroColorTheme: this.pomodoroColorTheme,
+      shortBreakColorTheme: this.shortBreakColorTheme,
+      longBreakColorTheme: this.longBreakColorTheme,
+      darkMode: this.darkMode,
     };
 
     this.appStateService?.updateState(newState);
-    this.setShowSettings.emit()
-    console.log(newState);
+    this.setShowSettings.emit();
   }
   public toggleDarkMode(event: any) {
     this.appStateService!.toggleDarkMode(event);
-    this.darkMode = this.appStateService!.darkMode
+    this.darkMode = this.appStateService!.darkMode;
   }
 
   public toggleAutoStartBreaks(event: any) {
     this.appStateService!.toggleAutoStartBreaks(event);
-    this.autoStartBreaks = this.appStateService!.autoStartBreaks
+    this.autoStartBreaks = this.appStateService!.autoStartBreaks;
   }
 
   public toggleAutoStartPomodoros(event: any) {
     this.appStateService!.toggleAutoStartPomodoros(event);
-    this.autoStartPomodoros = this.appStateService!.autoStartPomodoros
+    this.autoStartPomodoros = this.appStateService!.autoStartPomodoros;
   }
 
   public toggleAutoCheckTasks(event: any) {
     this.appStateService!.toggleAutoCheckTasks(event);
-    this.autoCheckTasks = this.appStateService!.autoCheckTasks
+    this.autoCheckTasks = this.appStateService!.autoCheckTasks;
   }
 
   public toggleAutoSwitchTasks(event: any) {
     this.appStateService!.toggleAutoSwitchTasks(event);
-    this.autoSwitchTasks = this.appStateService!.autoSwitchTasks
+    this.autoSwitchTasks = this.appStateService!.autoSwitchTasks;
   }
 
   public autoCheckTasksMessage() {
@@ -116,5 +137,37 @@ export class ConfigComponent {
       text: "If you enable 'Auto Switch Tasks', the checked task will be automatically moved to the bottom of the task list.",
       icon: 'info',
     });
+  }
+  public setThemeColor(value: string) {
+    this.setColorThemeSelection(true)
+
+    switch (value) {
+      case 'pomodoro':
+        this.appStateService!.selectingColorThemePomodoro = true;
+        console.log(this.appStateService!.selectingColorThemePomodoro);
+        
+        break;
+      case 'short-break':
+        this.appStateService!.selectingColorThemeBreak = true;
+        console.log(this.appStateService!.selectingColorThemeBreak);
+        
+        break;
+      case 'long-break':
+        this.appStateService!.selectingColorThemeLongBreak = true;
+        console.log(this.appStateService!.selectingColorThemeLongBreak);
+        break;
+    }
+  }
+  public get pomodoroTheme() {
+    this.pomodoroColorTheme = this.appStateService!.pomodoroColorTheme
+    return this.appStateService!.pomodoroColorTheme;
+  }
+  public get shortBreakTheme() {
+    this.shortBreakColorTheme = this.appStateService!.shortBreakColorTheme
+    return this.appStateService!.shortBreakColorTheme;
+  }
+  public get longBreakTheme() {
+    this.longBreakColorTheme = this.appStateService!.longBreakColorTheme
+    return this.appStateService!.longBreakColorTheme;
   }
 }
