@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   Inject,
-  SimpleChanges,
   ViewChild,
   inject,
 } from '@angular/core';
@@ -60,15 +59,18 @@ export class PomodoroComponent {
     this.setShowingButtons(true, false, false);
     switch (this.currentSection) {
       case 'pomodoro':
-        this.document.body.style.background = this.appStateService!.pomodoroColorTheme;
+        this.document.body.style.background =
+          this.appStateService!.pomodoroColorTheme;
         break;
 
       case 'short-break':
-        this.document.body.style.background = this.appStateService!.shortBreakColorTheme;
+        this.document.body.style.background =
+          this.appStateService!.shortBreakColorTheme;
         break;
 
       case 'long-break':
-        this.document.body.style.background = this.appStateService!.longBreakColorTheme;
+        this.document.body.style.background =
+          this.appStateService!.longBreakColorTheme;
         break;
     }
   }
@@ -85,8 +87,8 @@ export class PomodoroComponent {
     this.showResumeButton = resume;
   }
   public startTimer(): void {
-    this.timerComponentRef.startTimer();
     this.setShowingButtons(false, true, false);
+    this.timerComponentRef.startTimer();
   }
   public pauseTimer(): void {
     this.timerComponentRef.pauseTimer();
@@ -95,6 +97,19 @@ export class PomodoroComponent {
   public skipSection(): void {
     this.timerComponentRef.skipSection();
     this.setShowingButtons(true, false, false);
+
+    if (
+      this.appStateService?.autoStartPomodoros &&
+      this.currentSection === 'pomdoro'
+    ) {
+      this.startTimer();
+    }
+    if (
+      this.appStateService?.autoStartBreaks &&
+      this.currentSection === 'short-break'
+    ) {
+      this.startTimer();
+    }
   }
   public resumeTimer(): void {
     this.timerComponentRef.resumeTimer();

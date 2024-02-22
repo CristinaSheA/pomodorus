@@ -13,6 +13,8 @@ import { Subscription, interval } from 'rxjs';
 import { Section } from '../../interfaces/section';
 import { TasksService } from '../../../tasks/services/tasks.service';
 import { AppStateService } from '../../../../services/app-state.service';
+import { AlarmSound } from '../../../../enums/alarmSound';
+import { TickingSound } from '../../../../enums/tickingSound';
 
 @Component({
   selector: 'timer',
@@ -24,20 +26,16 @@ import { AppStateService } from '../../../../services/app-state.service';
 })
 export class TimerComponent {
   private readonly appStateService = inject(AppStateService);
-
   @Input() public currentSection!: string;
   @Input() public sectionsList!: Section[];
-  @Input() public longBreakFrequency: number = 1;
+  @Input() public longBreakFrequency: number =
+    this.appStateService!.longBreakInterval + 1;
   @Output() timerEnded = new EventEmitter<void>();
   @Output() setShowingButtons = new EventEmitter<void>();
-
-
-  
-
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly tasksService = inject(TasksService);
-
   private currentPomodoroCount: number = 0;
+  private tickingAudio = new Audio();
   public timer!: Subscription;
   public secondsLeft!: number;
   public min!: number;
@@ -46,38 +44,99 @@ export class TimerComponent {
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
   ngOnChanges(): void {
+    this.longBreakFrequency = this.appStateService!.longBreakInterval + 1;
     this.setTime();
-    this.fsa()
+    this.themeBySection();
   }
-
   ngOnInit() {
     this.setTime();
-
   }
-
   public startTimer(): void {
+    let audio = new Audio();
+    audio.src = '../../../../../assets/sounds/starting-timer.mp3';
+    audio.play();
+
     this.timer = interval(1000).subscribe(() => {
       if (this.secondsLeft > 0) {
         this.secondsLeft--;
         this.getMinutes();
+        console.log(this.appStateService?.tickingSound);
       } else {
         this.timer.unsubscribe();
         this.skipSection();
         this.timerEnded.emit();
+        switch (this.appStateService?.alarmSound) {
+          case AlarmSound.Bell:
+            this.appStateService?.playAudio(
+              '../../assets/sounds/alarm/bells.mp3',
+              this.appStateService.alarmSoundRepetition
+            );
+            break;
+
+          case AlarmSound.Bird:
+            this.appStateService?.playAudio(
+              '../../assets/sounds/alarm/birds.mp3',
+              this.appStateService.alarmSoundRepetition
+            );
+            break;
+
+          case AlarmSound.Digital:
+            this.appStateService?.playAudio(
+              '../../assets/sounds/alarm/digital.mp3',
+              this.appStateService.alarmSoundRepetition
+            );
+            break;
+
+          case AlarmSound.Kitchen:
+            this.appStateService?.playAudio(
+              '../../assets/sounds/alarm/kitchen.mp3',
+              this.appStateService.alarmSoundRepetition
+            );
+            break;
+
+          case AlarmSound.Wood:
+            this.appStateService?.playAudio(
+              '../../assets/sounds/alarm/pop.mp3',
+              this.appStateService.alarmSoundRepetition
+            );
+            break;
+        }
       }
     });
-
+    this.startTicking();
     if (this.appStateService?.darkMode === true) {
       this.document.body.style.background = 'black';
     }
   }
+  public startTicking() {
+    console.log(this.appStateService?.tickingSound);
+    this.tickingAudio.loop = true;
 
+    switch (this.appStateService?.tickingSound) {
+      case TickingSound.None:
+        return;
+      case TickingSound.TickingSlow:
+        this.tickingAudio.src = '../../assets/sounds/ticking/ticking-slow.mp3';
+        break;
+      case TickingSound.TickingFast:
+        this.tickingAudio.src = '../../assets/sounds/ticking/ticking-fast.mp3';
+        break;
+      case TickingSound.BrownNoise:
+        this.tickingAudio.src = '../../assets/sounds/ticking/brown-noise.mp3';
+        break;
+
+      case TickingSound.WhiteNoise:
+        this.tickingAudio.src = '../../assets/sounds/ticking/white-noise.mp3';
+        break;
+    }
+    this.tickingAudio.play();
+  }
   public pauseTimer(): void {
     this.timer.unsubscribe();
-    this.fsa();
+    this.themeBySection();
+    this.tickingAudio.pause();
   }
-
-  fsa() {
+  public themeBySection() {
     switch (this.currentSection) {
       case 'pomodoro':
         this.document.body.style.background =
@@ -105,6 +164,7 @@ export class TimerComponent {
     if (this.appStateService?.darkMode === true) {
       this.document.body.style.background = 'black';
     }
+    this.startTicking();
   }
   public skipSection(): void {
     if (this.currentSection === 'pomodoro') {
@@ -126,18 +186,22 @@ export class TimerComponent {
         : 'pomodoro';
     this.setTime();
     this.getMinutes();
+    this.tickingAudio.pause();
 
     if (
-      (this.currentSection === 'pomodoro' &&
-        this.appStateService?.autoStartPomodoros) ||
-      ((this.currentSection === 'short-break' ||
-        this.currentSection === 'long-break') &&
-        this.appStateService?.autoStartBreaks)
+      this.appStateService?.autoStartPomodoros &&
+      this.currentSection === 'pomdoro'
+    ) {
+      this.startTimer();
+    }
+    if (
+      this.appStateService?.autoStartBreaks &&
+      this.currentSection === 'short-break'
     ) {
       this.startTimer();
     }
   }
-  public setTime(): void { 
+  public setTime(): void {
     let index = 0;
     let desiredTime = this.sectionsList[index].time;
     let minutes;
@@ -204,5 +268,24 @@ export class TimerComponent {
       return task;
     });
     this.cdr?.detectChanges();
+    const selectedTask = this.tasksService?.selectedTask();
+    if (
+      selectedTask &&
+      selectedTask.pomodoros.donePomodoros ===
+        selectedTask.pomodoros.totalPomodoros
+    ) {
+      this.tasksService?.toggleTaskStatus(selectedTask);
+
+      const tasks = this.tasksService!.tasksList();
+      const currentIndex = tasks.findIndex((task) => task === selectedTask);
+      const nextTask = tasks[currentIndex + 1];
+
+      if (nextTask) {
+        this.tasksService!.selectedTask.set(nextTask);
+        nextTask.isSelected = true;
+      } else {
+        return;
+      }
+    }
   }
 }

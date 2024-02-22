@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   Output,
   inject,
 } from '@angular/core';
@@ -29,7 +28,7 @@ export class ConfigComponent {
   public pomodoroMinutes = this.appStateService!.pomodoroMinutes;
   public shortBreakMinutes = this.appStateService!.shortBreakMinutes;
   public longBreakMinutes = this.appStateService!.longBreakMinutes;
-  public longBreakInterval = this.appStateService!.longBreakInterval;
+  public longBreakInterval = this.appStateService!.longBreakInterval + 1;
   public alarmSound: AlarmSound = this.appStateService!.alarmSound;
   public alarmSoundRepetition = this.appStateService!.alarmSoundRepetition;
   public tickingSound: TickingSound = this.appStateService!.tickingSound;
@@ -73,11 +72,20 @@ export class ConfigComponent {
       this.appStateService!.selectingColorThemeLongBreak;
   }
 
+  onSelectAlarm(e:any) {
+    this.appStateService?.onSelectAlarm(e)
+  }
+
+  onSelectTicking(e:any) {
+    this.appStateService?.onSelectTicking(e)
+  }
   setColorThemeSelection(value: boolean) {
     this.showColorThemeSelection = value;
   }
 
   public updateState() {
+    this.alarmSound = this.appStateService!.alarmSound
+    this.tickingSound = this.appStateService!.tickingSound
     const newState = {
       pomodoroMinutes: this.pomodoroMinutes,
       shortBreakMinutes: this.shortBreakMinutes,

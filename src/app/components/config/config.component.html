@@ -1,7 +1,7 @@
 <div class="popup">
   <header class="header">
     <h1>Setting</h1>
-    <i class="fi fi-rr-cross"></i>
+    <i class="fi fi-rr-cross" (click)="setColorThemeSelection(false)"></i>
   </header>
 
   <section>
@@ -97,12 +97,12 @@
       <h3>alarm sound</h3>
       <div class="switch-setting-select">
         <i class="fi fi-sr-caret-down"></i>
-        <select name="" id="">
-          <option value="">Bell</option>
-          <option value="">Bird</option>
-          <option value="">Digital</option>
-          <option value="">Kitchen</option>
-          <option value="">Wood</option>
+        <select (change)="this.onSelectAlarm($event)">
+          <option value="bell">Bell</option>
+          <option value="bird">Bird</option>
+          <option value="digital">Digital</option>
+          <option value="kitchen">Kitchen</option>
+          <option value="wood">Wood</option>
         </select>
         <span>
           repeat
@@ -115,12 +115,12 @@
       <h3>ticking sound</h3>
       <div class="switch-setting-select">
         <i class="fi fi-sr-caret-down"></i>
-        <select name="" id="">
-          <option value="">None</option>
-          <option value="">Ticking fast</option>
-          <option value="">Ticking Slow</option>
-          <option value="">White Noise</option>
-          <option value="">Brown Noise</option>
+        <select (change)="this.onSelectTicking($event)">
+          <option value="none">None</option>
+          <option value="ticking-fast">Ticking fast</option>
+          <option value="ticking-slow">Ticking Slow</option>
+          <option value="white-noise">White Noise</option>
+          <option value="brown-noise">Brown Noise</option>
         </select>
       </div>
     </div>
