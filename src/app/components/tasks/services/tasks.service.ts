@@ -11,6 +11,23 @@ export class TasksService {
   public selectedTask: WritableSignal<Task | null> = signal<Task | null>(null);
   public tasksList = signal<Task[]>([]);
 
+  constructor() {
+    const selectedTaskFromLocalStorage = localStorage.getItem('selectedTask');
+    if (selectedTaskFromLocalStorage) {
+      this.selectedTask.set(JSON.parse(selectedTaskFromLocalStorage));
+    }
+
+    const tasksListFromLocalStorage = localStorage.getItem('tasksList');
+    if (tasksListFromLocalStorage) {
+      this.tasksList.set(JSON.parse(tasksListFromLocalStorage));
+    }
+  }
+
+  public updateLocalStorage() {
+    localStorage.setItem('selectedTask', JSON.stringify(this.selectedTask()));
+    localStorage.setItem('tasksList', JSON.stringify(this.tasksList()));
+  }
+
   public selectTask(task: Task): void {
     this.tasksList.update((currentTasksList: Task[]) => {
       return currentTasksList.map((t) => ({ ...t, isSelected: false }));
@@ -23,6 +40,7 @@ export class TasksService {
     this.tasksList.update((currentTasksList: Task[]) => {
       return currentTasksList.map((t) => (t.id === task.id ? task : t));
     });
+    this.updateLocalStorage();
   }
   public toggleTaskStatus(task: Task): void {
     task.status =
@@ -31,6 +49,7 @@ export class TasksService {
     this.tasksList.update((currentTasksList: Task[]) => {
       return currentTasksList.map((t) => (t.id === task.id ? task : t));
     });
+    this.updateLocalStorage();
   }
   public createTask(
     title: string,
@@ -54,6 +73,7 @@ export class TasksService {
     this.tasksList.update((currentTasksList: Task[]) => {
       return [...currentTasksList, newTask];
     });
+    this.updateLocalStorage();
   }
   public updateTask(
     title: string,
@@ -83,6 +103,7 @@ export class TasksService {
 
       updatedTask.editMode = false;
     }
+    this.updateLocalStorage();
   }
   public deleteTask(taskToDelete: Task): void {
     Swal.fire({
@@ -98,6 +119,7 @@ export class TasksService {
         this.tasksList.update((currentTasksList: Task[]) => {
           return currentTasksList.filter((task) => task.id !== taskToDelete.id);
         });
+        this.updateLocalStorage();
       }
     });
   }
