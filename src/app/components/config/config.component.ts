@@ -152,17 +152,12 @@ export class ConfigComponent {
     switch (value) {
       case 'pomodoro':
         this.appStateService!.selectingColorThemePomodoro = true;
-        console.log(this.appStateService!.selectingColorThemePomodoro);
-        
         break;
       case 'short-break':
         this.appStateService!.selectingColorThemeBreak = true;
-        console.log(this.appStateService!.selectingColorThemeBreak);
-        
         break;
       case 'long-break':
         this.appStateService!.selectingColorThemeLongBreak = true;
-        console.log(this.appStateService!.selectingColorThemeLongBreak);
         break;
     }
   }

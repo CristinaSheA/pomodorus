@@ -20,14 +20,9 @@ export class ClickOutsideDirective {
   clickOutsideAction(event: Event) {
     if (!this.elementRef!.nativeElement.contains(event.target)) {
       this.clickCount++;
-      console.log('Clicked outside:', this.clickCount);
-
       if (this.clickCount >= 2) {
         this.clickOutside.emit();
-        console.log('emited');
       }
-    } else {
-      console.log('Clicked inside');
     }
   }
 }

@@ -25,6 +25,89 @@ export class AppStateService {
   public selectingColorThemeBreak: boolean = false;
   public selectingColorThemeLongBreak: boolean = false;
 
+  constructor() {
+    const pomodoroMinutesFromLocalStorage =
+      localStorage.getItem('pomodoroMinutes');
+    const shortBreakMinutesFromLocalStorage =
+      localStorage.getItem('shortBreakMinutes');
+    const longBreakMinutesFromLocalStorage =
+      localStorage.getItem('longBreakMinutes');
+    const autoStartBreaksFromLocalStorage =
+      localStorage.getItem('autoStartBreaks');
+    const autoStartPomodorosFromLocalStorage =
+      localStorage.getItem('autoStartPomodoros');
+    const longBreakIntervalFromLocalStorage =
+      localStorage.getItem('longBreakInterval');
+    const autoCheckTasksFromLocalStorage =
+      localStorage.getItem('autoCheckTasks');
+    const autoSwitchTasksFromLocalStorage =
+      localStorage.getItem('autoSwitchTasks');
+    const alarmSoundFromLocalStorage = localStorage.getItem('alarmSound');
+    const alarmSoundRepetitionFromLocalStorage = localStorage.getItem(
+      'alarmSoundRepetition'
+    );
+    const tickingSoundFromLocalStorage = localStorage.getItem('tickingSound');
+    const pomodoroColorThemeFromLocalStorage =
+      localStorage.getItem('pomodoroColorTheme');
+    const shortBreakColorThemeFromLocalStorage = localStorage.getItem(
+      'shortBreakColorTheme'
+    );
+    const longBreakColorThemeFromLocalStorage = localStorage.getItem(
+      'longBreakColorTheme'
+    );
+    const darkModeFromLocalStorage = localStorage.getItem('darkMode');
+
+    if (pomodoroMinutesFromLocalStorage) {
+      this.pomodoroMinutes = JSON.parse(pomodoroMinutesFromLocalStorage);
+    }
+    if (shortBreakMinutesFromLocalStorage) {
+      this.shortBreakMinutes = JSON.parse(shortBreakMinutesFromLocalStorage);
+    }
+    if (longBreakMinutesFromLocalStorage) {
+      this.longBreakMinutes = JSON.parse(longBreakMinutesFromLocalStorage);
+    }
+    if (autoStartBreaksFromLocalStorage) {
+      this.autoStartBreaks = JSON.parse(autoStartBreaksFromLocalStorage);
+    }
+    if (autoStartPomodorosFromLocalStorage) {
+      this.autoStartPomodoros = JSON.parse(autoStartPomodorosFromLocalStorage);
+    }
+    if (longBreakIntervalFromLocalStorage) {
+      this.longBreakInterval = JSON.parse(longBreakIntervalFromLocalStorage);
+    }
+    if (autoCheckTasksFromLocalStorage) {
+      this.autoCheckTasks = JSON.parse(autoCheckTasksFromLocalStorage);
+    }
+    if (autoSwitchTasksFromLocalStorage) {
+      this.autoSwitchTasks = JSON.parse(autoSwitchTasksFromLocalStorage);
+    }
+    if (alarmSoundFromLocalStorage) {
+      this.alarmSound = JSON.parse(alarmSoundFromLocalStorage);
+    }
+    if (alarmSoundRepetitionFromLocalStorage) {
+      this.alarmSoundRepetition = JSON.parse(alarmSoundRepetitionFromLocalStorage);
+    }
+    if (tickingSoundFromLocalStorage) {
+      this.tickingSound = JSON.parse(tickingSoundFromLocalStorage);
+    }
+    if (pomodoroColorThemeFromLocalStorage) {
+      this.pomodoroColorTheme = JSON.parse(pomodoroColorThemeFromLocalStorage);
+    }
+    if (shortBreakColorThemeFromLocalStorage) {
+      this.shortBreakColorTheme = JSON.parse(
+        shortBreakColorThemeFromLocalStorage
+      );
+    }
+    if (longBreakColorThemeFromLocalStorage) {
+      this.longBreakColorTheme = JSON.parse(
+        longBreakColorThemeFromLocalStorage
+      );
+    }
+    if (darkModeFromLocalStorage) {
+      this.darkMode = JSON.parse(darkModeFromLocalStorage);
+    }
+  }
+
   public playAudio(src: string, times: number | null) {
     if (!times) return;
     const audio = new Audio();
@@ -50,39 +133,26 @@ export class AppStateService {
       case 'bell':
         this.playAudio('../../assets/sounds/alarm/bells.mp3', 1);
         this.alarmSound = AlarmSound.Bell;
-        console.log(this.alarmSound);
-
         break;
 
       case 'bird':
-        console.log('bird');
         this.playAudio('../../assets/sounds/alarm/birds.mp3', 1);
         this.alarmSound = AlarmSound.Bird;
-        console.log(this.alarmSound);
-
         break;
 
       case 'digital':
-        console.log('digital');
         this.playAudio('../../assets/sounds/alarm/digital.mp3', 1);
         this.alarmSound = AlarmSound.Digital;
-        console.log(this.alarmSound);
-
         break;
 
       case 'kitchen':
-        console.log('kitchen');
         this.playAudio('../../assets/sounds/alarm/kitchen.mp3', 1);
         this.alarmSound = AlarmSound.Kitchen;
-        console.log(this.alarmSound);
-
         break;
 
       case 'wood':
         this.playAudio('../../assets/sounds/alarm/pop.mp3', 1);
         this.alarmSound = AlarmSound.Wood;
-        console.log('wood');
-        console.log(this.alarmSound);
         break;
     }
   }
@@ -123,8 +193,7 @@ export class AppStateService {
     this.shortBreakColorTheme = newState?.shortBreakColorTheme ?? '';
     this.longBreakColorTheme = newState?.longBreakColorTheme ?? '';
     this.darkMode = newState?.darkMode ?? false;
-    console.log(newState);
-    console.log(this.alarmSound);
+    this.updateLocalStorage();
   }
   public toggleDarkMode(event: { target: { checked: any } }) {
     if (event.target.checked) {
@@ -176,9 +245,54 @@ export class AppStateService {
     this.selectingColorThemeBreak = false;
     this.selectingColorThemeLongBreak = false;
   }
-
-  // updateLocalStorage() {
-  //   localStorage.setItem('tasks', JSON.stringify(this.arraysService.tasks));
-  //   localStorage.setItem('templates', JSON.stringify(this.arraysService.template));
-  // }
+  private updateLocalStorage() {
+    localStorage.setItem(
+      'pomodoroMinutes',
+      JSON.stringify(this.pomodoroMinutes)
+    );
+    localStorage.setItem(
+      'shortBreakMinutes',
+      JSON.stringify(this.shortBreakMinutes)
+    );
+    localStorage.setItem(
+      'longBreakMinutes',
+      JSON.stringify(this.longBreakMinutes)
+    );
+    localStorage.setItem(
+      'autoStartBreaks',
+      JSON.stringify(this.autoStartBreaks)
+    );
+    localStorage.setItem(
+      'autoStartPomodoros',
+      JSON.stringify(this.autoStartPomodoros)
+    );
+    localStorage.setItem(
+      'longBreakInterval',
+      JSON.stringify(this.longBreakInterval)
+    );
+    localStorage.setItem('autoCheckTasks', JSON.stringify(this.autoCheckTasks));
+    localStorage.setItem(
+      'autoSwitchTasks',
+      JSON.stringify(this.autoSwitchTasks)
+    );
+    localStorage.setItem('alarmSound', JSON.stringify(this.alarmSound));
+    localStorage.setItem(
+      'alarmSoundRepetition',
+      JSON.stringify(this.alarmSoundRepetition)
+    );
+    localStorage.setItem('tickingSound', JSON.stringify(this.tickingSound));
+    localStorage.setItem(
+      'pomodoroColorTheme',
+      JSON.stringify(this.pomodoroColorTheme)
+    );
+    localStorage.setItem(
+      'shortBreakColorTheme',
+      JSON.stringify(this.shortBreakColorTheme)
+    );
+    localStorage.setItem(
+      'longBreakColorTheme',
+      JSON.stringify(this.longBreakColorTheme)
+    );
+    localStorage.setItem('darkMode', JSON.stringify(this.darkMode));
+  }
 }

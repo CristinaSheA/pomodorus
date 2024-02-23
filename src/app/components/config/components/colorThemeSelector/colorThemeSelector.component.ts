@@ -20,9 +20,6 @@ export class ColorThemeSelectorComponent {
   public pickColor(color :string){
     this.appStateService!.pickColor(color)
     this.hideColorThemeSelection.emit()
-    console.log('bef:',this.appStateService?.pomodoroColorTheme)
-    console.log('bef:',this.appStateService?.shortBreakColorTheme)
-    console.log('bef:',this.appStateService?.longBreakColorTheme)
     if (this.appStateService!.selectingColorThemePomodoro) {
       this.appStateService!.pomodoroColorTheme = color
     }
@@ -32,13 +29,8 @@ export class ColorThemeSelectorComponent {
     if (this.appStateService!.selectingColorThemeLongBreak) {
       this.appStateService!.longBreakColorTheme = color
     }
-
     this.appStateService!.selectingColorThemePomodoro = false
     this.appStateService!.selectingColorThemeBreak = false
     this.appStateService!.selectingColorThemeLongBreak = false
-
-    console.log('aft:',this.appStateService?.pomodoroColorTheme)
-    console.log('aft:',this.appStateService?.shortBreakColorTheme)
-    console.log('aft:',this.appStateService?.longBreakColorTheme)
   }
 }

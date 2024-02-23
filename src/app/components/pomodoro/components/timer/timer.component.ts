@@ -60,7 +60,6 @@ export class TimerComponent {
       if (this.secondsLeft > 0) {
         this.secondsLeft--;
         this.getMinutes();
-        console.log(this.appStateService?.tickingSound);
       } else {
         this.timer.unsubscribe();
         this.skipSection();
@@ -109,7 +108,6 @@ export class TimerComponent {
     }
   }
   public startTicking() {
-    console.log(this.appStateService?.tickingSound);
     this.tickingAudio.loop = true;
 
     switch (this.appStateService?.tickingSound) {
