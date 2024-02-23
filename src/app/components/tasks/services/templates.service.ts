@@ -58,4 +58,8 @@ export class TemplatesService {
       }
     });
   }
+
+  public updateTemplateLocalStorage() {
+    localStorage.setItem('templates', JSON.stringify(this.templatesList));
+  }
 }

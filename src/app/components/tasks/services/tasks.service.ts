@@ -101,4 +101,8 @@ export class TasksService {
       }
     });
   }
+
+  public updateTaskLocalStorage() {
+    localStorage.setItem('tasks', JSON.stringify(this.tasksList));
+  }
 }

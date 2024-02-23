@@ -176,4 +176,9 @@ export class AppStateService {
     this.selectingColorThemeBreak = false;
     this.selectingColorThemeLongBreak = false;
   }
+
+  // updateLocalStorage() {
+  //   localStorage.setItem('tasks', JSON.stringify(this.arraysService.tasks));
+  //   localStorage.setItem('templates', JSON.stringify(this.arraysService.template));
+  // }
 }
