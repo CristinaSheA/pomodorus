@@ -177,9 +177,11 @@ export class TimerComponent {
     if (this.currentSection === 'pomodoro') {
       this.currentPomodoroCount++;
     }
+    this.cdr?.detectChanges();
+
     this.currentSection =
       this.currentSection === 'pomodoro' &&
-      this.currentPomodoroCount % this.longBreakFrequency === 0
+      this.currentPomodoroCount % (this.appStateService!.longBreakInterval + 1) === 0
         ? 'long-break'
         : this.currentSection === 'pomodoro'
         ? 'short-break'
@@ -187,6 +189,7 @@ export class TimerComponent {
     this.setTime();
     this.getMinutes();
     this.tickingAudio.pause();
+    this.cdr?.detectChanges();
 
     if (
       this.appStateService?.autoStartPomodoros &&

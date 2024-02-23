@@ -11,7 +11,7 @@ export class AppStateService {
   public longBreakMinutes: number = 15;
   public autoStartBreaks: boolean = false;
   public autoStartPomodoros: boolean = false;
-  public longBreakInterval: number = 1;
+  public longBreakInterval: number = 3;
   public autoCheckTasks: boolean = false;
   public autoSwitchTasks: boolean = false;
   public alarmSound: AlarmSound = AlarmSound.Bell;
