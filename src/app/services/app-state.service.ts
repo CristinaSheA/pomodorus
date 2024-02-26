@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, inject } from '@angular/core';
 import { AlarmSound } from '../enums/alarmSound';
 import { TickingSound } from '../enums/tickingSound';
+import { SectionService } from './section.service';
+import { DOCUMENT } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -24,8 +26,9 @@ export class AppStateService {
   public selectingColorThemePomodoro: boolean = false;
   public selectingColorThemeBreak: boolean = false;
   public selectingColorThemeLongBreak: boolean = false;
+  public sectionService = inject(SectionService);
 
-  constructor() {
+  constructor(@Inject(DOCUMENT) private document: Document) {
     const pomodoroMinutesFromLocalStorage =
       localStorage.getItem('pomodoroMinutes');
     const shortBreakMinutesFromLocalStorage =
@@ -85,7 +88,9 @@ export class AppStateService {
       this.alarmSound = JSON.parse(alarmSoundFromLocalStorage);
     }
     if (alarmSoundRepetitionFromLocalStorage) {
-      this.alarmSoundRepetition = JSON.parse(alarmSoundRepetitionFromLocalStorage);
+      this.alarmSoundRepetition = JSON.parse(
+        alarmSoundRepetitionFromLocalStorage
+      );
     }
     if (tickingSoundFromLocalStorage) {
       this.tickingSound = JSON.parse(tickingSoundFromLocalStorage);
@@ -176,6 +181,7 @@ export class AppStateService {
         break;
     }
   }
+
   public updateState(newState: Partial<AppStateService>) {
     Object.assign(this, newState);
     this.pomodoroMinutes = newState?.pomodoroMinutes ?? 0;
@@ -194,6 +200,19 @@ export class AppStateService {
     this.longBreakColorTheme = newState?.longBreakColorTheme ?? '';
     this.darkMode = newState?.darkMode ?? false;
     this.updateLocalStorage();
+
+    switch (this.sectionService!.currentSection) {
+      case 'pomodoro':
+        this.document.body.style.background = this.pomodoroColorTheme;
+        break;
+
+      case 'short-break':
+        this.document.body.style.background = this.shortBreakColorTheme;
+        break;
+      case 'long-break':
+        this.document.body.style.background = this.longBreakColorTheme;
+        break;
+    }
   }
   public toggleDarkMode(event: { target: { checked: any } }) {
     if (event.target.checked) {

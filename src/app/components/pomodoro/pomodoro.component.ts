@@ -10,6 +10,7 @@ import { TimerComponent } from './components/timer/timer.component';
 import { SectionsComponent } from './components/sections/sections.component';
 import { Section } from './interfaces/section';
 import { AppStateService } from '../../services/app-state.service';
+import { SectionService } from '../../services/section.service';
 
 @Component({
   selector: 'pomodoro-main',
@@ -22,7 +23,9 @@ import { AppStateService } from '../../services/app-state.service';
 export class PomodoroComponent {
   @ViewChild(TimerComponent) timerComponentRef!: TimerComponent;
   private readonly appStateService = inject(AppStateService);
-  public currentSection: string = 'pomodoro';
+  private readonly sectionService = inject(SectionService);
+
+  // public currentSection: string = 'pomodoro';
   public sectionsList: Section[] = [
     {
       name: 'pomodoro',
@@ -32,13 +35,13 @@ export class PomodoroComponent {
     },
     {
       name: 'short-break',
-      time: this.appStateService?.pomodoroMinutes
+      time: this.appStateService?.shortBreakMinutes
         ? this.appStateService.shortBreakMinutes * 60
         : 0,
     },
     {
       name: 'long-break',
-      time: this.appStateService?.pomodoroMinutes
+      time: this.appStateService?.longBreakMinutes
         ? this.appStateService.longBreakMinutes * 60
         : 0,
     },
@@ -52,12 +55,13 @@ export class PomodoroComponent {
     if (this.timerComponentRef.timer) {
       this.timerComponentRef.timer.unsubscribe();
     }
-    this.currentSection = message;
+    this.sectionService!.currentSection = message;
+    console.log(this.sectionService!.currentSection);
+    
     this.timerComponentRef.getMinutes();
-    this.timerComponentRef.setTime();
     this.handleTimerEnd();
     this.setShowingButtons(true, false, false);
-    switch (this.currentSection) {
+    switch (this.sectionService!.currentSection) {
       case 'pomodoro':
         this.document.body.style.background =
           this.appStateService!.pomodoroColorTheme;
@@ -100,13 +104,13 @@ export class PomodoroComponent {
 
     if (
       this.appStateService?.autoStartPomodoros &&
-      this.currentSection === 'pomdoro'
+      this.sectionService!.currentSection === 'pomdoro'
     ) {
       this.startTimer();
     }
     if (
       this.appStateService?.autoStartBreaks &&
-      this.currentSection === 'short-break'
+      this.sectionService!.currentSection === 'short-break'
     ) {
       this.startTimer();
     }

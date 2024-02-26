@@ -71,18 +71,15 @@ export class ConfigComponent {
     this.selectingColorThemeLongBreak =
       this.appStateService!.selectingColorThemeLongBreak;
   }
-
-  onSelectAlarm(e:any) {
+  public onSelectAlarm(e:any) {
     this.appStateService?.onSelectAlarm(e)
   }
-
-  onSelectTicking(e:any) {
+  public onSelectTicking(e:any) {
     this.appStateService?.onSelectTicking(e)
   }
-  setColorThemeSelection(value: boolean) {
+  public setColorThemeSelection(value: boolean) {
     this.showColorThemeSelection = value;
   }
-
   public updateState() {
     this.alarmSound = this.appStateService!.alarmSound
     this.tickingSound = this.appStateService!.tickingSound
@@ -111,27 +108,22 @@ export class ConfigComponent {
     this.appStateService!.toggleDarkMode(event);
     this.darkMode = this.appStateService!.darkMode;
   }
-
   public toggleAutoStartBreaks(event: any) {
     this.appStateService!.toggleAutoStartBreaks(event);
     this.autoStartBreaks = this.appStateService!.autoStartBreaks;
   }
-
   public toggleAutoStartPomodoros(event: any) {
     this.appStateService!.toggleAutoStartPomodoros(event);
     this.autoStartPomodoros = this.appStateService!.autoStartPomodoros;
   }
-
   public toggleAutoCheckTasks(event: any) {
     this.appStateService!.toggleAutoCheckTasks(event);
     this.autoCheckTasks = this.appStateService!.autoCheckTasks;
   }
-
   public toggleAutoSwitchTasks(event: any) {
     this.appStateService!.toggleAutoSwitchTasks(event);
     this.autoSwitchTasks = this.appStateService!.autoSwitchTasks;
   }
-
   public autoCheckTasksMessage() {
     Swal.fire({
       title: 'Auto Check Tasks',
