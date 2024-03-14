@@ -97,7 +97,7 @@
       <h3>alarm sound</h3>
       <div class="switch-setting-select">
         <i class="fi fi-sr-caret-down"></i>
-        <select (change)="this.onSelectAlarm($event)">
+        <select (change)="this.onSelectAlarm($event)" [(ngModel)]="valueAlarmSelect">
           <option value="bell">Bell</option>
           <option value="bird">Bird</option>
           <option value="digital">Digital</option>
@@ -115,7 +115,7 @@
       <h3>ticking sound</h3>
       <div class="switch-setting-select">
         <i class="fi fi-sr-caret-down"></i>
-        <select (change)="this.onSelectTicking($event)">
+        <select (change)="this.onSelectTicking($event)" [(ngModel)]="valueTickingSelect">
           <option value="none">None</option>
           <option value="ticking-fast">Ticking fast</option>
           <option value="ticking-slow">Ticking Slow</option>

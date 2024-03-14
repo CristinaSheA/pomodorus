@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {  Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TasksService } from '../../services/tasks.service';
 import { AppStateService } from '../../../../services/app-state.service';
 
@@ -22,10 +22,9 @@ export class StatsComponent {
       return total + task.pomodoros.totalPomodoros;
     }, 0);
 
-    if (!this.appState) return
-    return totalPomodoros * this.appState.pomodoroMinutes;
+    if (!this.appState) return;
+    return totalPomodoros * this.appState.pomodoroMinutes();
   }
-
   public allPomodoros() {
     if (!this.tasksService) return 0;
     const tasks = this.tasksService.tasksList();
@@ -35,7 +34,6 @@ export class StatsComponent {
     }, 0);
     return totalPomodoros;
   }
-
   public pomodorosDone() {
     if (!this.tasksService) return 0;
     const tasks = this.tasksService.tasksList();

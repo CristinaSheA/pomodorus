@@ -18,7 +18,7 @@ import { StatsComponent } from './components/stats/stats.component';
 import { TasksToolbarComponent } from './components/tasks-toolbar/tasks-toolbar.component';
 
 import { ClickOutsideDirective } from './directives/click-outside.directive';
-import { TemplateActions } from './enums/templateAction';
+import { TemplateActions } from './directives/enums/templateAction';
 
 @Component({
   selector: 'tasks',

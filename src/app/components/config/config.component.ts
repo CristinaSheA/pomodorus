@@ -4,7 +4,9 @@ import {
   Component,
   EventEmitter,
   Output,
+  WritableSignal,
   inject,
+  signal,
 } from '@angular/core';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
@@ -25,9 +27,9 @@ export class ConfigComponent {
   @Output() public setShowSettings = new EventEmitter<void>();
 
   private appStateService = inject(AppStateService);
-  public pomodoroMinutes = this.appStateService!.pomodoroMinutes;
-  public shortBreakMinutes = this.appStateService!.shortBreakMinutes;
-  public longBreakMinutes = this.appStateService!.longBreakMinutes;
+  public pomodoroMinutes = this.appStateService!.pomodoroMinutes();
+  public shortBreakMinutes = this.appStateService!.shortBreakMinutes();
+  public longBreakMinutes = this.appStateService!.longBreakMinutes();
   public longBreakInterval = this.appStateService!.longBreakInterval + 1;
   public alarmSound: AlarmSound = this.appStateService!.alarmSound;
   public alarmSoundRepetition = this.appStateService!.alarmSoundRepetition;
@@ -48,10 +50,28 @@ export class ConfigComponent {
   public selectingColorThemeBreak: boolean = false;
   public selectingColorThemeLongBreak: boolean = false;
 
+  valueAlarmSelect!: string;
+  valueTickingSelect!: string;
+
+  
+
   ngOnInit() {
-    this.pomodoroMinutes = this.appStateService!.pomodoroMinutes;
-    this.shortBreakMinutes = this.appStateService!.shortBreakMinutes;
-    this.longBreakMinutes = this.appStateService!.longBreakMinutes;
+    const valueAlarmSelectFromLocalStorage = localStorage.getItem('valueAlarmSelect');
+    if (!valueAlarmSelectFromLocalStorage) return;
+    if (this.valueAlarmSelect = 'bird') {
+      this.valueAlarmSelect = valueAlarmSelectFromLocalStorage;
+      console.log(this.valueAlarmSelect);
+    }
+    const valueTickingSelectFromLocalStorage = localStorage.getItem('valueTickingSelect');
+    if (!valueTickingSelectFromLocalStorage) return;
+    if (this.valueTickingSelect = 'none') {
+      this.valueTickingSelect = valueTickingSelectFromLocalStorage;
+      console.log(this.valueTickingSelect);
+    }
+
+    this.pomodoroMinutes = this.appStateService!.pomodoroMinutes();
+    this.shortBreakMinutes = this.appStateService!.shortBreakMinutes();
+    this.longBreakMinutes = this.appStateService!.longBreakMinutes();
     this.longBreakInterval = this.appStateService!.longBreakInterval;
     this.alarmSound = this.appStateService!.alarmSound;
     this.alarmSoundRepetition = this.appStateService!.alarmSoundRepetition;
@@ -71,22 +91,22 @@ export class ConfigComponent {
     this.selectingColorThemeLongBreak =
       this.appStateService!.selectingColorThemeLongBreak;
   }
-  public onSelectAlarm(e:any) {
-    this.appStateService?.onSelectAlarm(e)
+  public onSelectAlarm(e: any) {
+    this.appStateService?.onSelectAlarm(e);
   }
-  public onSelectTicking(e:any) {
-    this.appStateService?.onSelectTicking(e)
+  public onSelectTicking(e: any) {
+    this.appStateService?.onSelectTicking(e);
   }
   public setColorThemeSelection(value: boolean) {
     this.showColorThemeSelection = value;
   }
   public updateState() {
-    this.alarmSound = this.appStateService!.alarmSound
-    this.tickingSound = this.appStateService!.tickingSound
+    this.alarmSound = this.appStateService!.alarmSound;
+    this.tickingSound = this.appStateService!.tickingSound;
     const newState = {
-      pomodoroMinutes: this.pomodoroMinutes,
-      shortBreakMinutes: this.shortBreakMinutes,
-      longBreakMinutes: this.longBreakMinutes,
+      pomodoroMinutes: signal(this.pomodoroMinutes),
+      shortBreakMinutes: signal(this.shortBreakMinutes),
+      longBreakMinutes: signal(this.longBreakMinutes),
       autoStartBreaks: this.autoStartBreaks,
       autoStartPomodoros: this.autoStartPomodoros,
       longBreakInterval: this.longBreakInterval,
@@ -100,6 +120,9 @@ export class ConfigComponent {
       longBreakColorTheme: this.longBreakColorTheme,
       darkMode: this.darkMode,
     };
+
+    localStorage.setItem('valueAlarmSelect', this.valueAlarmSelect);
+    localStorage.setItem('valueTickingSelect', this.valueTickingSelect);
 
     this.appStateService?.updateState(newState);
     this.setShowSettings.emit();
@@ -139,7 +162,7 @@ export class ConfigComponent {
     });
   }
   public setThemeColor(value: string) {
-    this.setColorThemeSelection(true)
+    this.setColorThemeSelection(true);
 
     switch (value) {
       case 'pomodoro':
@@ -154,15 +177,15 @@ export class ConfigComponent {
     }
   }
   public get pomodoroTheme() {
-    this.pomodoroColorTheme = this.appStateService!.pomodoroColorTheme
+    this.pomodoroColorTheme = this.appStateService!.pomodoroColorTheme;
     return this.appStateService!.pomodoroColorTheme;
   }
   public get shortBreakTheme() {
-    this.shortBreakColorTheme = this.appStateService!.shortBreakColorTheme
+    this.shortBreakColorTheme = this.appStateService!.shortBreakColorTheme;
     return this.appStateService!.shortBreakColorTheme;
   }
   public get longBreakTheme() {
-    this.longBreakColorTheme = this.appStateService!.longBreakColorTheme
+    this.longBreakColorTheme = this.appStateService!.longBreakColorTheme;
     return this.appStateService!.longBreakColorTheme;
   }
 }

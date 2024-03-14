@@ -7,6 +7,7 @@ import {
   Inject,
   Input,
   Output,
+  effect,
   inject,
 } from '@angular/core';
 import { Subscription, interval } from 'rxjs';
@@ -15,7 +16,7 @@ import { TasksService } from '../../../tasks/services/tasks.service';
 import { AppStateService } from '../../../../services/app-state.service';
 import { AlarmSound } from '../../../../enums/alarmSound';
 import { TickingSound } from '../../../../enums/tickingSound';
-import { SectionService } from '../../../../services/section.service';
+import { ConfigService } from '../../../../services/config.service';
 
 @Component({
   selector: 'timer',
@@ -27,7 +28,7 @@ import { SectionService } from '../../../../services/section.service';
 })
 export class TimerComponent {
   private readonly appStateService = inject(AppStateService);
-  private readonly sectionService = inject(SectionService);
+  private readonly configService = inject(ConfigService);
   private readonly tasksService = inject(TasksService);
   private readonly cdr = inject(ChangeDetectorRef);
 
@@ -44,7 +45,12 @@ export class TimerComponent {
   public min!: number;
   public sec!: number;
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor(@Inject(DOCUMENT) private document: Document) {
+    effect(() => {
+      this.getMinutes();
+      this.setTime();
+    });
+  }
   ngOnChanges(): void {
     this.longBreakFrequency = this.appStateService!.longBreakInterval + 1;
     this.themeBySection();
@@ -137,7 +143,7 @@ export class TimerComponent {
     this.tickingAudio.pause();
   }
   public themeBySection() {
-    switch (this.sectionService!.currentSection) {
+    switch (this.configService!.currentSection) {
       case 'pomodoro':
         this.document.body.style.background =
           this.appStateService!.pomodoroColorTheme;
@@ -167,25 +173,25 @@ export class TimerComponent {
     this.startTicking();
   }
   public skipSection(): void {
-    if (this.sectionService!.currentSection === 'pomodoro') {
+    if (this.configService!.currentSection === 'pomodoro') {
       this.cdr?.detectChanges();
       this.incrementDonePomodoros();
       this.cdr?.detectChanges();
     }
 
     this.timer.unsubscribe();
-    if (this.sectionService!.currentSection === 'pomodoro') {
+    if (this.configService!.currentSection === 'pomodoro') {
       this.currentPomodoroCount++;
     }
     this.cdr?.detectChanges();
 
-    this.sectionService!.currentSection =
-      this.sectionService!.currentSection === 'pomodoro' &&
+    this.configService!.currentSection =
+      this.configService!.currentSection === 'pomodoro' &&
       this.currentPomodoroCount %
         (this.appStateService!.longBreakInterval + 1) ===
         0
         ? 'long-break'
-        : this.sectionService!.currentSection === 'pomodoro'
+        : this.configService!.currentSection === 'pomodoro'
         ? 'short-break'
         : 'pomodoro';
     this.setTime();
@@ -195,13 +201,13 @@ export class TimerComponent {
 
     if (
       this.appStateService?.autoStartPomodoros &&
-      this.sectionService!.currentSection === 'pomdoro'
+      this.configService!.currentSection === 'pomdoro'
     ) {
       this.startTimer();
     }
     if (
       this.appStateService?.autoStartBreaks &&
-      this.sectionService!.currentSection === 'short-break'
+      this.configService!.currentSection === 'short-break'
     ) {
       this.startTimer();
     }
@@ -211,50 +217,29 @@ export class TimerComponent {
     let desiredTime = this.sectionsList[index].time;
     let minutes;
 
-    switch (this.sectionService!.currentSection) {
+    switch (this.configService!.currentSection) {
       case 'pomodoro':
         this.updateTimerAndBackground(
-          this.appStateService!.pomodoroMinutes,
+          this.appStateService!.pomodoroMinutes(),
           this.appStateService!.pomodoroColorTheme
         );
         index = 0;
-        console.log(
-          'desde pomodoro:',
-          this.sectionService!.currentSection,
-          'segundos',
-          this.secondsLeft
-        );
-
         break;
 
       case 'short-break':
         this.updateTimerAndBackground(
-          this.appStateService!.shortBreakMinutes,
+          this.appStateService!.shortBreakMinutes(),
           this.appStateService!.shortBreakColorTheme
         );
         index = 1;
-        console.log(
-          'desde short-break:',
-          this.sectionService!.currentSection,
-          'segundos',
-          this.secondsLeft
-        );
         break;
 
       case 'long-break':
         this.updateTimerAndBackground(
-          this.appStateService!.longBreakMinutes,
+          this.appStateService!.longBreakMinutes(),
           this.appStateService!.longBreakColorTheme
         );
         index = 2;
-        console.log(
-          'desde long-break:',
-          this.sectionService!.currentSection,
-          'segundos',
-          this.secondsLeft
-        );
-        console.log(this.secondsLeft);
-
         break;
     }
 
@@ -262,19 +247,18 @@ export class TimerComponent {
     minutes = desiredTime / 60;
   }
   public getMinutes(): void {
-    switch (this.sectionService!.currentSection) {
+    switch (this.configService!.currentSection) {
       case 'pomodoro':
-        this.secondsLeft = this.appStateService!.pomodoroMinutes * 60;
+        this.secondsLeft = this.appStateService!.pomodoroMinutes() * 60;
         break;
 
       case 'short-break':
-        this.secondsLeft = this.appStateService!.shortBreakMinutes * 60;
+        this.secondsLeft = this.appStateService!.shortBreakMinutes() * 60;
         break;
 
       case 'long-break':
-        this.secondsLeft = this.appStateService!.longBreakMinutes * 60;
+        this.secondsLeft = this.appStateService!.longBreakMinutes() * 60;
         break;
-
     }
     const minutes = ~~(this.secondsLeft / 60);
     const sec = this.secondsLeft % 60;

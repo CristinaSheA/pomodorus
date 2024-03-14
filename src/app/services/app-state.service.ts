@@ -1,16 +1,25 @@
-import { Inject, Injectable, inject } from '@angular/core';
+import {
+  Inject,
+  Injectable,
+  ViewChild,
+  WritableSignal,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { AlarmSound } from '../enums/alarmSound';
 import { TickingSound } from '../enums/tickingSound';
-import { SectionService } from './section.service';
+import { ConfigService } from './config.service';
 import { DOCUMENT } from '@angular/common';
+import { TimerComponent } from '../components/pomodoro/components/timer/timer.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppStateService {
-  public pomodoroMinutes: number = 25;
-  public shortBreakMinutes: number = 5;
-  public longBreakMinutes: number = 15;
+  public readonly pomodoroMinutes: WritableSignal<number> = signal(25);
+  public readonly shortBreakMinutes: WritableSignal<number> = signal(5);
+  public readonly longBreakMinutes: WritableSignal<number> = signal(15);
   public autoStartBreaks: boolean = false;
   public autoStartPomodoros: boolean = false;
   public longBreakInterval: number = 3;
@@ -26,7 +35,7 @@ export class AppStateService {
   public selectingColorThemePomodoro: boolean = false;
   public selectingColorThemeBreak: boolean = false;
   public selectingColorThemeLongBreak: boolean = false;
-  public sectionService = inject(SectionService);
+  public configService = inject(ConfigService);
 
   constructor(@Inject(DOCUMENT) private document: Document) {
     const pomodoroMinutesFromLocalStorage =
@@ -61,14 +70,15 @@ export class AppStateService {
     const darkModeFromLocalStorage = localStorage.getItem('darkMode');
 
     if (pomodoroMinutesFromLocalStorage) {
-      this.pomodoroMinutes = JSON.parse(pomodoroMinutesFromLocalStorage);
+      this.pomodoroMinutes.set(JSON.parse(pomodoroMinutesFromLocalStorage));
     }
     if (shortBreakMinutesFromLocalStorage) {
-      this.shortBreakMinutes = JSON.parse(shortBreakMinutesFromLocalStorage);
+      this.shortBreakMinutes.set(JSON.parse(shortBreakMinutesFromLocalStorage));
     }
     if (longBreakMinutesFromLocalStorage) {
-      this.longBreakMinutes = JSON.parse(longBreakMinutesFromLocalStorage);
+      this.longBreakMinutes.set(JSON.parse(longBreakMinutesFromLocalStorage));
     }
+
     if (autoStartBreaksFromLocalStorage) {
       this.autoStartBreaks = JSON.parse(autoStartBreaksFromLocalStorage);
     }
@@ -181,12 +191,34 @@ export class AppStateService {
         break;
     }
   }
+  @ViewChild(TimerComponent) timerComponentRef!: TimerComponent;
 
   public updateState(newState: Partial<AppStateService>) {
+
+    if (
+      !newState.longBreakMinutes ||
+      !newState.pomodoroMinutes ||
+      !newState.shortBreakMinutes
+    )
+      return;
+      
+    let a = newState.pomodoroMinutes();
+    console.log('pomodoroMinutes', this.pomodoroMinutes());
+    this.pomodoroMinutes.update((value) => (value = a));
+    console.log('pomodoroMinutes', this.pomodoroMinutes());
+
+    let b = newState.shortBreakMinutes();
+    console.log('shortBreakMinutes', this.shortBreakMinutes());
+    this.shortBreakMinutes.update((value) => (value = b));
+    console.log('shortBreakMinutes', this.shortBreakMinutes());
+    console.log(this.configService?.currentSection);
+    
+
     Object.assign(this, newState);
-    this.pomodoroMinutes = newState?.pomodoroMinutes ?? 0;
-    this.shortBreakMinutes = newState?.shortBreakMinutes ?? 0;
-    this.longBreakMinutes = newState?.longBreakMinutes ?? 0;
+
+    // this.pomodoroMinutes.set(newState!.pomodoroMinutes() ?? signal(0));
+    // this.shortBreakMinutes.set(newState!.shortBreakMinutes() ?? signal(0));
+    this.longBreakMinutes.set(newState!.longBreakMinutes() ?? 0);
     this.autoStartBreaks = newState?.autoStartBreaks ?? false;
     this.autoStartPomodoros = newState?.autoStartPomodoros ?? false;
     this.longBreakInterval = newState?.longBreakInterval ?? 0;
@@ -201,7 +233,7 @@ export class AppStateService {
     this.darkMode = newState?.darkMode ?? false;
     this.updateLocalStorage();
 
-    switch (this.sectionService!.currentSection) {
+    switch (this.configService!.currentSection) {
       case 'pomodoro':
         this.document.body.style.background = this.pomodoroColorTheme;
         break;
@@ -267,15 +299,15 @@ export class AppStateService {
   private updateLocalStorage() {
     localStorage.setItem(
       'pomodoroMinutes',
-      JSON.stringify(this.pomodoroMinutes)
+      JSON.stringify(this.pomodoroMinutes())
     );
     localStorage.setItem(
       'shortBreakMinutes',
-      JSON.stringify(this.shortBreakMinutes)
+      JSON.stringify(this.shortBreakMinutes())
     );
     localStorage.setItem(
       'longBreakMinutes',
-      JSON.stringify(this.longBreakMinutes)
+      JSON.stringify(this.longBreakMinutes())
     );
     localStorage.setItem(
       'autoStartBreaks',

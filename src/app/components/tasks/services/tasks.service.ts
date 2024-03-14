@@ -2,7 +2,7 @@ import { Injectable, WritableSignal } from '@angular/core';
 import { signal } from '@angular/core';
 import { Task } from '../interfaces/task';
 import Swal from 'sweetalert2';
-import { TaskStatus } from '../enums/taskStatus';
+import { TaskStatus } from '../directives/enums/taskStatus';
 
 @Injectable({
   providedIn: 'root',
@@ -97,7 +97,7 @@ export class TasksService {
 
       this.tasksList.update((currentTasksList: Task[]) => {
         return currentTasksList.map((t) =>
-          t.id === updatedTask.id ? updatedTask : t
+        t.id === updatedTask.id ? updatedTask : t
         );
       });
 

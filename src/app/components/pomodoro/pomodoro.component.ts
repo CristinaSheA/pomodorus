@@ -4,13 +4,14 @@ import {
   Component,
   Inject,
   ViewChild,
+  effect,
   inject,
 } from '@angular/core';
 import { TimerComponent } from './components/timer/timer.component';
 import { SectionsComponent } from './components/sections/sections.component';
 import { Section } from './interfaces/section';
 import { AppStateService } from '../../services/app-state.service';
-import { SectionService } from '../../services/section.service';
+import { ConfigService } from './../../services/config.service';
 
 @Component({
   selector: 'pomodoro-main',
@@ -23,45 +24,41 @@ import { SectionService } from '../../services/section.service';
 export class PomodoroComponent {
   @ViewChild(TimerComponent) timerComponentRef!: TimerComponent;
   private readonly appStateService = inject(AppStateService);
-  private readonly sectionService = inject(SectionService);
-
-  // public currentSection: string = 'pomodoro';
-  public sectionsList: Section[] = [
-    {
-      name: 'pomodoro',
-      time: this.appStateService?.pomodoroMinutes
-        ? this.appStateService.pomodoroMinutes * 60
-        : 0,
-    },
-    {
-      name: 'short-break',
-      time: this.appStateService?.shortBreakMinutes
-        ? this.appStateService.shortBreakMinutes * 60
-        : 0,
-    },
-    {
-      name: 'long-break',
-      time: this.appStateService?.longBreakMinutes
-        ? this.appStateService.longBreakMinutes * 60
-        : 0,
-    },
-  ];
+  private readonly configService = inject(ConfigService);
+  public sectionsList: Section[] = [];
   public showStartButton: boolean = true;
   public showPauseAndSkipButtons: boolean = false;
   public showResumeButton: boolean = false;
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor(@Inject(DOCUMENT) private document: Document) {
+    this.sectionsList = [
+      {
+        name: 'pomodoro',
+        time: (this.appStateService?.pomodoroMinutes() as number) * 60,
+      },
+      {
+        name: 'short-break',
+        time: (this.appStateService?.shortBreakMinutes() as number) * 60,
+      },
+      {
+        name: 'long-break',
+        time: (this.appStateService?.longBreakMinutes() as number) * 60,
+      },
+    ];
 
+    effect(() => {
+      this.timerComponentRef.getMinutes();
+      this.timerComponentRef.setTime();
+    });
+  }
   public setSection(message: string): void {
     if (this.timerComponentRef.timer) {
       this.timerComponentRef.timer.unsubscribe();
     }
-    this.sectionService!.currentSection = message;
-    console.log(this.sectionService!.currentSection);
-    
+    this.configService!.currentSection = message;
     this.timerComponentRef.getMinutes();
     this.handleTimerEnd();
     this.setShowingButtons(true, false, false);
-    switch (this.sectionService!.currentSection) {
+    switch (this.configService!.currentSection) {
       case 'pomodoro':
         this.document.body.style.background =
           this.appStateService!.pomodoroColorTheme;
@@ -104,13 +101,13 @@ export class PomodoroComponent {
 
     if (
       this.appStateService?.autoStartPomodoros &&
-      this.sectionService!.currentSection === 'pomdoro'
+      this.configService!.currentSection === 'pomdoro'
     ) {
       this.startTimer();
     }
     if (
       this.appStateService?.autoStartBreaks &&
-      this.sectionService!.currentSection === 'short-break'
+      this.configService!.currentSection === 'short-break'
     ) {
       this.startTimer();
     }

@@ -1,4 +1,4 @@
-import { TaskStatus } from "../enums/taskStatus";
+import { TaskStatus } from "../directives/enums/taskStatus";
 
 
 export interface Task {

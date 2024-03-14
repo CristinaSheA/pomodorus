@@ -11,7 +11,7 @@ import { TasksService } from '../../services/tasks.service';
 import { Task } from '../../interfaces/task';
 import Swal from 'sweetalert2';
 import { TemplatesService } from '../../services/templates.service';
-import { TemplateActions } from '../../enums/templateAction';
+import { TemplateActions } from '../../directives/enums/templateAction';
 
 @Component({
   selector: 'tasks-toolbar',
@@ -22,26 +22,21 @@ import { TemplateActions } from '../../enums/templateAction';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TasksToolbarComponent {
-  @Output() private manageFormTemplateWindow: EventEmitter<void> = new EventEmitter<void>();
-  @Output() private manageListTemplateWindow: EventEmitter<TemplateActions> = new EventEmitter<TemplateActions>();
-  @Output() private saveAsTemplate: EventEmitter<void> = new EventEmitter<void>();
-
+  @Output() private manageFormTemplateWindow: EventEmitter<void> =
+    new EventEmitter<void>();
+  @Output() private manageListTemplateWindow: EventEmitter<TemplateActions> =
+    new EventEmitter<TemplateActions>();
+  @Output() private saveAsTemplate: EventEmitter<void> =
+    new EventEmitter<void>();
   @Output() private showToolbar: EventEmitter<void> = new EventEmitter<void>();
-
-  
   private readonly tasksService = inject(TasksService);
   private readonly templatesService = inject(TemplatesService);
-  private tasks = this.tasksService?.tasksList()
-  private templates = this.templatesService?.templatesList()
-
-
+  private tasks = this.tasksService?.tasksList();
+  private templates = this.templatesService?.templatesList();
 
   public onSaveAsTemplate() {
     this.saveAsTemplate.emit();
   }
-
-
-
   public deleteAllTasks() {
     Swal.fire({
       title: 'Are you sure?',
@@ -57,7 +52,7 @@ export class TasksToolbarComponent {
         this.tasksService.tasksList = signal<Task[]>([]);
       }
     });
-    this.showToolbar.emit()
+    this.showToolbar.emit();
   }
   public deleteCompletedTasks() {
     Swal.fire({
@@ -76,9 +71,8 @@ export class TasksToolbarComponent {
         });
       }
     });
-    this.showToolbar.emit()
+    this.showToolbar.emit();
   }
-
   public showTemplateForm() {
     if (!this.tasks || this.tasks.length === 0) {
       Swal.fire('Please add tasks first. 📋✅');
@@ -90,7 +84,6 @@ export class TasksToolbarComponent {
       }
     }
   }
-
   public showTemplatesList() {
     if (!this.templates || this.templates.length === 0) {
       Swal.fire('Please add templates first. 📋🔢');

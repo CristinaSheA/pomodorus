@@ -11,7 +11,7 @@ import { TemplatesService } from '../../services/templates.service';
 import { Template } from '../../interfaces/template';
 import { TasksService } from '../../services/tasks.service';
 import { Task } from '../../interfaces/task';
-import { TemplateActions } from '../../enums/templateAction';
+import { TemplateActions } from '../../directives/enums/templateAction';
 
 @Component({
   selector: 'templates-list',
