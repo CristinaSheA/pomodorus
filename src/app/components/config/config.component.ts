@@ -50,23 +50,19 @@ export class ConfigComponent {
   public selectingColorThemeBreak: boolean = false;
   public selectingColorThemeLongBreak: boolean = false;
 
-  valueAlarmSelect!: string;
-  valueTickingSelect!: string;
-
-  
+  public valueAlarmSelect!: string;
+  public valueTickingSelect!: string;
 
   ngOnInit() {
     const valueAlarmSelectFromLocalStorage = localStorage.getItem('valueAlarmSelect');
     if (!valueAlarmSelectFromLocalStorage) return;
     if (this.valueAlarmSelect = 'bird') {
       this.valueAlarmSelect = valueAlarmSelectFromLocalStorage;
-      console.log(this.valueAlarmSelect);
     }
     const valueTickingSelectFromLocalStorage = localStorage.getItem('valueTickingSelect');
     if (!valueTickingSelectFromLocalStorage) return;
     if (this.valueTickingSelect = 'none') {
       this.valueTickingSelect = valueTickingSelectFromLocalStorage;
-      console.log(this.valueTickingSelect);
     }
 
     this.pomodoroMinutes = this.appStateService!.pomodoroMinutes();
@@ -123,7 +119,6 @@ export class ConfigComponent {
 
     localStorage.setItem('valueAlarmSelect', this.valueAlarmSelect);
     localStorage.setItem('valueTickingSelect', this.valueTickingSelect);
-
     this.appStateService?.updateState(newState);
     this.setShowSettings.emit();
   }

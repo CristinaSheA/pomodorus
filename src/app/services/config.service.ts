@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConfigService {
-  public currentSection: string = 'pomodoro';
+  public currentSection: WritableSignal<string> = signal('pomodoro');
 }

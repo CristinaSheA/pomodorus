@@ -44,21 +44,17 @@ export class PomodoroComponent {
         time: (this.appStateService?.longBreakMinutes() as number) * 60,
       },
     ];
-
-    effect(() => {
-      this.timerComponentRef.getMinutes();
-      this.timerComponentRef.setTime();
-    });
   }
+
   public setSection(message: string): void {
     if (this.timerComponentRef.timer) {
       this.timerComponentRef.timer.unsubscribe();
     }
-    this.configService!.currentSection = message;
+    this.configService!.currentSection.set(message);
     this.timerComponentRef.getMinutes();
     this.handleTimerEnd();
     this.setShowingButtons(true, false, false);
-    switch (this.configService!.currentSection) {
+    switch (this.configService!.currentSection()) {
       case 'pomodoro':
         this.document.body.style.background =
           this.appStateService!.pomodoroColorTheme;
@@ -101,13 +97,13 @@ export class PomodoroComponent {
 
     if (
       this.appStateService?.autoStartPomodoros &&
-      this.configService!.currentSection === 'pomdoro'
+      this.configService!.currentSection() === 'pomdoro'
     ) {
       this.startTimer();
     }
     if (
       this.appStateService?.autoStartBreaks &&
-      this.configService!.currentSection === 'short-break'
+      this.configService!.currentSection() === 'short-break'
     ) {
       this.startTimer();
     }
