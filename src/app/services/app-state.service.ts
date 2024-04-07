@@ -200,24 +200,13 @@ export class AppStateService {
       !newState.shortBreakMinutes
     )
       return;
-    console.log('pomodoroMinutes bef', this.pomodoroMinutes());
-    this.lastValuea = this.pomodoroMinutes();
-    let a = newState.pomodoroMinutes();
-    this.pomodoroMinutes.update((value) => (value = a));
-    console.log('pomodoroMinutes aft', this.pomodoroMinutes());
+    let newStatePomodoroMinutes = newState.pomodoroMinutes();
+    this.pomodoroMinutes.update((value) => (value = newStatePomodoroMinutes));
+    let newStateShortBreakMinutes = newState.shortBreakMinutes();
+    this.shortBreakMinutes.update((value) => (value = newStateShortBreakMinutes));
+    let newStateLongBreakMinutes = newState.longBreakMinutes();
+    this.longBreakMinutes.update((value) => (value = newStateLongBreakMinutes));
 
-    console.log('shortBreakMinutes bef', this.shortBreakMinutes());
-    this.lastValueb = this.shortBreakMinutes();
-    let b = newState.shortBreakMinutes();
-    this.shortBreakMinutes.update((value) => (value = b));
-    console.log('shortBreakMinutes aft', this.shortBreakMinutes());
-
-    console.log('longBreakMinutes bef', this.longBreakMinutes());
-    this.lastValuec = this.longBreakMinutes();
-    let c = newState.longBreakMinutes();
-    this.longBreakMinutes.update((value) => (value = c));
-    console.log('longBreakMinutes aft', this.longBreakMinutes());
-    // Object.assign(this, newState);
     this.autoStartBreaks = newState?.autoStartBreaks ?? false;
     this.autoStartPomodoros = newState?.autoStartPomodoros ?? false;
     this.longBreakInterval = newState?.longBreakInterval ?? 0;

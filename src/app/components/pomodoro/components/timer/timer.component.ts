@@ -45,11 +45,11 @@ public currentSection!: string;
   public min!: number;
   public sec!: number;
 
-  private loggingEffect = effect(() => {
+  private minutesEffect = effect(() => {
+
     let currentSection = this.configService!.currentSection()
     switch (currentSection) {
       case 'pomodoro':
-        console.log(1, 'succesfull');
         this.getMinutes();
         this.updateTimerAndBackground(
           this.appStateService!.pomodoroMinutes(),
@@ -57,7 +57,6 @@ public currentSection!: string;
         );
         break;
       case 'short-break':
-        console.log(2, 'succesfull');
         this.getMinutes();
         this.updateTimerAndBackground(
           this.appStateService!.shortBreakMinutes(),
@@ -65,7 +64,6 @@ public currentSection!: string;
         );
         break;
       case 'long-break':
-        console.log(3, 'succesfull');
         this.getMinutes();
         this.updateTimerAndBackground(
           this.appStateService!.longBreakMinutes(),
@@ -73,9 +71,6 @@ public currentSection!: string;
         );
         break;
     }
-
-    console.log(this.currentSection);
-    console.log(0);
     this.getMinutes();
   });
 
@@ -83,21 +78,29 @@ public currentSection!: string;
   ngOnChanges(): void {
     this.themeBySection();
   }
+
   public startTimer(): void {
     let audio = new Audio();
     audio.src = '../../../../../assets/sounds/starting-timer.mp3';
     audio.play();
 
     this.timer = interval(1000).subscribe(() => {
-      this.secondsLeft--;
-      this.getMinutes();
-      this.setTime()
+      // this.getMinutes();
+      // this.setTime()
 
-      if (this.secondsLeft > 0) {
-        this.secondsLeft--;
-        this.getMinutes();
-        this.setTime()
-      } else {
+      this.secondsLeft--;
+      this.min = ~~(this.secondsLeft / 60);
+      this.sec = this.secondsLeft % 60;
+      console.log(this.sec);
+      this.cdr?.detectChanges();
+      
+      
+      console.log(this.secondsLeft);
+      
+      // this.getMinutes();
+      // this.setTime()
+
+      if (this.secondsLeft <= 0) {
         this.timer.unsubscribe();
         this.skipSection();
         this.timerEnded.emit();
@@ -245,8 +248,7 @@ public currentSection!: string;
     let index = 0;
     let desiredTime = this.sectionsList[index].time;
     let minutes;
-    let currentSection = this.configService!.currentSection()
-    switch (currentSection) {
+    switch (this.configService!.currentSection()) {
       case 'pomodoro':
         this.updateTimerAndBackground(
           this.appStateService!.pomodoroMinutes(),
@@ -272,11 +274,12 @@ public currentSection!: string;
 
     desiredTime = this.sectionsList[index].time;
     minutes = desiredTime / 60;
+    this.min = minutes
   }
   public getMinutes(): void {
     let currentSection = this.configService!.currentSection()
 
-    switch (currentSection) {
+    switch (this.configService!.currentSection()) {
       case 'pomodoro':
         this.secondsLeft = this.appStateService!.pomodoroMinutes() * 60;
         break;
@@ -289,11 +292,13 @@ public currentSection!: string;
         this.secondsLeft = this.appStateService!.longBreakMinutes() * 60;
         break;
     }
+    
     const minutes = ~~(this.secondsLeft / 60);
     const sec = this.secondsLeft % 60;
 
     this.min = minutes;
     this.sec = sec;
+    console.log('second', this.secondsLeft);
     this.cdr?.detectChanges();
   }
   public updateTimerAndBackground(minutes: number, background: string): void {
