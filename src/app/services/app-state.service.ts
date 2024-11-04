@@ -34,10 +34,6 @@ export class AppStateService {
   public selectingColorThemeLongBreak: boolean = false;
   public configService = inject(ConfigService);
 
-  public lastValuea!: number;
-  public lastValueb!: number;
-  public lastValuec!: number;
-
   constructor(@Inject(DOCUMENT) private document: Document) {
     const pomodoroMinutesFromLocalStorage =
       localStorage.getItem('pomodoroMinutes');
@@ -192,7 +188,6 @@ export class AppStateService {
         break;
     }
   }
-
   public updateState(newState: Partial<AppStateService>) {
     if (
       !newState.longBreakMinutes ||
@@ -203,7 +198,9 @@ export class AppStateService {
     let newStatePomodoroMinutes = newState.pomodoroMinutes();
     this.pomodoroMinutes.update((value) => (value = newStatePomodoroMinutes));
     let newStateShortBreakMinutes = newState.shortBreakMinutes();
-    this.shortBreakMinutes.update((value) => (value = newStateShortBreakMinutes));
+    this.shortBreakMinutes.update(
+      (value) => (value = newStateShortBreakMinutes)
+    );
     let newStateLongBreakMinutes = newState.longBreakMinutes();
     this.longBreakMinutes.update((value) => (value = newStateLongBreakMinutes));
 

@@ -4,7 +4,6 @@ import {
   Component,
   EventEmitter,
   Output,
-  WritableSignal,
   inject,
   signal,
 } from '@angular/core';
@@ -54,14 +53,16 @@ export class ConfigComponent {
   public valueTickingSelect!: string;
 
   ngOnInit() {
-    const valueAlarmSelectFromLocalStorage = localStorage.getItem('valueAlarmSelect');
+    const valueAlarmSelectFromLocalStorage =
+      localStorage.getItem('valueAlarmSelect');
     if (!valueAlarmSelectFromLocalStorage) return;
-    if (this.valueAlarmSelect = 'bird') {
+    if ((this.valueAlarmSelect = 'bird')) {
       this.valueAlarmSelect = valueAlarmSelectFromLocalStorage;
     }
-    const valueTickingSelectFromLocalStorage = localStorage.getItem('valueTickingSelect');
+    const valueTickingSelectFromLocalStorage =
+      localStorage.getItem('valueTickingSelect');
     if (!valueTickingSelectFromLocalStorage) return;
-    if (this.valueTickingSelect = 'none') {
+    if ((this.valueTickingSelect = 'none')) {
       this.valueTickingSelect = valueTickingSelectFromLocalStorage;
     }
 

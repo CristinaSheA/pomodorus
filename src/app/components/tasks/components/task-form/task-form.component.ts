@@ -16,7 +16,6 @@ import {
 import { TasksService } from '../../services/tasks.service';
 import { FormGroup } from '@angular/forms';
 import { Task } from '../../interfaces/task';
-import { ClickOutsideDirective } from '../../directives/click-outside.directive';
 
 @Component({
   selector: 'task-form',

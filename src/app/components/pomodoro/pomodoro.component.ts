@@ -4,7 +4,6 @@ import {
   Component,
   Inject,
   ViewChild,
-  effect,
   inject,
 } from '@angular/core';
 import { TimerComponent } from './components/timer/timer.component';
